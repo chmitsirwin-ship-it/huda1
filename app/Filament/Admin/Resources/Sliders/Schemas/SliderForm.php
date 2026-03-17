@@ -1,0 +1,47 @@
+<?php
+
+namespace App\Filament\Admin\Resources\Sliders\Schemas;
+
+use AbdulmajeedJamaan\FilamentTranslatableTabs\TranslatableTabs;
+use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
+use Filament\Schemas\Schema;
+
+class SliderForm
+{
+    public static function configure(Schema $schema): Schema
+    {
+        return $schema
+            ->components([
+                FileUpload::make('image')
+                    ->label(__('Image'))
+                    ->image()
+                    ->visibility('public')
+                    ->required(),
+
+                TranslatableTabs::make()
+
+                    ->schema([
+                        TextInput::make('title')->label(__('Title')),
+                        TextInput::make('subtitle')->label(__('Subtitle')),
+                    ]),
+
+                TextInput::make('button_text')
+                    ->label(__('Button Text')),
+
+                TextInput::make('button_url')
+                    ->label(__('Button URL'))
+                    ->url(),
+
+                TextInput::make('sort_order')
+                    ->label(__('Sort Order'))
+                    ->numeric()
+                    ->default(0),
+
+                Toggle::make('is_active')
+                    ->label(__('Active'))
+                    ->default(true),
+            ]);
+    }
+}

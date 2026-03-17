@@ -1,0 +1,141 @@
+<?php
+
+namespace App\Filament\Admin\Pages;
+
+use App\Enums\CalculationMethod;
+use App\Enums\PrayerMethod;
+use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\Hidden;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TextInput;
+use Filament\Schemas\Components\Tabs;
+use Filament\Schemas\Components\Tabs\Tab;
+use Filament\Schemas\Schema;
+use Filament\Support\Icons\Heroicon;
+use Outerweb\FilamentSettings\Pages\Settings;
+use SalemAljebaly\FilamentMapPicker\MapPicker;
+
+class MosqueSettings extends Settings
+{
+    protected static string|\BackedEnum|null $navigationIcon = Heroicon::OutlinedCog6Tooth;
+
+    public static function getNavigationGroup(): string|\UnitEnum|null
+    {
+        return __('Settings');
+    }
+
+    public static function getNavigationLabel(): string
+    {
+        return __('Mosque Settings');
+    }
+
+    public function form(Schema $schema): Schema
+    {
+        return $schema
+            ->components([
+                Tabs::make()
+                    ->columnSpanFull()
+                    ->tabs([
+                        Tab::make(__('General'))
+                            ->schema([
+                                TextInput::make('general.name')
+                                    ->label(__('Name'))
+                                    ->required(),
+
+                                Textarea::make('general.description')
+                                    ->label(__('Description'))
+                                    ->rows(3),
+
+                                Textarea::make('general.address')
+                                    ->label(__('Address'))
+                                    ->rows(2),
+
+                                TextInput::make('general.phone')
+                                    ->label(__('Phone'))
+                                    ->tel(),
+
+                                TextInput::make('general.email')
+                                    ->label(__('Email'))
+                                    ->email(),
+                            ]),
+
+                        Tab::make(__('Location'))
+                            ->schema([
+                                Hidden::make('location.latitude'),
+                                Hidden::make('location.longitude'),
+
+                                MapPicker::make('location.map')
+                                    ->label(__('Location'))
+                                    ->latlngFields('location.latitude', 'location.longitude')
+                                    ->searchable()
+                                    ->collapsibleSearch()
+                                    ->draggable()
+                                    ->height(320)
+                                    ->dehydrated(false),
+                            ]),
+
+                        Tab::make(__('Branding'))
+                            ->schema([
+                                FileUpload::make('branding.logo')
+                                    ->label(__('Logo'))
+                                    ->image()
+                                    ->visibility('public')
+                                    ->directory('settings'),
+
+                                FileUpload::make('branding.favicon')
+                                    ->label(__('Favicon'))
+                                    ->image()
+                                    ->visibility('public')
+                                    ->directory('settings'),
+                            ]),
+
+                        Tab::make(__('Social'))
+                            ->schema([
+                                TextInput::make('social.facebook')
+                                    ->label(__('Facebook'))
+                                    ->url(),
+
+                                TextInput::make('social.twitter')
+                                    ->label(__('Twitter / X'))
+                                    ->url(),
+
+                                TextInput::make('social.instagram')
+                                    ->label(__('Instagram'))
+                                    ->url(),
+
+                                TextInput::make('social.youtube')
+                                    ->label(__('YouTube'))
+                                    ->url(),
+                            ]),
+
+                        Tab::make(__('Prayer'))
+                            ->schema([
+                                Select::make('prayer.method')
+                                    ->label(__('Prayer Method'))
+                                    ->options(PrayerMethod::class)
+                                    ->required(),
+
+                                Select::make('prayer.calculation_method')
+                                    ->label(__('Calculation Method'))
+                                    ->options(CalculationMethod::class)
+                                    ->required(),
+
+                                TextInput::make('prayer.timezone')
+                                    ->label(__('Timezone'))
+                                    ->placeholder('America/New_York'),
+                            ]),
+
+                        Tab::make(__('SEO'))
+                            ->schema([
+                                TextInput::make('seo.meta_title')
+                                    ->label(__('Meta Title')),
+
+                                Textarea::make('seo.meta_description')
+                                    ->label(__('Meta Description'))
+                                    ->rows(3),
+                            ]),
+                    ]),
+            ]);
+    }
+}

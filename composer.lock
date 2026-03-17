@@ -4,8 +4,79 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "88a91faba4a5ebc19fc7c162e8dba63d",
+    "content-hash": "eb4d0e9e7997441844655068738f3858",
     "packages": [
+        {
+            "name": "abdulmajeed-jamaan/filament-translatable-tabs",
+            "version": "v5.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Abdulmajeed-Jamaan/filament-translatable-tabs.git",
+                "reference": "a1957257c1dc0afeb326471fb1c7f0eb60bf3715"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Abdulmajeed-Jamaan/filament-translatable-tabs/zipball/a1957257c1dc0afeb326471fb1c7f0eb60bf3715",
+                "reference": "a1957257c1dc0afeb326471fb1c7f0eb60bf3715",
+                "shasum": ""
+            },
+            "require": {
+                "filament/filament": "^5.0",
+                "filament/forms": "^5.0",
+                "spatie/laravel-package-tools": "^1.15.0"
+            },
+            "require-dev": {
+                "larastan/larastan": "^3.0",
+                "laravel/pint": "^1.0",
+                "orchestra/testbench": "^9.0",
+                "pestphp/pest": "^3.8"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "aliases": [],
+                    "providers": [
+                        "AbdulmajeedJamaan\\FilamentTranslatableTabs\\FilamentTranslatableTabsServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "AbdulmajeedJamaan\\FilamentTranslatableTabs\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Abdulmajeed-Jamaan",
+                    "email": "abdulmajeed.jamaan@outlook.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Simplifying managing json based translation columns using tabs",
+            "homepage": "https://github.com/abdulmajeed-jamaan/filament-translatable-tabs",
+            "keywords": [
+                "Abdulmajeed-Jamaan",
+                "filament",
+                "filament-translatable-tabs",
+                "laravel",
+                "translation"
+            ],
+            "support": {
+                "issues": "https://github.com/abdulmajeed-jamaan/filament-translatable-tabs/issues",
+                "source": "https://github.com/abdulmajeed-jamaan/filament-translatable-tabs"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/Abdulmajeed-Jamaan",
+                    "type": "github"
+                }
+            ],
+            "time": "2026-01-23T12:26:31+00:00"
+        },
         {
             "name": "anourvalar/eloquent-serialize",
             "version": "1.3.5",
@@ -3980,6 +4051,164 @@
             "time": "2025-09-03T16:03:54+00:00"
         },
         {
+            "name": "outerweb/filament-settings",
+            "version": "v2.3.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/outer-web/filament-settings.git",
+                "reference": "aaf62625f2b7c6a371d731e326749de555af9dca"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/outer-web/filament-settings/zipball/aaf62625f2b7c6a371d731e326749de555af9dca",
+                "reference": "aaf62625f2b7c6a371d731e326749de555af9dca",
+                "shasum": ""
+            },
+            "require": {
+                "filament/filament": "^4.0|^5.0",
+                "outerweb/settings": "^2.0",
+                "php": "^8.4",
+                "spatie/laravel-package-tools": "^1.16"
+            },
+            "require-dev": {
+                "larastan/larastan": "^3.0",
+                "laravel/pint": "^1.14",
+                "nunomaduro/collision": "^8.8",
+                "orchestra/testbench": "^10.0.0||^9.0.0",
+                "pestphp/pest": "^4.0",
+                "pestphp/pest-plugin-arch": "^4.0",
+                "pestphp/pest-plugin-laravel": "^4.0",
+                "phpstan/extension-installer": "^1.4",
+                "phpstan/phpstan-deprecation-rules": "^2.0",
+                "phpstan/phpstan-phpunit": "^2.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Outerweb\\FilamentSettings\\FilamentSettingsServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Outerweb\\FilamentSettings\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Outerweb",
+                    "email": "info@outerweb.be",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Filament integration for the outerweb/settings package",
+            "homepage": "https://github.com/outerweb/filament-settings",
+            "keywords": [
+                "Outerweb",
+                "filament-settings",
+                "laravel"
+            ],
+            "support": {
+                "issues": "https://github.com/outerweb/filament-settings/issues",
+                "source": "https://github.com/outerweb/filament-settings"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/outer-web",
+                    "type": "github"
+                }
+            ],
+            "time": "2026-01-20T09:55:11+00:00"
+        },
+        {
+            "name": "outerweb/settings",
+            "version": "v2.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/outer-web/settings.git",
+                "reference": "ea6ab44e4d774864054b69d2419c191be8cd9f08"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/outer-web/settings/zipball/ea6ab44e4d774864054b69d2419c191be8cd9f08",
+                "reference": "ea6ab44e4d774864054b69d2419c191be8cd9f08",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/contracts": "^11.0||^12.0",
+                "illuminate/database": "^11.0||^12.0",
+                "illuminate/support": "^11.0||^12.0",
+                "php": "^8.4",
+                "spatie/laravel-package-tools": "^1.16"
+            },
+            "require-dev": {
+                "larastan/larastan": "^3.0",
+                "laravel/pint": "^1.14",
+                "nunomaduro/collision": "^8.8",
+                "orchestra/testbench": "^10.0.0||^9.0.0",
+                "pestphp/pest": "^4.0",
+                "pestphp/pest-plugin-arch": "^4.0",
+                "pestphp/pest-plugin-laravel": "^4.0",
+                "phpstan/extension-installer": "^1.4",
+                "phpstan/phpstan-deprecation-rules": "^2.0",
+                "phpstan/phpstan-phpunit": "^2.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "aliases": {
+                        "Setting": "Outerweb\\Settings\\Facades\\Setting"
+                    },
+                    "providers": [
+                        "Outerweb\\Settings\\SettingsServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "files": [
+                    "src/Helpers/helpers.php"
+                ],
+                "psr-4": {
+                    "Outerweb\\Settings\\": "src/",
+                    "Outerweb\\Settings\\Database\\Factories\\": "database/factories/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Outerweb",
+                    "email": "info@outerweb.be",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Application wide settings stored in your database",
+            "homepage": "https://github.com/outer-web/settings",
+            "keywords": [
+                "Outerweb",
+                "Settings",
+                "laravel"
+            ],
+            "support": {
+                "issues": "https://github.com/outer-web/settings/issues",
+                "source": "https://github.com/outer-web/settings/tree/v2.0.2"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/Outerweb",
+                    "type": "github"
+                }
+            ],
+            "time": "2025-10-09T12:02:13+00:00"
+        },
+        {
             "name": "paragonie/constant_time_encoding",
             "version": "v3.1.3",
             "source": {
@@ -4932,6 +5161,97 @@
             "time": "2025-12-14T04:43:48+00:00"
         },
         {
+            "name": "redberry/page-builder-plugin",
+            "version": "v3.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/RedberryProducts/filament-page-builder-plugin.git",
+                "reference": "c0545796bb3b2f3dcbac60a2948b394c468bfab4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/RedberryProducts/filament-page-builder-plugin/zipball/c0545796bb3b2f3dcbac60a2948b394c468bfab4",
+                "reference": "c0545796bb3b2f3dcbac60a2948b394c468bfab4",
+                "shasum": ""
+            },
+            "require": {
+                "filament/actions": "^5.0",
+                "filament/filament": "^5.0",
+                "filament/forms": "^5.0",
+                "filament/infolists": "^5.0",
+                "filament/notifications": "^5.0",
+                "filament/schemas": "^5.0",
+                "filament/support": "^5.0",
+                "filament/tables": "^5.0",
+                "filament/widgets": "^5.0",
+                "php": "^8.1|^8.2|^8.3|^8.4",
+                "spatie/laravel-package-tools": "^1.15.0"
+            },
+            "require-dev": {
+                "filament/upgrade": "^4.0",
+                "laravel/pint": "^1.0",
+                "nunomaduro/collision": "^7.9||^8.0",
+                "nunomaduro/larastan": "^2.0.1||^3.0",
+                "orchestra/testbench": "^10.0.0||^9.16||^8.35",
+                "pestphp/pest": "^3.1||^2.0||^4.0",
+                "pestphp/pest-plugin-arch": "^3.0||^2.0||^4.0",
+                "pestphp/pest-plugin-laravel": "^3.0||^2.0||^4.0",
+                "pestphp/pest-plugin-livewire": "^2.1||^3.0||^4.0",
+                "phpstan/extension-installer": "^1.1||^2.0",
+                "phpstan/phpstan-deprecation-rules": "^2.0||^1.0",
+                "phpstan/phpstan-phpunit": "^2.0||^1.0",
+                "spatie/laravel-ray": "^1.26"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "aliases": {
+                        "PageBuilderPlugin": "Redberry\\PageBuilderPlugin\\Facades\\PageBuilderPlugin"
+                    },
+                    "providers": [
+                        "Redberry\\PageBuilderPlugin\\PageBuilderPluginServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Redberry\\PageBuilderPlugin\\": "src/",
+                    "Redberry\\PageBuilderPlugin\\Database\\Factories\\": "database/factories/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "redberry",
+                    "email": "hello@redberry.ge",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Page builder plugin for filamentphp admin panel to build pages using blocks.",
+            "homepage": "https://github.com/redberryproducts/page-builder-plugin",
+            "keywords": [
+                "filament",
+                "filamnetphp",
+                "laravel",
+                "page-builder-plugin",
+                "redberry"
+            ],
+            "support": {
+                "issues": "https://github.com/redberryproducts/page-builder-plugin/issues",
+                "source": "https://github.com/redberryproducts/page-builder-plugin"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/RedberryProducts",
+                    "type": "github"
+                }
+            ],
+            "time": "2026-03-04T10:37:34+00:00"
+        },
+        {
             "name": "ryangjchandler/blade-capture-directive",
             "version": "v1.1.0",
             "source": {
@@ -5008,6 +5328,61 @@
                 }
             ],
             "time": "2025-02-25T09:09:36+00:00"
+        },
+        {
+            "name": "salemaljebaly/filament-map-picker",
+            "version": "v1.0.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/salemaljebaly/filament-map-picker.git",
+                "reference": "4c766817529cb23ececb81b763d3511c3d01139e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/salemaljebaly/filament-map-picker/zipball/4c766817529cb23ececb81b763d3511c3d01139e",
+                "reference": "4c766817529cb23ececb81b763d3511c3d01139e",
+                "shasum": ""
+            },
+            "require": {
+                "filament/filament": "^5.0",
+                "illuminate/support": "^11.0|^12.0",
+                "php": "^8.2"
+            },
+            "require-dev": {
+                "orchestra/testbench": "^9.0|^10.0",
+                "phpunit/phpunit": "^11.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "SalemAljebaly\\FilamentMapPicker\\FilamentMapPickerServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "SalemAljebaly\\FilamentMapPicker\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "A Leaflet / OpenStreetMap map picker field for Filament v5.",
+            "keywords": [
+                "OpenStreetMap",
+                "filament",
+                "laravel",
+                "leaflet",
+                "map",
+                "picker"
+            ],
+            "support": {
+                "issues": "https://github.com/salemaljebaly/filament-map-picker/issues",
+                "source": "https://github.com/salemaljebaly/filament-map-picker/tree/v1.0.3"
+            },
+            "time": "2026-02-06T22:59:37+00:00"
         },
         {
             "name": "scrivo/highlight.php",
@@ -5206,6 +5581,89 @@
                 }
             ],
             "time": "2026-02-21T12:49:54+00:00"
+        },
+        {
+            "name": "spatie/laravel-translatable",
+            "version": "6.13.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/spatie/laravel-translatable.git",
+                "reference": "f2c5b8805a2dd22799c9aa8ce66cd98ce3170dcb"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/spatie/laravel-translatable/zipball/f2c5b8805a2dd22799c9aa8ce66cd98ce3170dcb",
+                "reference": "f2c5b8805a2dd22799c9aa8ce66cd98ce3170dcb",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/database": "^11.0|^12.0|^13.0",
+                "illuminate/support": "^11.0|^12.0|^13.0",
+                "php": "^8.3",
+                "spatie/laravel-package-tools": "^1.93.0"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "^3.90",
+                "mockery/mockery": "^1.6.12",
+                "orchestra/testbench": "^9.0|^10.0|^11.0",
+                "pestphp/pest": "^4.0.0"
+            },
+            "type": "library",
+            "extra": {
+                "aliases": {
+                    "Translatable": "Spatie\\Translatable\\Facades\\Translatable"
+                },
+                "laravel": {
+                    "providers": [
+                        "Spatie\\Translatable\\TranslatableServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Spatie\\Translatable\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Freek Van der Herten",
+                    "email": "freek@spatie.be",
+                    "homepage": "https://spatie.be",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Sebastian De Deyne",
+                    "email": "sebastian@spatie.be",
+                    "homepage": "https://spatie.be",
+                    "role": "Developer"
+                }
+            ],
+            "description": "A trait to make an Eloquent model hold translations",
+            "homepage": "https://github.com/spatie/laravel-translatable",
+            "keywords": [
+                "eloquent",
+                "i8n",
+                "laravel-translatable",
+                "model",
+                "multilingual",
+                "spatie",
+                "translate"
+            ],
+            "support": {
+                "issues": "https://github.com/spatie/laravel-translatable/issues",
+                "source": "https://github.com/spatie/laravel-translatable/tree/6.13.0"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/spatie",
+                    "type": "github"
+                }
+            ],
+            "time": "2026-02-21T14:20:19+00:00"
         },
         {
             "name": "spatie/shiki-php",

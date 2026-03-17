@@ -1,0 +1,48 @@
+<?php
+
+namespace App\Filament\Admin\Resources\Staff;
+
+use App\Filament\Admin\Resources\Staff\Pages\CreateStaff;
+use App\Filament\Admin\Resources\Staff\Pages\EditStaff;
+use App\Filament\Admin\Resources\Staff\Pages\ListStaff;
+use App\Filament\Admin\Resources\Staff\Schemas\StaffForm;
+use App\Filament\Admin\Resources\Staff\Tables\StaffTable;
+use App\Models\Staff;
+use Filament\Resources\Resource;
+use Filament\Schemas\Schema;
+use Filament\Support\Icons\Heroicon;
+use Filament\Tables\Table;
+
+class StaffResource extends Resource
+{
+    protected static ?string $model = Staff::class;
+
+    public static function getNavigationIcon(): string|\BackedEnum|null
+    {
+        return Heroicon::OutlinedUserGroup;
+    }
+
+    public static function getNavigationGroup(): string|\UnitEnum|null
+    {
+        return __('People');
+    }
+
+    public static function form(Schema $schema): Schema
+    {
+        return StaffForm::configure($schema);
+    }
+
+    public static function table(Table $table): Table
+    {
+        return StaffTable::configure($table);
+    }
+
+    public static function getPages(): array
+    {
+        return [
+            'index' => ListStaff::route('/'),
+            'create' => CreateStaff::route('/create'),
+            'edit' => EditStaff::route('/{record}/edit'),
+        ];
+    }
+}
