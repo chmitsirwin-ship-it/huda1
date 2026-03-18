@@ -17,6 +17,16 @@ class StaffResource extends Resource
 {
     protected static ?string $model = Staff::class;
 
+    public static function getModelLabel(): string
+    {
+        return __('Staff Member');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('Staff');
+    }
+
     public static function getNavigationIcon(): string|\BackedEnum|null
     {
         return Heroicon::OutlinedUserGroup;

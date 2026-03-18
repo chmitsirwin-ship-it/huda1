@@ -8,6 +8,8 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
+use Redberry\PageBuilderPlugin\Components\Forms\Actions\EditPageBuilderBlockAction;
+use Redberry\PageBuilderPlugin\Components\Forms\Actions\SelectBlockAction;
 use Redberry\PageBuilderPlugin\Components\Forms\PageBuilder;
 
 class PageForm
@@ -52,9 +54,15 @@ class PageForm
                 Section::make(__('Content Blocks'))
                     ->schema([
                         PageBuilder::make('pageBuilderBlocks')
+                            ->relationship()
                             ->label(__('Content'))
                             ->reorderable()
-                            ->relationship(),
+                            ->renderWithThumbnails()
+                            ->translateLabel()
+                            ->selectBlockAction(function (SelectBlockAction $action) {
+                                return $action->label(__('Add New Block'));
+                            })
+                            ->editAction(fn (EditPageBuilderBlockAction $action) => $action->label(__('Edit Block'))),
                     ]),
             ]);
     }

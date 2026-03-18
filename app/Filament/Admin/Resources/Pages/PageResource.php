@@ -17,6 +17,16 @@ class PageResource extends Resource
 {
     protected static ?string $model = Page::class;
 
+    public static function getModelLabel(): string
+    {
+        return __('Page');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('Pages');
+    }
+
     public static function getNavigationIcon(): string|\BackedEnum|null
     {
         return Heroicon::OutlinedDocumentText;

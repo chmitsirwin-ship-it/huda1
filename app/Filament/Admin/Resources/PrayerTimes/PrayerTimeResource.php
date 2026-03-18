@@ -17,6 +17,16 @@ class PrayerTimeResource extends Resource
 {
     protected static ?string $model = PrayerTime::class;
 
+    public static function getModelLabel(): string
+    {
+        return __('Prayer Time');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('Prayer Times');
+    }
+
     public static function getNavigationIcon(): string|\BackedEnum|null
     {
         return Heroicon::OutlinedClock;

@@ -129,4 +129,12 @@
         </div>
     </div>
 
+    <div class="max-w-7xl mx-auto px-6 pb-16">
+        <div class="bg-white rounded-2xl border border-neutral-200 shadow-sm p-8 lg:p-12">
+            <h2 class="text-2xl font-bold text-neutral-900 mb-2">{{ __('Send Us a Message') }}</h2>
+            <p class="text-neutral-500 mb-8">{{ __('Fill out the form below and we will get back to you as soon as possible.') }}</p>
+            <livewire:contact-form />
+        </div>
+    </div>
+
 @endsection

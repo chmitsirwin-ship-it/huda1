@@ -17,6 +17,16 @@ class SliderResource extends Resource
 {
     protected static ?string $model = Slider::class;
 
+    public static function getModelLabel(): string
+    {
+        return __('Slider');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('Sliders');
+    }
+
     public static function getNavigationIcon(): string|\BackedEnum|null
     {
         return Heroicon::OutlinedViewColumns;

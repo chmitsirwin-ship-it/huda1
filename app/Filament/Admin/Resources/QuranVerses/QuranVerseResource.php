@@ -17,6 +17,16 @@ class QuranVerseResource extends Resource
 {
     protected static ?string $model = QuranVerse::class;
 
+    public static function getModelLabel(): string
+    {
+        return __('Quran Verse');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('Quran Verses');
+    }
+
     public static function getNavigationIcon(): string|\BackedEnum|null
     {
         return Heroicon::OutlinedBookOpen;

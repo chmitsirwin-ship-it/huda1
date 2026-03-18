@@ -17,6 +17,16 @@ class MediaItemResource extends Resource
 {
     protected static ?string $model = MediaItem::class;
 
+    public static function getModelLabel(): string
+    {
+        return __('Media Item');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('Media Items');
+    }
+
     public static function getNavigationIcon(): string|\BackedEnum|null
     {
         return Heroicon::OutlinedPhoto;

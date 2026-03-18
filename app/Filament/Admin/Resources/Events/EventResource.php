@@ -17,6 +17,16 @@ class EventResource extends Resource
 {
     protected static ?string $model = Event::class;
 
+    public static function getModelLabel(): string
+    {
+        return __('Event');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('Events');
+    }
+
     public static function getNavigationIcon(): string|\BackedEnum|null
     {
         return Heroicon::OutlinedCalendarDays;

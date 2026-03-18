@@ -17,6 +17,16 @@ class KhutbaResource extends Resource
 {
     protected static ?string $model = Khutba::class;
 
+    public static function getModelLabel(): string
+    {
+        return __('Khutba');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('Khutbas');
+    }
+
     public static function getNavigationIcon(): string|\BackedEnum|null
     {
         return Heroicon::OutlinedMicrophone;

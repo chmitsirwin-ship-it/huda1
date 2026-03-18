@@ -17,6 +17,16 @@ class AnnouncementResource extends Resource
 {
     protected static ?string $model = Announcement::class;
 
+    public static function getModelLabel(): string
+    {
+        return __('Announcement');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('Announcements');
+    }
+
     public static function getNavigationIcon(): string|\BackedEnum|null
     {
         return Heroicon::OutlinedMegaphone;

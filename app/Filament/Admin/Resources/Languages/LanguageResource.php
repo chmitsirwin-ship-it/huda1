@@ -17,6 +17,16 @@ class LanguageResource extends Resource
 {
     protected static ?string $model = Language::class;
 
+    public static function getModelLabel(): string
+    {
+        return __('Language');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('Languages');
+    }
+
     public static function getNavigationIcon(): string|\BackedEnum|null
     {
         return Heroicon::OutlinedLanguage;

@@ -5,6 +5,7 @@ namespace App\Filament\Admin\Blocks;
 use AbdulmajeedJamaan\FilamentTranslatableTabs\TranslatableTabs;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\TextInput;
+use Illuminate\Contracts\Support\Htmlable;
 use Redberry\PageBuilderPlugin\Abstracts\BaseBlock;
 
 class HeroBlock extends BaseBlock
@@ -38,13 +39,13 @@ class HeroBlock extends BaseBlock
 
         return $data;
     }
-
+    public static function getThumbnail(): string|Htmlable|null
+    {
+        return asset('images/blocks/'.basename(self::class).'.jpg');
+    }
     public static function getBlockLabel(array $state, ?int $index = null): mixed
     {
-        $heading = $state['heading'] ?? null;
-        $label = is_array($heading) ? collect($heading)->first(fn ($v) => filled($v)) : $heading;
-
-        return filled($label) ? static::getBlockName().' - '.$label : parent::getBlockLabel($state, $index);
+        return (data_get($state, 'order') + 1).' - '.class_basename(data_get($state, 'block_type'));
     }
 
     public static function getView(): ?string

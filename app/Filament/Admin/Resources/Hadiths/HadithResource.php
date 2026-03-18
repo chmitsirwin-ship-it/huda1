@@ -17,6 +17,16 @@ class HadithResource extends Resource
 {
     protected static ?string $model = Hadith::class;
 
+    public static function getModelLabel(): string
+    {
+        return __('Hadith');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('Hadiths');
+    }
+
     public static function getNavigationIcon(): string|\BackedEnum|null
     {
         return Heroicon::OutlinedBookmarkSquare;
