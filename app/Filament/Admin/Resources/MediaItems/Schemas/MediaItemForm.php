@@ -7,6 +7,7 @@ use App\Enums\MediaType;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
+use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 
 class MediaItemForm
@@ -15,32 +16,42 @@ class MediaItemForm
     {
         return $schema
             ->components([
-                FileUpload::make('file_path')
-                    ->label(__('File'))
-                    ->image()
-                    ->visibility('public')
-                    ->required(),
-
-                TranslatableTabs::make()
-
+                Section::make(__('Media'))
                     ->schema([
-                        TextInput::make('title')->label(__('Title')),
-                        TextInput::make('alt_text')->label(__('Alt Text')),
+                        FileUpload::make('file_path')
+                            ->label(__('File'))
+                            ->image()
+                            ->visibility('public')
+                            ->required()
+                            ->columnSpanFull(),
+                        Select::make('type')
+                            ->label(__('Type'))
+                            ->options(MediaType::class)
+                            ->default(MediaType::Image)
+                            ->required()
+                            ->columnSpanFull(),
                     ]),
 
-                Select::make('type')
-                    ->label(__('Type'))
-                    ->options(MediaType::class)
-                    ->default(MediaType::Image)
-                    ->required(),
+                Section::make(__('Details'))
+                    ->schema([
+                        TranslatableTabs::make()
+                            ->schema([
+                                TextInput::make('title')->label(__('Title')),
+                                TextInput::make('alt_text')->label(__('Alt Text')),
+                            ]),
+                        TextInput::make('collection')
+                            ->label(__('Collection'))
+                            ->columnSpanFull(),
+                    ]),
 
-                TextInput::make('collection')
-                    ->label(__('Collection')),
-
-                TextInput::make('sort_order')
-                    ->label(__('Sort Order'))
-                    ->numeric()
-                    ->default(0),
+                Section::make(__('Settings'))
+                    ->aside()
+                    ->schema([
+                        TextInput::make('sort_order')
+                            ->label(__('Sort Order'))
+                            ->numeric()
+                            ->default(0),
+                    ]),
             ]);
     }
 }

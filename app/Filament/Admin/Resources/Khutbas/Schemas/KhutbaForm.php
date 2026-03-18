@@ -7,6 +7,7 @@ use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
+use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 
 class KhutbaForm
@@ -15,29 +16,38 @@ class KhutbaForm
     {
         return $schema
             ->components([
-                TranslatableTabs::make()
-
+                Section::make(__('Khutba Details'))
                     ->schema([
-                        TextInput::make('title')->label(__('Title'))->required(),
-                        TextInput::make('speaker')->label(__('Speaker'))->required(),
-                        TextInput::make('topic')->label(__('Topic')),
-                        Textarea::make('summary')->label(__('Summary'))->rows(4),
+                        TranslatableTabs::make()
+                            ->schema([
+                                TextInput::make('title')->label(__('Title'))->required(),
+                                TextInput::make('speaker')->label(__('Speaker'))->required(),
+                                TextInput::make('topic')->label(__('Topic')),
+                                Textarea::make('summary')->label(__('Summary'))->rows(4),
+                            ]),
+                        DatePicker::make('date')
+                            ->label(__('Date'))
+                            ->required()
+                            ->columnSpanFull(),
                     ]),
 
-                DatePicker::make('date')
-                    ->label(__('Date'))
-                    ->required(),
+                Section::make(__('Media'))
+                    ->columns(2)
+                    ->schema([
+                        TextInput::make('audio_url')
+                            ->label(__('Audio URL'))
+                            ->url(),
+                        TextInput::make('video_url')
+                            ->label(__('Video URL'))
+                            ->url(),
+                    ]),
 
-                TextInput::make('audio_url')
-                    ->label(__('Audio URL'))
-                    ->url(),
-
-                TextInput::make('video_url')
-                    ->label(__('Video URL'))
-                    ->url(),
-
-                Toggle::make('is_published')
-                    ->label(__('Published')),
+                Section::make(__('Status'))
+                    ->aside()
+                    ->schema([
+                        Toggle::make('is_published')
+                            ->label(__('Published')),
+                    ]),
             ]);
     }
 }

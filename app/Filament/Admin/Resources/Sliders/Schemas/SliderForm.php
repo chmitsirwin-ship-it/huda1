@@ -6,6 +6,7 @@ use AbdulmajeedJamaan\FilamentTranslatableTabs\TranslatableTabs;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
+use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 
 class SliderForm
@@ -14,34 +15,42 @@ class SliderForm
     {
         return $schema
             ->components([
-                FileUpload::make('image')
-                    ->label(__('Image'))
-                    ->image()
-                    ->visibility('public')
-                    ->required(),
-
-                TranslatableTabs::make()
-
+                Section::make(__('Slide Content'))
                     ->schema([
-                        TextInput::make('title')->label(__('Title')),
-                        TextInput::make('subtitle')->label(__('Subtitle')),
+                        FileUpload::make('image')
+                            ->label(__('Image'))
+                            ->image()
+                            ->visibility('public')
+                            ->required()
+                            ->columnSpanFull(),
+                        TranslatableTabs::make()
+                            ->schema([
+                                TextInput::make('title')->label(__('Title')),
+                                TextInput::make('subtitle')->label(__('Subtitle')),
+                            ]),
                     ]),
 
-                TextInput::make('button_text')
-                    ->label(__('Button Text')),
+                Section::make(__('Button'))
+                    ->columns(2)
+                    ->schema([
+                        TextInput::make('button_text')
+                            ->label(__('Button Text')),
+                        TextInput::make('button_url')
+                            ->label(__('Button URL'))
+                            ->url(),
+                    ]),
 
-                TextInput::make('button_url')
-                    ->label(__('Button URL'))
-                    ->url(),
-
-                TextInput::make('sort_order')
-                    ->label(__('Sort Order'))
-                    ->numeric()
-                    ->default(0),
-
-                Toggle::make('is_active')
-                    ->label(__('Active'))
-                    ->default(true),
+                Section::make(__('Settings'))
+                    ->aside()
+                    ->schema([
+                        TextInput::make('sort_order')
+                            ->label(__('Sort Order'))
+                            ->numeric()
+                            ->default(0),
+                        Toggle::make('is_active')
+                            ->label(__('Active'))
+                            ->default(true),
+                    ]),
             ]);
     }
 }

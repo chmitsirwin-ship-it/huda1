@@ -9,6 +9,7 @@ use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
+use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 
 class AnnouncementForm
@@ -17,28 +18,37 @@ class AnnouncementForm
     {
         return $schema
             ->components([
-                TranslatableTabs::make()
-
+                Section::make(__('Announcement Details'))
                     ->schema([
-                        TextInput::make('title')->label(__('Title'))->required(),
-                        RichEditor::make('content')->label(__('Content')),
+                        TranslatableTabs::make()
+                            ->schema([
+                                TextInput::make('title')->label(__('Title'))->required(),
+                                RichEditor::make('content')->label(__('Content'))->columnSpanFull(),
+                            ]),
+                        Select::make('type')
+                            ->label(__('Type'))
+                            ->options(AnnouncementType::class)
+                            ->default(AnnouncementType::General)
+                            ->required()
+                            ->columnSpanFull(),
                     ]),
 
-                Select::make('type')
-                    ->label(__('Type'))
-                    ->options(AnnouncementType::class)
-                    ->default(AnnouncementType::General)
-                    ->required(),
+                Section::make(__('Schedule'))
+                    ->columns(2)
+                    ->schema([
+                        DateTimePicker::make('published_at')
+                            ->label(__('Published At')),
+                        DateTimePicker::make('expires_at')
+                            ->label(__('Expires At')),
+                    ]),
 
-                DateTimePicker::make('published_at')
-                    ->label(__('Published At')),
-
-                DateTimePicker::make('expires_at')
-                    ->label(__('Expires At')),
-
-                Toggle::make('is_active')
-                    ->label(__('Active'))
-                    ->default(true),
+                Section::make(__('Status'))
+                    ->aside()
+                    ->schema([
+                        Toggle::make('is_active')
+                            ->label(__('Active'))
+                            ->default(true),
+                    ]),
             ]);
     }
 }

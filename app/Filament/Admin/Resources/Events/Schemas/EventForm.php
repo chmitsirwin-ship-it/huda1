@@ -10,6 +10,7 @@ use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
+use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 
 class EventForm
@@ -18,34 +19,42 @@ class EventForm
     {
         return $schema
             ->components([
-                TranslatableTabs::make()
-
+                Section::make(__('Event Details'))
                     ->schema([
-                        TextInput::make('title')->label(__('Title'))->required(),
-                        RichEditor::make('description')->label(__('Description')),
-                        TextInput::make('location')->label(__('Location')),
+                        TranslatableTabs::make()
+                            ->schema([
+                                TextInput::make('title')->label(__('Title'))->required(),
+                                RichEditor::make('description')->label(__('Description'))->columnSpanFull(),
+                                TextInput::make('location')->label(__('Location')),
+                            ]),
+                        FileUpload::make('image')
+                            ->label(__('Image'))
+                            ->image()
+                            ->visibility('public')
+                            ->columnSpanFull(),
                     ]),
 
-                DateTimePicker::make('starts_at')
-                    ->label(__('Starts At'))
-                    ->required(),
+                Section::make(__('Schedule'))
+                    ->columns(2)
+                    ->schema([
+                        DateTimePicker::make('starts_at')
+                            ->label(__('Starts At'))
+                            ->required(),
+                        DateTimePicker::make('ends_at')
+                            ->label(__('Ends At')),
+                    ]),
 
-                DateTimePicker::make('ends_at')
-                    ->label(__('Ends At')),
-
-                Select::make('status')
-                    ->label(__('Status'))
-                    ->options(EventStatus::class)
-                    ->default(EventStatus::Draft)
-                    ->required(),
-
-                FileUpload::make('image')
-                    ->label(__('Image'))
-                    ->image()
-                    ->visibility('public'),
-
-                Toggle::make('is_featured')
-                    ->label(__('Featured')),
+                Section::make(__('Status'))
+                    ->aside()
+                    ->schema([
+                        Select::make('status')
+                            ->label(__('Status'))
+                            ->options(EventStatus::class)
+                            ->default(EventStatus::Draft)
+                            ->required(),
+                        Toggle::make('is_featured')
+                            ->label(__('Featured')),
+                    ]),
             ]);
     }
 }
