@@ -4,13 +4,7 @@
 
             <a href="{{ route('home') }}" class="flex items-center gap-3 shrink-0">
                 @if(setting('branding.logo'))
-                    <img src="{{ asset('storage/' . setting('branding.logo')) }}" alt="{{ setting('general.name') }}" class="h-10 w-auto">
-                @else
-                    <div class="flex items-center justify-center w-10 h-10 rounded-full bg-emerald-600">
-                        <svg class="w-6 h-6 text-white" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm0-14c-3.31 0-6 2.69-6 6s2.69 6 6 6 6-2.69 6-6-2.69-6-6-6z"/>
-                        </svg>
-                    </div>
+                    <img src="{{ \Illuminate\Support\Facades\Storage::url(setting('branding.logo')) }}" alt="{{ setting('general.name') }}" class="h-10 w-auto">
                 @endif
                 <span class="text-lg font-semibold text-neutral-900 leading-tight">
                     {{ setting('general.name') ?? __('Mosque') }}

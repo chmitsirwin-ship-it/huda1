@@ -14,9 +14,12 @@
         "outerweb/filament-settings": "^2.3",
         "redberry/page-builder-plugin": "^3.0",
         "salemaljebaly/filament-map-picker": "^1.0",
-        "spatie/laravel-translatable": "^6.13"
+        "spatie/laravel-translatable": "^6.13",
+        "statikbe/laravel-filament-chained-translation-manager": "^4.2"
     },
     "require-dev": {
+        "coding-socks/lost-in-translation": "^0.3.5",
+        "eg-mohamed/laravelmissingtranslations": "^1.1",
         "fakerphp/faker": "^1.23",
         "laravel/boost": "^2.0",
         "laravel/pail": "^1.2.2",
@@ -91,6 +94,6 @@
             "php-http/discovery": true
         }
     },
-    "minimum-stability": "stable",
+    "minimum-stability": "dev",
     "prefer-stable": true
 }

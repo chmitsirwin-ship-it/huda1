@@ -21,6 +21,7 @@ use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Outerweb\FilamentSettings\SettingsPlugin;
 use Redberry\PageBuilderPlugin\PageBuilderPluginPlugin;
+use Statikbe\FilamentTranslationManager\FilamentChainedTranslationManagerPlugin;
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -46,6 +47,7 @@ class AdminPanelProvider extends PanelProvider
                 FilamentInfoWidget::class,
             ])
             ->plugins([
+                FilamentChainedTranslationManagerPlugin::make(),
                 SettingsPlugin::make()->pages([
                     MosqueSettings::class,
                 ]),

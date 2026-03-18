@@ -3,3 +3,4 @@
 @source '../../../../app/Filament/Admin/**/*';
 @source '../../../../resources/views/filament/admin/**/*';
 @source '../../../../resources/views/components/blocks/**/*';
+@source '../../../../vendor/statikbe/laravel-filament-chained-translation-manager/resources/**/*.blade.php';

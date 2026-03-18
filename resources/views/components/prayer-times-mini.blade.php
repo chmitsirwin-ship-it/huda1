@@ -9,12 +9,12 @@
             ['name' => __('Isha'),    'time' => $today->isha_adhan],
         ];
     @endphp
-    <div class="space-y-1.5">
+    <div class="space-y-1">
         @foreach($prayers as $prayer)
             @if($prayer['time'])
-                <div class="flex items-center justify-between py-1.5 px-2 rounded-md bg-neutral-800/60 hover:bg-neutral-800 transition-colors">
-                    <span class="text-sm text-neutral-300">{{ $prayer['name'] }}</span>
-                    <span class="text-sm font-semibold text-emerald-400 tabular-nums">
+                <div class="flex items-center justify-between py-1 px-2 rounded bg-neutral-800/50 hover:bg-neutral-800 transition-colors">
+                    <span class="text-xs text-neutral-400">{{ $prayer['name'] }}</span>
+                    <span class="text-xs font-medium text-emerald-400 tabular-nums">
                         {{ \Carbon\Carbon::parse($prayer['time'])->format('H:i') }}
                     </span>
                 </div>
@@ -22,19 +22,17 @@
         @endforeach
 
         @if($today->jummah_time)
-            <div class="flex items-center justify-between py-1.5 px-2 rounded-md bg-amber-700/20 border border-amber-700/30">
-                <span class="text-sm text-amber-400">{{ __('Jumu\'ah') }}</span>
-                <span class="text-sm font-semibold text-amber-400 tabular-nums">
+            <div class="flex items-center justify-between py-1 px-2 rounded bg-amber-900/20 border border-amber-800/30">
+                <span class="text-xs text-amber-500">{{ __("Jumu'ah") }}</span>
+                <span class="text-xs font-medium text-amber-400 tabular-nums">
                     {{ \Carbon\Carbon::parse($today->jummah_time)->format('H:i') }}
                 </span>
             </div>
         @endif
     </div>
 @else
-    <div class="flex items-center gap-2 py-3 px-2 rounded-md bg-neutral-800/40 text-sm text-neutral-500">
-        <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
-        </svg>
+    <div class="flex items-center gap-2 py-2 px-2 rounded bg-neutral-800/40 text-xs text-neutral-600">
+        <x-heroicon-o-clock class="w-3.5 h-3.5 shrink-0" />
         {{ __('Times not available') }}
     </div>
 @endif

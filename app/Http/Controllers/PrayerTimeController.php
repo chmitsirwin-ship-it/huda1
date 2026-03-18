@@ -12,8 +12,8 @@ class PrayerTimeController extends Controller
 
     public function index(Request $request): View
     {
-        $year = (int) $request->get('year', now()->year);
-        $month = (int) $request->get('month', now()->month);
+        $year = (int) $request->input('year', now()->year);
+        $month = (int) $request->input('month', now()->month);
         $prayerTimes = $this->prayerTimeService->getMonthPrayers($year, $month);
         $today = $this->prayerTimeService->getTodayPrayer();
 

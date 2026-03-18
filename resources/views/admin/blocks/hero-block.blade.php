@@ -1,3 +1,0 @@
-<div>
-    @json($block)
-</div>

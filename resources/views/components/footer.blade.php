@@ -1,135 +1,94 @@
-<footer class="bg-neutral-900 text-neutral-300">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
+<footer class="bg-neutral-900 text-neutral-400 border-t border-neutral-800">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-8">
 
-            <div class="space-y-4">
-                <div class="flex items-center gap-3">
+            {{-- Brand --}}
+            <div class="space-y-3">
+                <div class="flex items-center gap-2.5">
                     @if(setting('branding.logo'))
-                        <img src="{{ asset('storage/' . setting('branding.logo')) }}" alt="{{ setting('general.name') }}" class="h-10 w-auto brightness-0 invert">
-                    @else
-                        <div class="flex items-center justify-center w-10 h-10 rounded-full bg-emerald-600">
-                            <svg class="w-6 h-6 text-white" viewBox="0 0 24 24" fill="currentColor">
-                                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm0-14c-3.31 0-6 2.69-6 6s2.69 6 6 6 6-2.69 6-6-2.69-6-6-6z"/>
-                            </svg>
-                        </div>
+                        <img src="{{ \Illuminate\Support\Facades\Storage::url(setting('branding.logo')) }}"
+                             alt="{{ setting('general.name') }}"
+                             class="h-7 w-auto brightness-0 invert">
                     @endif
-                    <span class="text-lg font-semibold text-white">
+                    <span class="text-sm font-semibold text-white">
                         {{ setting('general.name') ?? __('Mosque') }}
                     </span>
                 </div>
 
                 @if(setting('general.description'))
-                    <p class="text-sm leading-relaxed text-neutral-400">
+                    <p class="text-xs leading-relaxed text-neutral-500 max-w-xs">
                         {{ setting('general.description') }}
                     </p>
                 @endif
 
-                @if(setting('general.address'))
-                    <p class="text-sm text-neutral-400">
-                        <svg class="inline w-4 h-4 me-1 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
-                        </svg>
-                        {{ setting('general.address') }}
-                    </p>
-                @endif
+                <div class="space-y-1.5">
+                    @if(setting('general.address'))
+                        <div class="flex items-start gap-2 text-xs text-neutral-500">
+                            <x-heroicon-o-map-pin class="w-3.5 h-3.5 mt-0.5 shrink-0 text-emerald-700" />
+                            <span>{{ setting('general.address') }}</span>
+                        </div>
+                    @endif
+                    @if(setting('general.phone'))
+                        <div class="flex items-center gap-2 text-xs text-neutral-500">
+                            <x-heroicon-o-phone class="w-3.5 h-3.5 shrink-0 text-emerald-700" />
+                            <span>{{ setting('general.phone') }}</span>
+                        </div>
+                    @endif
+                    @if(setting('general.email'))
+                        <div class="flex items-center gap-2 text-xs text-neutral-500">
+                            <x-heroicon-o-envelope class="w-3.5 h-3.5 shrink-0 text-emerald-700" />
+                            <span>{{ setting('general.email') }}</span>
+                        </div>
+                    @endif
+                </div>
 
-                @if(setting('general.phone'))
-                    <p class="text-sm text-neutral-400">
-                        <svg class="inline w-4 h-4 me-1 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
-                        </svg>
-                        {{ setting('general.phone') }}
-                    </p>
-                @endif
-
-                @if(setting('general.email'))
-                    <p class="text-sm text-neutral-400">
-                        <svg class="inline w-4 h-4 me-1 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
-                        </svg>
-                        {{ setting('general.email') }}
-                    </p>
-                @endif
-
-                <div class="flex items-center gap-3 pt-2">
+                <div class="flex items-center gap-3 pt-0.5">
                     @if(setting('social.facebook'))
                         <a href="{{ setting('social.facebook') }}" target="_blank" rel="noopener noreferrer"
-                           class="text-neutral-400 hover:text-emerald-400 transition-colors">
-                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
-                            </svg>
+                           class="text-neutral-600 hover:text-emerald-500 transition-colors">
+                            <x-icon name="fab-facebook" class="w-4 h-4" />
                         </a>
                     @endif
-
                     @if(setting('social.twitter'))
                         <a href="{{ setting('social.twitter') }}" target="_blank" rel="noopener noreferrer"
-                           class="text-neutral-400 hover:text-emerald-400 transition-colors">
-                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
-                            </svg>
+                           class="text-neutral-600 hover:text-emerald-500 transition-colors">
+                            <x-icon name="fab-x-twitter" class="w-4 h-4" />
                         </a>
                     @endif
-
                     @if(setting('social.instagram'))
                         <a href="{{ setting('social.instagram') }}" target="_blank" rel="noopener noreferrer"
-                           class="text-neutral-400 hover:text-emerald-400 transition-colors">
-                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
-                            </svg>
+                           class="text-neutral-600 hover:text-emerald-500 transition-colors">
+                            <x-icon name="fab-instagram" class="w-4 h-4" />
                         </a>
                     @endif
-
                     @if(setting('social.youtube'))
                         <a href="{{ setting('social.youtube') }}" target="_blank" rel="noopener noreferrer"
-                           class="text-neutral-400 hover:text-emerald-400 transition-colors">
-                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
-                            </svg>
+                           class="text-neutral-600 hover:text-emerald-500 transition-colors">
+                            <x-icon name="fab-youtube" class="w-4 h-4" />
                         </a>
                     @endif
                 </div>
             </div>
 
-            <div class="space-y-4">
-                <h3 class="text-sm font-semibold text-white uppercase tracking-wider">{{ __('Quick Links') }}</h3>
-                <nav class="space-y-2">
-                    @php
-                        $footerLinks = [
-                            ['route' => 'home', 'label' => __('Home')],
-                            ['route' => 'prayer-times.index', 'label' => __('Prayer Times')],
-                            ['route' => 'events.index', 'label' => __('Events')],
-                            ['route' => 'announcements.index', 'label' => __('Announcements')],
-                            ['route' => 'gallery.index', 'label' => __('Gallery')],
-                            ['route' => 'islamic-library.index', 'label' => __('Islamic Library')],
-                            ['route' => 'khutba.index', 'label' => __('Khutba')],
-                            ['route' => 'staff.index', 'label' => __('Staff')],
-                            ['route' => 'contact.index', 'label' => __('Contact')],
-                        ];
-                    @endphp
-                    @foreach($footerLinks as $link)
-                        <a href="{{ route($link['route']) }}"
-                           class="block text-sm text-neutral-400 hover:text-emerald-400 transition-colors">
-                            {{ $link['label'] }}
-                        </a>
-                    @endforeach
-                </nav>
+            {{-- Today's Prayer Times --}}
+            <div class="space-y-3">
+                <h3 class="text-xs font-semibold text-neutral-300 uppercase tracking-wider">{{ __("Today's Prayer Times") }}</h3>
+                @include('components.prayer-times-mini', [
+                    'today' => \App\Models\PrayerTime::forDate(now()->toDateString())->first()
+                ])
             </div>
 
-            <div class="space-y-4">
-                <h3 class="text-sm font-semibold text-white uppercase tracking-wider">{{ __("Today's Prayer Times") }}</h3>
-                @include('components.prayer-times-mini', ['today' => \App\Models\PrayerTime::forDate(now()->toDateString())->first()])
-            </div>
         </div>
     </div>
 
     <div class="border-t border-neutral-800">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-col sm:flex-row items-center justify-between gap-2">
-            <p class="text-sm text-neutral-500">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex flex-col sm:flex-row items-center justify-between gap-1.5">
+            <p class="text-xs text-neutral-600">
                 &copy; {{ date('Y') }} {{ setting('general.name') ?? __('Mosque') }}. {{ __('All rights reserved.') }}
             </p>
-            <p class="text-xs text-neutral-600">
-                {{ __('Built with') }} <span class="text-emerald-600">&hearts;</span>
+            <p class="text-xs text-neutral-700">
+                {{ __('Built with') }} <span class="text-emerald-800">&hearts;</span> {{ __('by') }}
+                <a href="https://msaied.com" class="text-neutral-500 hover:text-emerald-400 transition-colors">Mohamed Said</a>
             </p>
         </div>
     </div>

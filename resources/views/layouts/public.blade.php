@@ -9,7 +9,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Alexandria:wght@100..900&display=swap" rel="stylesheet">
     @if(setting('branding.favicon'))
-        <link rel="icon" type="image/x-icon" href="{{ asset('storage/' . setting('branding.favicon')) }}">
+        <link rel="icon" type="image/x-icon" href="{{ \Illuminate\Support\Facades\Storage::url(setting('branding.favicon')) }}">
     @endif
     <style>
         [x-cloak] {

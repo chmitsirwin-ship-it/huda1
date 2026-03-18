@@ -28,6 +28,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\ServiceProvider;
 use Redberry\PageBuilderPlugin\Components\Forms\PageBuilder;
+use Statikbe\FilamentTranslationManager\FilamentTranslationManager;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -58,13 +59,16 @@ class AppServiceProvider extends ServiceProvider
             VideoBlock::class,
             CounterBlock::class,
         ]));
-        TranslatableTabs::configureUsing(function (TranslatableTabs $component) {
-            $locales = Cache::flexible('local', [43200, 86400], fn () => Language::whereIsActive(true)->orderBy('sort_order', 'asc')->pluck('name', 'code')->toArray());
+        $locales = Cache::flexible('local', [43200, 86400], fn () => Language::whereIsActive(true)->orderBy('sort_order', 'asc')->pluck('name', 'code')->toArray());
+        TranslatableTabs::configureUsing(function (TranslatableTabs $component) use ($locales) {
+
             $component->localesLabels($locales)
                 ->locales(array_keys($locales))
                 ->addDirectionByLocale()
                 ->addEmptyBadgeWhenAllFieldsAreEmpty(emptyLabel: __('Not Defined'))
                 ->addSetActiveTabThatHasValue();
         });
+        FilamentTranslationManager::setLocales(array_keys($locales));
+
     }
 }
