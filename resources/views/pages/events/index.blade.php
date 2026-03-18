@@ -24,7 +24,7 @@
         @else
             <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
                 @foreach($events as $event)
-                    <a href="{{ route('events.show', [app()->getLocale(), $event->id]) }}"
+                    <a href="{{ route('events.show', [ $event->id]) }}"
                        class="group bg-white rounded-2xl shadow-sm border border-neutral-100 overflow-hidden hover:shadow-md hover:-translate-y-0.5 transition-all duration-200">
 
                         @if($event->image)
@@ -59,7 +59,7 @@
                                     };
                                 @endphp
                                 <span class="inline-block text-xs font-medium px-2.5 py-1 rounded-full {{ $statusClasses }} capitalize shrink-0">
-                                    {{ __($event->status ?? 'upcoming') }}
+                                    {{ $event->status->getLabel() }}
                                 </span>
                             </div>
 

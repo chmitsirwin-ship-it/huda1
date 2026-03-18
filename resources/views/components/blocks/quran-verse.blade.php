@@ -46,7 +46,7 @@ if (!$verse) {
                 </div>
 
                 <div class="text-right mb-8" dir="rtl">
-                    <p class="text-white text-2xl md:text-4xl leading-loose font-serif" style="font-family: 'Amiri', 'Scheherazade New', 'Traditional Arabic', serif; line-height: 2.2;">
+                    <p class="text-white text-2xl md:text-4xl leading-loose" style="font-family: 'Amiri', serif; line-height: 2.2;">
                         {{ $verse->arabic_text }}
                     </p>
                 </div>

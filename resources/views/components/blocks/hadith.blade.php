@@ -36,17 +36,10 @@ if (!$hadith) {
                     </div>
 
                     <blockquote class="pt-6 pl-8">
-                        <p class="text-neutral-800 text-xl md:text-2xl leading-relaxed font-serif italic">
+                        <p class="text-neutral-800 text-xl md:text-2xl leading-relaxed" style="font-family: 'Amiri', serif; line-height: 2.2;">
                             {{ $hadith->getTranslation('text', app()->getLocale(), false) }}
                         </p>
                     </blockquote>
-
-                    <div class="absolute -bottom-2 -right-2 text-emerald-200 rotate-180">
-                        <svg class="w-14 h-14" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M3 21c3 0 7-1 7-8V5c0-1.25-.756-2.017-2-2H4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2 1 0 1 0 1 1v1c0 1-1 2-2 2s-1 .008-1 1.031V20c0 1 0 1 1 1z"/>
-                            <path d="M15 21c3 0 7-1 7-8V5c0-1.25-.757-2.017-2-2h-4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2h.75c0 2.25.25 4-2.75 4v3c0 1 0 1 1 1z"/>
-                        </svg>
-                    </div>
                 </div>
 
                 <div class="mt-10 pt-6 border-t border-neutral-100 flex flex-wrap items-center justify-between gap-4">

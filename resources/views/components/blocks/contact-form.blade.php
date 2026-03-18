@@ -2,6 +2,7 @@
 $data = $block['data'] ?? $data ?? [];
 $title = $data['title'] ?? null;
 $description = $data['description'] ?? null;
+
 @endphp
 
 <section class="py-16 bg-white">
@@ -17,10 +18,8 @@ $description = $data['description'] ?? null;
                 @endif
             </div>
         @endif
-
         <div class="bg-white rounded-2xl border border-neutral-200 shadow-sm p-8">
             <livewire:contact-form />
         </div>
-
     </div>
 </section>

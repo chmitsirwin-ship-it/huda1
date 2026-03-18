@@ -7,7 +7,7 @@
     <meta name="description" content="@yield('description', setting('seo.meta_description') ?? '')">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Alexandria:wght@100..900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Alexandria:wght@100..900&family=Amiri+Quran&display=swap" rel="stylesheet">
     @if(setting('branding.favicon'))
         <link rel="icon" type="image/x-icon" href="{{ \Illuminate\Support\Facades\Storage::url(setting('branding.favicon')) }}">
     @endif

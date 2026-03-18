@@ -16,11 +16,10 @@ class ContactFormBlock extends BaseBlock
             TranslatableTabs::make()
                 ->schema([
                     TextInput::make('title')->label(__('Title')),
-                    Textarea::make('description')->label(__('Description'))->rows(3),
+                    Textarea::make('description')->label(__('Description')),
                 ]),
         ];
     }
-
     public static function formatForSingleView(array $data): array
     {
         $locale = app()->getLocale();
@@ -33,7 +32,6 @@ class ContactFormBlock extends BaseBlock
 
         return $data;
     }
-
     public static function getView(): ?string
     {
         return 'components.blocks.contact-form';
@@ -44,6 +42,6 @@ class ContactFormBlock extends BaseBlock
     }
     public static function getThumbnail(): string|Htmlable|null
     {
-        return asset('images/blocks/'.basename(self::class).'.jpg');
+        return asset('images/blocks/'.class_basename(self::class).'.png');
     }
 }

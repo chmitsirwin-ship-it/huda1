@@ -17,12 +17,12 @@ class BlockRenderer
             if (! $view) {
                 continue;
             }
-
             $data = $block->block_type::formatForSingleView($block->data ?? []);
 
             try {
                 $html .= view($view, ['data' => $data])->render();
             } catch (\Exception) {
+                dd("Error rendering block of type {$block->block_type}: View '{$view}' not found or error in view.");
             }
         }
 

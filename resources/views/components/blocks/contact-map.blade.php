@@ -102,6 +102,7 @@ $hasMap = !empty(setting('location.latitude')) && !empty(setting('location.longi
                     </div>
                 @endif
             </div>
+
         </div>
     </div>
 </section>

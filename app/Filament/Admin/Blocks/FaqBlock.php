@@ -63,7 +63,7 @@ class FaqBlock extends BaseBlock
 
     public static function getThumbnail(): string|Htmlable|null
     {
-        return asset('images/blocks/'.basename(self::class).'.jpg');
+        return asset('images/blocks/'.class_basename(self::class).'.png');
     }
     public static function getView(): ?string
     {
