@@ -15,6 +15,7 @@ use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Outerweb\FilamentSettings\Pages\Settings;
 use SalemAljebaly\FilamentMapPicker\MapPicker;
+use Ysfkaya\FilamentPhoneInput\Forms\PhoneInput;
 
 class MosqueSettings extends Settings
 {
@@ -51,9 +52,8 @@ class MosqueSettings extends Settings
                                     ->label(__('Address'))
                                     ->rows(2),
 
-                                TextInput::make('general.phone')
-                                    ->label(__('Phone'))
-                                    ->tel(),
+                                PhoneInput::make('general.phone')
+                                    ->label(__('Phone')),
 
                                 TextInput::make('general.email')
                                     ->label(__('Email'))

@@ -12,7 +12,7 @@ class PrayerTimeService
 {
     public function getTodayPrayer(): ?PrayerTime
     {
-        return Cache::remember('prayer_today', 86400, fn () => PrayerTime::where('date', today()->toDateString())->first());
+        return Cache::remember('prayer_today', 86400, fn () => PrayerTime::where('date', today()->format('d-m-Y'))->first());
     }
 
     public function getMonthPrayers(int $year, int $month): Collection
@@ -26,9 +26,9 @@ class PrayerTimeService
         $generated = 0;
 
         for ($day = 1; $day <= $daysInMonth; $day++) {
-            $date = Carbon::createFromDate($year, $month, $day)->toDateString();
-            $response = $this->fetchFromApi($date);
+            $date = Carbon::createFromDate($year, $month, $day)->format('d-m-Y');
 
+            $response = $this->fetchFromApi($date);
             if ($response) {
                 PrayerTime::updateOrCreate(
                     ['date' => $date],
