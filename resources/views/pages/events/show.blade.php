@@ -1,11 +1,11 @@
 @extends('layouts.public')
-@section('title', $event->getTranslation('title', app()->getLocale(), false))
+@section('title', $event->title)
 @section('content')
 
     @if($event->image)
         <div class="w-full h-80 md:h-96 overflow-hidden">
             <img src="{{ \Illuminate\Support\Facades\Storage::url($event->image) }}"
-                 alt="{{ $event->getTranslation('title', app()->getLocale(), false) }}"
+                 alt="{{ $event->title }}"
                  class="w-full h-full object-cover">
         </div>
     @else
@@ -18,7 +18,7 @@
                     </svg>
                     {{ __('Back to Events') }}
                 </a>
-                <h1 class="text-4xl font-bold tracking-tight">{{ $event->getTranslation('title', app()->getLocale(), false) }}</h1>
+                <h1 class="text-4xl font-bold tracking-tight">{{ $event->title }}</h1>
             </div>
         </div>
     @endif
@@ -35,7 +35,7 @@
             </a>
 
             <h1 class="text-4xl font-bold text-neutral-900 mb-6 leading-tight">
-                {{ $event->getTranslation('title', app()->getLocale(), false) }}
+                {{ $event->title }}
             </h1>
         @endif
 
@@ -86,7 +86,7 @@
 
         @if($event->description)
             <div class="prose prose-emerald prose-lg max-w-none text-neutral-700 leading-relaxed">
-                {!! $event->getTranslation('description', app()->getLocale(), false) !!}
+                {!! $event->description !!}
             </div>
         @endif
 

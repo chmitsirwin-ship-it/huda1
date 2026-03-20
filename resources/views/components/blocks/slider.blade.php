@@ -39,7 +39,7 @@ $slides = \App\Models\Slider::active()->get();
 
                 @if($slide->image)
                     <img src="{{ Storage::url($slide->image) }}"
-                         alt="{{ $slide->getTranslation('title', app()->getLocale(), false) }}"
+                         alt="{{ $slide->title }}"
                          class="absolute inset-0 w-full h-full object-cover">
                 @endif
                 <div class="absolute inset-0 bg-gradient-to-t from-emerald-950 via-emerald-950/50 to-emerald-950/20"></div>
@@ -54,15 +54,15 @@ $slides = \App\Models\Slider::active()->get();
                      x-transition:enter-end="opacity-100 translate-y-0"
                      class="text-center text-white max-w-3xl mx-auto">
 
-                    @if($slide->getTranslation('title', app()->getLocale(), false))
+                    @if($slide->title)
                         <h2 class="text-4xl md:text-5xl font-bold mb-4 leading-tight">
-                            {{ $slide->getTranslation('title', app()->getLocale(), false) }}
+                            {{ $slide->title }}
                         </h2>
                     @endif
 
-                    @if($slide->getTranslation('subtitle', app()->getLocale(), false))
+                    @if($slide->subtitle)
                         <p class="text-xl text-emerald-100 leading-relaxed">
-                            {{ $slide->getTranslation('subtitle', app()->getLocale(), false) }}
+                            {{ $slide->subtitle }}
                         </p>
                     @endif
                 </div>

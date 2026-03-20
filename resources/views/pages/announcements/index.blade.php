@@ -46,7 +46,7 @@
                                     {{ $typeLabel }}
                                 </span>
                                 <h3 class="text-lg font-bold text-neutral-900">
-                                    {{ $announcement->getTranslation('title', app()->getLocale(), false) }}
+                                    {{ $announcement->title }}
                                 </h3>
                             </div>
                             <span class="text-xs text-neutral-400 whitespace-nowrap shrink-0">
@@ -54,7 +54,7 @@
                             </span>
                         </div>
                         <p class="text-neutral-600 leading-relaxed">
-                            {{ \Illuminate\Support\Str::limit(strip_tags($announcement->getTranslation('content', app()->getLocale(), false)), 200) }}
+                            {{ \Illuminate\Support\Str::limit(strip_tags($announcement->content), 200) }}
                         </p>
                     </div>
                 @endforeach

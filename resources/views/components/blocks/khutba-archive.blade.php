@@ -42,7 +42,7 @@ $khutbas = \App\Models\Khutba::published()->limit($data['limit'] ?? 5)->get();
                             <div class="flex-1 min-w-0">
                                 <div class="flex flex-wrap items-start justify-between gap-3 mb-2">
                                     <h3 class="font-bold text-neutral-900 text-lg group-hover:text-emerald-600 transition-colors leading-snug">
-                                        {{ $khutba->getTranslation('title', app()->getLocale(), false) }}
+                                        {{ $khutba->title }}
                                     </h3>
 
                                     <div class="flex items-center gap-2 shrink-0">
@@ -72,21 +72,21 @@ $khutbas = \App\Models\Khutba::published()->limit($data['limit'] ?? 5)->get();
                                 </div>
 
                                 <div class="flex flex-wrap items-center gap-x-4 gap-y-1">
-                                    @if($khutba->getTranslation('speaker', app()->getLocale(), false))
+                                    @if($khutba->speaker)
                                         <span class="flex items-center gap-1.5 text-sm text-neutral-600">
                                             <svg class="w-4 h-4 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
                                                 <path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
                                             </svg>
-                                            {{ $khutba->getTranslation('speaker', app()->getLocale(), false) }}
+                                            {{ $khutba->speaker }}
                                         </span>
                                     @endif
 
-                                    @if($khutba->getTranslation('topic', app()->getLocale(), false))
+                                    @if($khutba->topic)
                                         <span class="flex items-center gap-1.5 text-sm text-neutral-500">
                                             <svg class="w-4 h-4 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
                                                 <path stroke-linecap="round" stroke-linejoin="round" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"/>
                                             </svg>
-                                            {{ $khutba->getTranslation('topic', app()->getLocale(), false) }}
+                                            {{ $khutba->topic }}
                                         </span>
                                     @endif
 
@@ -95,9 +95,9 @@ $khutbas = \App\Models\Khutba::published()->limit($data['limit'] ?? 5)->get();
                                     </span>
                                 </div>
 
-                                @if($khutba->getTranslation('summary', app()->getLocale(), false))
+                                @if($khutba->summary)
                                     <p class="text-neutral-500 text-sm mt-3 leading-relaxed line-clamp-2">
-                                        {{ $khutba->getTranslation('summary', app()->getLocale(), false) }}
+                                        {{ $khutba->summary }}
                                     </p>
                                 @endif
                             </div>

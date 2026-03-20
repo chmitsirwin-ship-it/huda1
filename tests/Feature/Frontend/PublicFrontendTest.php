@@ -68,12 +68,12 @@ it('shows only published events to the public', function () {
 
     $this->get(route('events.index'))
         ->assertOk()
-        ->assertSeeText($publishedEvent->getTranslation('title', 'en'))
-        ->assertDontSeeText($draftEvent->getTranslation('title', 'en'));
+        ->assertSeeText($publishedEvent->title)
+        ->assertDontSeeText($draftEvent->title);
 
     $this->get(route('events.show', $publishedEvent))
         ->assertOk()
-        ->assertSeeText($publishedEvent->getTranslation('title', 'en'));
+        ->assertSeeText($publishedEvent->title);
 
     $this->get(route('events.show', $draftEvent))
         ->assertNotFound();

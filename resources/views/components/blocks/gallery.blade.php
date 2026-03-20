@@ -12,7 +12,7 @@ if (!empty($data['collection'])) {
     x-data="{
         lightbox: false,
         activeIndex: 0,
-        images: {{ $images->map(fn($img) => ['src' => Storage::url($img->file_path), 'title' => $img->getTranslation('title', app()->getLocale(), false) ?? ''])->toJson() }},
+        images: {{ $images->map(fn($img) => ['src' => Storage::url($img->file_path), 'title' => $img->title ?? ''])->toJson() }},
         open(index) {
             this.activeIndex = index;
             this.lightbox = true;
@@ -49,7 +49,7 @@ if (!empty($data['collection'])) {
                      @click="open({{ $index }})">
                     <div class="relative overflow-hidden">
                         <img src="{{ Storage::url($image->file_path) }}"
-                             alt="{{ $image->getTranslation('alt_text', app()->getLocale(), false) ?? $image->getTranslation('title', app()->getLocale(), false) ?? '' }}"
+                             alt="{{ $image->alt_text ?? $image->title ?? '' }}"
                              class="w-full object-cover group-hover:scale-105 transition-transform duration-500">
                         <div class="absolute inset-0 bg-emerald-900/0 group-hover:bg-emerald-900/30 transition-all duration-300 flex items-center justify-center">
                             <svg class="w-10 h-10 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300 drop-shadow-lg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">

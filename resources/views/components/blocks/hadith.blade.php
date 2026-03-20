@@ -40,31 +40,31 @@ if (!$hadith) {
 
                     <blockquote class="pt-6 pl-8">
                         <p class="text-neutral-800 text-xl md:text-2xl leading-relaxed" style="font-family: 'Amiri', serif; line-height: 2.2;">
-                            {{ $hadith->getTranslation('text', app()->getLocale(), false) }}
+                            {{ $hadith->text }}
                         </p>
                     </blockquote>
                 </div>
 
                 <div class="mt-10 pt-6 border-t border-neutral-100 flex flex-wrap items-center justify-between gap-4">
                     <div>
-                        @if($hadith->getTranslation('narrator', app()->getLocale(), false))
+                        @if($hadith->narrator)
                             <p class="text-emerald-700 font-semibold">
-                                {{ __('Narrated by') }}: <span class="italic">{{ $hadith->getTranslation('narrator', app()->getLocale(), false) }}</span>
+                                {{ __('Narrated by') }}: <span class="italic">{{ $hadith->narrator }}</span>
                             </p>
                         @endif
-                        @if($hadith->getTranslation('source', app()->getLocale(), false))
+                        @if($hadith->source)
                             <p class="text-neutral-500 text-sm mt-1">
-                                {{ $hadith->getTranslation('source', app()->getLocale(), false) }}
+                                {{ $hadith->source }}
                             </p>
                         @endif
                     </div>
 
-                    @if($hadith->getTranslation('grade', app()->getLocale(), false))
+                    @if($hadith->grade)
                         <span class="inline-flex items-center gap-1.5 bg-amber-50 text-amber-700 border border-amber-200 text-sm font-semibold px-3 py-1.5 rounded-full">
                             <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/>
                             </svg>
-                            {{ $hadith->getTranslation('grade', app()->getLocale(), false) }}
+                            {{ $hadith->grade }}
                         </span>
                     @endif
                 </div>

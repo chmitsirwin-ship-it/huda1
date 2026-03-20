@@ -66,7 +66,7 @@
                         <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 mb-4">
                             <div>
                                 <h3 class="text-xl font-bold text-neutral-900 mb-1">
-                                    {{ $khutba->getTranslation('title', app()->getLocale(), false) }}
+                                    {{ $khutba->title }}
                                 </h3>
                                 <div class="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-neutral-500">
                                     @if($khutba->date)

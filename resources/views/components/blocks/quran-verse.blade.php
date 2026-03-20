@@ -54,10 +54,10 @@ if (!$verse) {
                     </p>
                 </div>
 
-                @if($verse->getTranslation('translation', app()->getLocale(), false))
+                @if($verse->translation)
                     <div class="border-t border-white/10 pt-6">
                         <p class="text-emerald-100 text-lg md:text-xl leading-relaxed italic text-center">
-                            "{{ $verse->getTranslation('translation', app()->getLocale(), false) }}"
+                            "{{ $verse->translation }}"
                         </p>
                     </div>
                 @endif

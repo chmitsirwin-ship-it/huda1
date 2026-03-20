@@ -40,20 +40,20 @@ $style = $data['style'] ?? 'grid';
                         </div>
                         <div class="flex-1 min-w-0">
                             <h3 class="font-bold text-neutral-900 text-lg mb-1 group-hover:text-emerald-600 transition-colors truncate">
-                                {{ $event->getTranslation('title', app()->getLocale(), false) }}
+                                {{ $event->title }}
                             </h3>
-                            @if($event->getTranslation('location', app()->getLocale(), false))
+                            @if($event->location)
                                 <div class="flex items-center gap-1.5 text-neutral-500 text-sm">
                                     <svg class="w-4 h-4 text-emerald-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
                                     </svg>
-                                    {{ $event->getTranslation('location', app()->getLocale(), false) }}
+                                    {{ $event->location }}
                                 </div>
                             @endif
-                            @if($event->getTranslation('description', app()->getLocale(), false))
+                            @if($event->description)
                                 <p class="text-neutral-500 text-sm mt-2 line-clamp-2">
-                                    {{ $event->getTranslation('description', app()->getLocale(), false) }}
+                                    {{ str($event->description)->squish()->stripTags() }}
                                 </p>
                             @endif
                         </div>
@@ -72,7 +72,7 @@ $style = $data['style'] ?? 'grid';
                                 <div class="bg-white rounded-2xl overflow-hidden shadow-md border border-neutral-100">
                                     @if($event->image)
                                         <img src="{{ Storage::url($event->image) }}"
-                                             alt="{{ $event->getTranslation('title', app()->getLocale(), false) }}"
+                                             alt="{{ $event->title }}"
                                              class="w-full h-64 object-cover">
                                     @else
                                         <div class="w-full h-64 bg-emerald-600 flex items-center justify-center">
@@ -88,7 +88,7 @@ $style = $data['style'] ?? 'grid';
                                             </span>
                                         </div>
                                         <h3 class="text-xl font-bold text-neutral-900 mb-2">
-                                            {{ $event->getTranslation('title', app()->getLocale(), false) }}
+                                            {{ $event->title }}
                                         </h3>
                                     </div>
                                 </div>
@@ -114,7 +114,7 @@ $style = $data['style'] ?? 'grid';
                         @if($event->image)
                             <div class="relative h-48 overflow-hidden">
                                 <img src="{{ Storage::url($event->image) }}"
-                                     alt="{{ $event->getTranslation('title', app()->getLocale(), false) }}"
+                                     alt="{{ $event->title }}"
                                      class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
                                 <div class="absolute top-4 left-4">
                                     <div class="bg-white rounded-lg px-3 py-1.5 shadow-md text-center min-w-[48px]">
@@ -139,16 +139,16 @@ $style = $data['style'] ?? 'grid';
 
                         <div class="p-6 flex flex-col flex-1">
                             <h3 class="font-bold text-neutral-900 text-lg mb-2 group-hover:text-emerald-600 transition-colors line-clamp-2 flex-1">
-                                {{ $event->getTranslation('title', app()->getLocale(), false) }}
+                                {{ $event->title }}
                             </h3>
 
-                            @if($event->getTranslation('location', app()->getLocale(), false))
+                            @if($event->location)
                                 <div class="flex items-center gap-1.5 text-neutral-500 text-sm mt-auto pt-4 border-t border-neutral-100">
                                     <svg class="w-4 h-4 text-emerald-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
                                     </svg>
-                                    <span class="truncate">{{ $event->getTranslation('location', app()->getLocale(), false) }}</span>
+                                    <span class="truncate">{{ $event->location }}</span>
                                 </div>
                             @endif
                         </div>

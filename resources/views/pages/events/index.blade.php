@@ -30,7 +30,7 @@
                         @if($event->image)
                             <div class="aspect-video overflow-hidden">
                                 <img src="{{ \Illuminate\Support\Facades\Storage::url($event->image) }}"
-                                     alt="{{ $event->getTranslation('title', app()->getLocale(), false) }}"
+                                     alt="{{ $event->title }}"
                                      class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
                             </div>
                         @else
@@ -64,7 +64,7 @@
                             </div>
 
                             <h3 class="text-lg font-bold text-neutral-900 mb-2 group-hover:text-emerald-700 transition-colors leading-snug">
-                                {{ $event->getTranslation('title', app()->getLocale(), false) }}
+                                {{ $event->title }}
                             </h3>
 
                             @if($event->location)

@@ -20,8 +20,7 @@ class SlidersTable
                     ->label(__('Image')),
 
                 TextColumn::make('title')
-                    ->label(__('Title'))
-                    ->getStateUsing(fn ($record) => $record->getTranslation('title', app()->getLocale(), false) ?: $record->getTranslation('title', 'en', false)),
+                    ->label(__('Title')),
 
                 TextColumn::make('sort_order')
                     ->label(__('Sort Order'))

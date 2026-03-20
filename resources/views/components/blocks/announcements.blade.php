@@ -59,11 +59,11 @@ $typeIconPaths = [
                                     @endif
                                 </div>
                                 <h3 class="font-bold text-neutral-900 text-lg mb-2 group-hover:text-emerald-600 transition-colors">
-                                    {{ $announcement->getTranslation('title', app()->getLocale(), false) }}
+                                    {{ $announcement->title }}
                                 </h3>
-                                @if($announcement->getTranslation('content', app()->getLocale(), false))
+                                @if($announcement->content)
                                     <p class="text-neutral-600 text-sm leading-relaxed line-clamp-3">
-                                        {{ strip_tags($announcement->getTranslation('content', app()->getLocale(), false)) }}
+                                        {{ strip_tags($announcement->content) }}
                                     </p>
                                 @endif
                             </div>

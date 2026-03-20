@@ -17,12 +17,10 @@ class HadithsTable
             ->columns([
                 TextColumn::make('narrator')
                     ->label(__('Narrator'))
-                    ->searchable()
-                    ->getStateUsing(fn ($record) => $record->getTranslation('narrator', app()->getLocale(), false) ?: $record->getTranslation('narrator', 'en', false)),
+                    ->searchable(),
 
                 TextColumn::make('source')
-                    ->label(__('Source'))
-                    ->getStateUsing(fn ($record) => $record->getTranslation('source', app()->getLocale(), false) ?: $record->getTranslation('source', 'en', false)),
+                    ->label(__('Source')),
 
                 TextColumn::make('collection')
                     ->label(__('Collection')),

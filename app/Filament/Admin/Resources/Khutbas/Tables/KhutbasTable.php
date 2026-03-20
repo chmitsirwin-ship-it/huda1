@@ -17,12 +17,10 @@ class KhutbasTable
             ->columns([
                 TextColumn::make('title')
                     ->label(__('Title'))
-                    ->searchable()
-                    ->getStateUsing(fn ($record) => $record->getTranslation('title', app()->getLocale(), false) ?: $record->getTranslation('title', 'en', false)),
+                    ->searchable(),
 
                 TextColumn::make('speaker')
-                    ->label(__('Speaker'))
-                    ->getStateUsing(fn ($record) => $record->getTranslation('speaker', app()->getLocale(), false) ?: $record->getTranslation('speaker', 'en', false)),
+                    ->label(__('Speaker')),
 
                 TextColumn::make('date')
                     ->label(__('Date'))

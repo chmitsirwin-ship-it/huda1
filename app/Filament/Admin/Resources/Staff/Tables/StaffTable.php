@@ -22,12 +22,10 @@ class StaffTable
 
                 TextColumn::make('name')
                     ->label(__('Name'))
-                    ->searchable()
-                    ->getStateUsing(fn ($record) => $record->getTranslation('name', app()->getLocale(), false) ?: $record->getTranslation('name', 'en', false)),
+                    ->searchable(),
 
                 TextColumn::make('title')
-                    ->label(__('Title'))
-                    ->getStateUsing(fn ($record) => $record->getTranslation('title', app()->getLocale(), false) ?: $record->getTranslation('title', 'en', false)),
+                    ->label(__('Title')),
 
                 ToggleColumn::make('is_active')
                     ->label(__('Active')),

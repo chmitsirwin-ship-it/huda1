@@ -25,7 +25,7 @@ $members = \App\Models\Staff::active()->get();
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
                 @foreach($members as $member)
                     @php
-                        $name = $member->getTranslation('name', app()->getLocale(), false);
+                        $name = $member->name;
                         $initials = collect(explode(' ', $name))->take(2)->map(fn($w) => strtoupper(substr($w, 0, 1)))->implode('');
                     @endphp
                     <div class="group text-center">
@@ -46,15 +46,15 @@ $members = \App\Models\Staff::active()->get();
                             {{ $name }}
                         </h3>
 
-                        @if($member->getTranslation('title', app()->getLocale(), false))
+                        @if($member->title)
                             <p class="text-emerald-600 font-medium text-sm mb-3">
-                                {{ $member->getTranslation('title', app()->getLocale(), false) }}
+                                {{ $member->title }}
                             </p>
                         @endif
 
-                        @if($member->getTranslation('bio', app()->getLocale(), false))
+                        @if($member->bio)
                             <p class="text-neutral-500 text-sm leading-relaxed line-clamp-3 max-w-xs mx-auto">
-                                {{ $member->getTranslation('bio', app()->getLocale(), false) }}
+                                {{ $member->bio }}
                             </p>
                         @endif
                     </div>

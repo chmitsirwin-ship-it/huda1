@@ -50,9 +50,9 @@
             <div class="columns-2 md:columns-3 lg:columns-4 gap-4 space-y-4">
                 @foreach($items as $item)
                     <div class="break-inside-avoid rounded-xl overflow-hidden cursor-pointer group"
-                         @click="openLightbox('{{ \Illuminate\Support\Facades\Storage::url($item->file_path) }}', '{{ $item->getTranslation('alt_text', app()->getLocale(), false) }}')">
+                         @click="openLightbox('{{ \Illuminate\Support\Facades\Storage::url($item->file_path) }}', '{{ $item->alt_text }}')">
                         <img src="{{ \Illuminate\Support\Facades\Storage::url($item->file_path) }}"
-                             alt="{{ $item->getTranslation('alt_text', app()->getLocale(), false) }}"
+                             alt="{{ $item->alt_text }}"
                              class="w-full object-cover group-hover:scale-105 transition-transform duration-300 rounded-xl">
                     </div>
                 @endforeach

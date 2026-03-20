@@ -29,12 +29,12 @@
                         @if($member->photo)
                             <div class="mb-5 flex justify-center">
                                 <img src="{{ \Illuminate\Support\Facades\Storage::url($member->photo) }}"
-                                     alt="{{ $member->getTranslation('name', app()->getLocale(), false) }}"
+                                     alt="{{ $member->name }}"
                                      class="w-24 h-24 rounded-full object-cover ring-4 ring-emerald-100">
                             </div>
                         @else
                             @php
-                                $name = $member->getTranslation('name', app()->getLocale(), false);
+                                $name = $member->name;
                                 $initials = collect(explode(' ', $name))->map(fn($w) => mb_strtoupper(mb_substr($w, 0, 1)))->take(2)->implode('');
                             @endphp
                             <div class="mb-5 flex justify-center">
@@ -45,18 +45,18 @@
                         @endif
 
                         <h3 class="text-lg font-bold text-neutral-900 mb-1">
-                            {{ $member->getTranslation('name', app()->getLocale(), false) }}
+                            {{ $member->name }}
                         </h3>
 
                         @if($member->title)
                             <p class="text-sm font-medium text-emerald-700 mb-3">
-                                {{ $member->getTranslation('title', app()->getLocale(), false) }}
+                                {{ $member->title }}
                             </p>
                         @endif
 
                         @if($member->bio)
                             <p class="text-sm text-neutral-500 leading-relaxed">
-                                {{ \Illuminate\Support\Str::limit($member->getTranslation('bio', app()->getLocale(), false), 120) }}
+                                {{ \Illuminate\Support\Str::limit($member->bio, 120) }}
                             </p>
                         @endif
 

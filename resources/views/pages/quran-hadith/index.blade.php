@@ -56,7 +56,7 @@
                                 @endif
                                 @if($verse->translation)
                                     <p class="text-neutral-700 leading-relaxed border-t border-neutral-100 pt-4">
-                                        {{ $verse->getTranslation('translation', app()->getLocale(), false) }}
+                                        {{ $verse->translation }}
                                     </p>
                                 @endif
                             </div>
@@ -99,7 +99,7 @@
                             </div>
                             <div class="p-6">
                                 <p class="text-neutral-800 leading-relaxed text-base mb-4">
-                                    {{ $hadith->getTranslation('text', app()->getLocale(), false) }}
+                                    {{ $hadith->text }}
                                 </p>
                                 @if($hadith->narrator)
                                     <p class="text-sm text-neutral-500 italic">

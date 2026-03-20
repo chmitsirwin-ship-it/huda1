@@ -21,8 +21,7 @@ class MediaItemsTable
 
                 TextColumn::make('title')
                     ->label(__('Title'))
-                    ->searchable()
-                    ->getStateUsing(fn ($record) => $record->getTranslation('title', app()->getLocale(), false) ?: $record->getTranslation('title', 'en', false)),
+                    ->searchable(),
 
                 TextColumn::make('type')
                     ->label(__('Type'))

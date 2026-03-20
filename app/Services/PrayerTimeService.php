@@ -28,12 +28,13 @@ class PrayerTimeService
         $generated = 0;
 
         for ($day = 1; $day <= $daysInMonth; $day++) {
-            $date = Carbon::createFromDate($year, $month, $day);
+            $gregorianDate = Carbon::createFromDate($year, $month, $day);
+            $formattedGregorianDate = $gregorianDate->format('d-m-Y');
 
-            $response = $this->fetchFromApi($date->format('d-m-Y'));
+            $response = $this->fetchFromApi($formattedGregorianDate);
             if ($response) {
                 PrayerTime::updateOrCreate(
-                    ['date' => $date->toDateString()],
+                    ['date' => $gregorianDate->toDateString()],
                     $response
                 );
                 $generated++;
