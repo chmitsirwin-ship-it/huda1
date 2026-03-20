@@ -1,6 +1,4 @@
-<p align="center">
-  <img src=".github/og_image.svg" alt="Mosque Management System" width="100%" />
-</p>
+![og_image.svg](.github/og_image.svg)
 <p align="center">
   <a href="https://laravel.com"><img src="https://img.shields.io/badge/Laravel-12.55-FF2D20?style=flat-square&logo=laravel&logoColor=white" alt="Laravel"/></a>
   <a href="https://filamentphp.com"><img src="https://img.shields.io/badge/Filament-5.4-FDAE4B?style=flat-square&logo=filament&logoColor=white" alt="Filament"/></a>
@@ -182,6 +180,32 @@ composer dev
 ````
 
 This starts all four processes concurrently: Laravel server, queue worker, Pail log viewer, and Vite dev server.
+
+### Scheduler
+
+This project has an **important scheduled job** defined in [routes/console.php](routes/console.php).
+
+The Laravel scheduler is responsible for running the core prayer time generation job:
+
+````php
+Schedule::command('mosque:generate-prayer-times')->dailyAt('00:05');
+````
+
+So the scheduler **must be running**.
+
+For local development, run:
+
+````bash
+php artisan schedule:work
+````
+
+For production, configure cron to run Laravel scheduler every minute:
+
+````bash
+* * * * * php /path-to-your-project/artisan schedule:run >> /dev/null 2>&1
+````
+
+> If the scheduler is not running, the automatic prayer time generation job will not execute.
 
 ---
 
