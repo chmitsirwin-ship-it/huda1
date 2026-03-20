@@ -2,6 +2,7 @@
 
 use App\Models\User;
 use Database\Seeders\DatabaseSeeder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -19,6 +20,10 @@ use Tests\TestCase;
 pest()->extend(TestCase::class)
     ->use(RefreshDatabase::class)
     ->in('Feature');
+
+uses()->beforeEach(function () {
+    seedDemoData();
+})->in('Feature/Frontend', 'Feature/Filament');
 
 /*
 |--------------------------------------------------------------------------
@@ -46,11 +51,6 @@ expect()->extend('toBeOne', function () {
 |
 */
 
-function something()
-{
-    // ..
-}
-
 function seedDemoData(): void
 {
     test()->seed(DatabaseSeeder::class);
@@ -62,4 +62,35 @@ function loginAsAdmin(): User
     test()->actingAs($user);
 
     return $user;
+}
+
+function adminPageUrls(string $resourceClass, ?Model $record = null, bool $canCreate = true): array
+{
+    $urls = [$resourceClass::getUrl('index')];
+
+    if ($canCreate) {
+        $urls[] = $resourceClass::getUrl('create');
+    }
+
+    if ($record) {
+        $urls[] = $resourceClass::getUrl('edit', ['record' => $record]);
+    }
+
+    return $urls;
+}
+
+function assertGuestIsRedirectedFrom(array $urls): void
+{
+    foreach ($urls as $url) {
+        test()->get($url)->assertRedirect('/admin/login');
+    }
+}
+
+function assertAdminCanOpen(array $urls): void
+{
+    loginAsAdmin();
+
+    foreach ($urls as $url) {
+        test()->followingRedirects()->get($url)->assertOk();
+    }
 }
