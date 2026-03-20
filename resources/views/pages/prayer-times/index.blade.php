@@ -113,10 +113,14 @@
                                 <div class="text-xs text-neutral-400 mt-0.5">{{ $pt->date->translatedFormat('l') }}</div>
                             </td>
 
-                            @foreach(['fajr', 'dhuhr', 'asr', 'maghrib', 'isha'] as $prayer)
+                            @foreach(['fajr', 'sunrise', 'dhuhr', 'asr', 'maghrib', 'isha'] as $prayer)
                                 @php
-                                    $adhan  = $pt->{$prayer . '_adhan'};
-                                    $iqamah = $pt->{$prayer . '_iqamah'};
+                                    $adhan = $prayer === 'sunrise'
+                                        ? $pt->sunrise
+                                        : $pt->{$prayer . '_adhan'};
+                                    $iqamah = $prayer === 'sunrise'
+                                        ? null
+                                        : $pt->{$prayer . '_iqamah'};
                                 @endphp
                                 <td class="px-3 py-3 text-center tabular-nums">
                                     <div class="{{ $isToday ? 'text-emerald-800' : 'text-neutral-700' }}">
@@ -129,10 +133,6 @@
                                     @endif
                                 </td>
                             @endforeach
-
-                            <td class="px-3 py-3 text-center tabular-nums {{ $isToday ? 'text-emerald-800' : 'text-neutral-700' }}">
-                                {{ $pt->sunrise ? \Carbon\Carbon::parse($pt->sunrise)->translatedFormat('h:i') : '—' }}
-                            </td>
                         </tr>
                     @endforeach
                     </tbody>

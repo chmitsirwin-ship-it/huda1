@@ -18,7 +18,7 @@ class EditContactSubmission extends EditRecord
         ];
     }
 
-    protected function mutateRecordDataUsing(array $data): array
+    protected function mutateFormDataBeforeFill(array $data): array
     {
         if ($this->record->status === ContactSubmissionStatus::New) {
             $this->record->update([

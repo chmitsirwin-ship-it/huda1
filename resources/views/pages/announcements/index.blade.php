@@ -25,13 +25,14 @@
             <div class="space-y-5">
                 @foreach($announcements as $announcement)
                     @php
-                        $type = $announcement->type ?? 'general';
-                        $badgeClasses = match($type) {
+                        $typeValue = $announcement->type?->value ?? $announcement->type ?? 'general';
+                        $typeLabel = $announcement->type?->getLabel() ?? ucfirst($typeValue);
+                        $badgeClasses = match($typeValue) {
                             'urgent'      => 'bg-red-100 text-red-700 border border-red-200',
                             'maintenance' => 'bg-amber-100 text-amber-700 border border-amber-200',
                             default       => 'bg-emerald-100 text-emerald-700 border border-emerald-200',
                         };
-                        $borderClasses = match($type) {
+                        $borderClasses = match($typeValue) {
                             'urgent'      => 'border-l-red-500',
                             'maintenance' => 'border-l-amber-500',
                             default       => 'border-l-emerald-500',
@@ -42,7 +43,7 @@
                         <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 mb-3">
                             <div class="flex items-center gap-3 flex-wrap">
                                 <span class="inline-block text-xs font-semibold px-3 py-1 rounded-full {{ $badgeClasses }} capitalize">
-                                    {{ __($type) }}
+                                    {{ $typeLabel }}
                                 </span>
                                 <h3 class="text-lg font-bold text-neutral-900">
                                     {{ $announcement->getTranslation('title', app()->getLocale(), false) }}

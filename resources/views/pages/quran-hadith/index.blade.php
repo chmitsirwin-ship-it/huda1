@@ -112,7 +112,7 @@
                 </div>
 
                 <div class="mt-10">
-                    {{ $hadiths->appends(['verses_page' => request('verses_page')])->pageName('hadiths_page')->links() }}
+                    {{ $hadiths->appends(['verses_page' => request('verses_page')])->links() }}
                 </div>
             @endif
         </div>

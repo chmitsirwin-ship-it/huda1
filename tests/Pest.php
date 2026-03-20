@@ -1,5 +1,8 @@
 <?php
 
+use App\Models\User;
+use Database\Seeders\DatabaseSeeder;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 /*
@@ -14,7 +17,7 @@ use Tests\TestCase;
 */
 
 pest()->extend(TestCase::class)
- // ->use(Illuminate\Foundation\Testing\RefreshDatabase::class)
+    ->use(RefreshDatabase::class)
     ->in('Feature');
 
 /*
@@ -46,4 +49,17 @@ expect()->extend('toBeOne', function () {
 function something()
 {
     // ..
+}
+
+function seedDemoData(): void
+{
+    test()->seed(DatabaseSeeder::class);
+}
+
+function loginAsAdmin(): User
+{
+    $user = User::query()->where('email', 'admin@mosque.test')->firstOrFail();
+    test()->actingAs($user);
+
+    return $user;
 }

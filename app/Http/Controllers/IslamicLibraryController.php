@@ -10,8 +10,8 @@ class IslamicLibraryController extends Controller
 {
     public function index(): View
     {
-        $verses = QuranVerse::paginate(12);
-        $hadiths = Hadith::paginate(12);
+        $verses = QuranVerse::paginate(12, ['*'], 'verses_page');
+        $hadiths = Hadith::paginate(12, ['*'], 'hadiths_page');
 
         return view('pages.quran-hadith.index', compact('verses', 'hadiths'));
     }

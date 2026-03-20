@@ -46,15 +46,22 @@ use Filament\Tables\Filters\BaseFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Schema as DatabaseSchema;
 use Illuminate\Support\ServiceProvider;
 use Redberry\PageBuilderPlugin\Components\Forms\PageBuilder;
 use Statikbe\FilamentTranslationManager\FilamentTranslationManager;
+use Throwable;
 
 class AppServiceProvider extends ServiceProvider
 {
+    private const FALLBACK_LOCALE_LABELS = [
+        'ar' => 'العربية',
+        'en' => 'English',
+    ];
+
     public function register(): void
     {
-        Panel::configureUsing(fn (Panel $panel) => $panel->maxContentWidth(Width::Full)
+        Panel::configureUsing(fn(Panel $panel) => $panel->maxContentWidth(Width::Full)
             ->font('Alexandria')
             ->readOnlyRelationManagersOnResourceViewPagesByDefault(false));
 
@@ -63,7 +70,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Model::unguard();
-        PageBuilder::configureUsing(fn (PageBuilder $pageBuilder) => $pageBuilder->blocks([
+        PageBuilder::configureUsing(fn(PageBuilder $pageBuilder) => $pageBuilder->blocks([
             HeroBlock::class,
             SliderBlock::class,
             PrayerTimesBlock::class,
@@ -86,7 +93,7 @@ class AppServiceProvider extends ServiceProvider
             CounterBlock::class,
             ContactFormBlock::class,
         ]));
-        $locales = Cache::flexible('local', [43200, 86400], fn () => Language::whereIsActive(true)->orderBy('sort_order', 'asc')->pluck('name', 'code')->toArray());
+        $locales = $this->resolveActiveLocales();
         TranslatableTabs::configureUsing(function (TranslatableTabs $component) use ($locales) {
 
             $component->localesLabels($locales)
@@ -100,7 +107,7 @@ class AppServiceProvider extends ServiceProvider
             $switch
                 ->locales(array_keys($locales));
         });
-        Table::configureUsing(fn (Table $table) => $table->defaultDateTimeDisplayFormat('j M Y - g:i A')
+        Table::configureUsing(fn(Table $table) => $table->defaultDateTimeDisplayFormat('j M Y - g:i A')
             ->defaultDateDisplayFormat('j M Y')
             ->defaultTimeDisplayFormat('g:i A'));
         ToggleColumn::configureUsing(function (ToggleColumn $toggle): void {
@@ -109,28 +116,56 @@ class AppServiceProvider extends ServiceProvider
                 ->onIcon('fas-check-circle')
                 ->offIcon('fas-times-circle');
         });
-        Schema::configureUsing(fn (Schema $schema) => $schema->defaultDateTimeDisplayFormat('j M Y - g:i A')
+        Schema::configureUsing(fn(Schema $schema) => $schema->defaultDateTimeDisplayFormat('j M Y - g:i A')
             ->defaultDateDisplayFormat('j M Y')
             ->defaultTimeDisplayFormat('g:i A'));
-        ViewAction::configureUsing(fn (ViewAction $action) => $action->button()
+        ViewAction::configureUsing(fn(ViewAction $action) => $action->button()
             ->size(Size::ExtraSmall));
-        EditAction::configureUsing(fn (EditAction $action) => $action->button()
+        EditAction::configureUsing(fn(EditAction $action) => $action->button()
             ->size(Size::ExtraSmall));
-        DeleteAction::configureUsing(fn (DeleteAction $action) => $action->button()
+        DeleteAction::configureUsing(fn(DeleteAction $action) => $action->button()
             ->size(Size::ExtraSmall));
-        Column::configureUsing(fn (Column $column) => $column->translateLabel());
-        Field::configureUsing(fn (Field $field) => $field->translateLabel());
-        Entry::configureUsing(fn (Entry $entry) => $entry->translateLabel());
-        BaseFilter::configureUsing(fn (BaseFilter $baseFilter) => $baseFilter->translateLabel());
-        Action::configureUsing(fn (Action $action) => $action->size(Size::ExtraSmall));
-        Section::configureUsing(fn (Section $section) => $section->columnSpanFull());
-        ImageColumn::configureUsing(fn (ImageColumn $imageColumn) => $imageColumn->checkFileExistence(false)
+        Column::configureUsing(fn(Column $column) => $column->translateLabel());
+        Field::configureUsing(fn(Field $field) => $field->translateLabel());
+        Entry::configureUsing(fn(Entry $entry) => $entry->translateLabel());
+        BaseFilter::configureUsing(fn(BaseFilter $baseFilter) => $baseFilter->translateLabel());
+        Action::configureUsing(fn(Action $action) => $action->size(Size::ExtraSmall));
+        Section::configureUsing(fn(Section $section) => $section->columnSpanFull());
+        ImageColumn::configureUsing(fn(ImageColumn $imageColumn) => $imageColumn->checkFileExistence(false)
             ->visibility('public')
             ->extraImgAttributes(['loading' => 'lazy']));
-        ImageEntry::configureUsing(fn (ImageEntry $imageEntry) => $imageEntry->checkFileExistence(false)
+        ImageEntry::configureUsing(fn(ImageEntry $imageEntry) => $imageEntry->checkFileExistence(false)
             ->visibility('public')
             ->extraImgAttributes(['loading' => 'lazy']));
-        FileUpload::configureUsing(fn (FileUpload $fileUpload) => $fileUpload->visibility('public')
+        FileUpload::configureUsing(fn(FileUpload $fileUpload) => $fileUpload->visibility('public')
             ->fetchFileInformation(false));
+    }
+
+    private function resolveActiveLocales(): array
+    {
+        $fallbackLocale = config('app.fallback_locale', config('app.locale', 'en'));
+        $fallbackLocales = [
+            $fallbackLocale => self::FALLBACK_LOCALE_LABELS[$fallbackLocale] ?? strtoupper($fallbackLocale),
+        ];
+
+        try {
+            if (!DatabaseSchema::hasTable('languages')) {
+                return $fallbackLocales;
+            }
+
+            $resolver = fn(): array => Language::query()
+                ->where('is_active', true)
+                ->orderBy('sort_order', 'asc')
+                ->pluck('name', 'code')
+                ->toArray();
+
+            $locales = app()->runningUnitTests() || config('cache.default') === 'array'
+                ? $resolver()
+                : Cache::flexible('local', [43200, 86400], $resolver);
+
+            return $locales !== [] ? $locales : $fallbackLocales;
+        } catch (Throwable) {
+            return $fallbackLocales;
+        }
     }
 }

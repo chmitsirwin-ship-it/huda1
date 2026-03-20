@@ -9,10 +9,7 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         $this->call([
-            LanguageSeeder::class,
-            AdminUserSeeder::class,
-            HomepagePageSeeder::class,
-            FullExamplePageSeeder::class,
+            MosqueDemoSeeder::class,
         ]);
     }
 }

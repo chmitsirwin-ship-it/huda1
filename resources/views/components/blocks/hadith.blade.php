@@ -1,7 +1,10 @@
 @php
 $data = $block['data'] ?? $data ?? [];
 $hadith = null;
-if (!empty($data['id'])) {
+if (!empty($data['hadith_id'])) {
+    $hadith = \App\Models\Hadith::find($data['hadith_id']);
+}
+if (!$hadith && !empty($data['id'])) {
     $hadith = \App\Models\Hadith::find($data['id']);
 }
 if (!$hadith) {

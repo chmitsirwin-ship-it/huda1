@@ -1,7 +1,11 @@
 <?php
 
 test('the application returns a successful response', function () {
+    seedDemoData();
+
     $response = $this->get('/');
 
-    $response->assertStatus(200);
+    $response
+        ->assertOk()
+        ->assertSeeText('Welcome to Masjid Al-Huda');
 });

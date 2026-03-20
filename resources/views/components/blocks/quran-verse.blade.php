@@ -1,7 +1,10 @@
 @php
 $data = $block['data'] ?? $data ?? [];
 $verse = null;
-if (!empty($data['surah_number']) && !empty($data['verse_number'])) {
+if (!empty($data['verse_id'])) {
+    $verse = \App\Models\QuranVerse::find($data['verse_id']);
+}
+if (!$verse && !empty($data['surah_number']) && !empty($data['verse_number'])) {
     $verse = \App\Models\QuranVerse::where('surah_number', $data['surah_number'])
         ->where('verse_number', $data['verse_number'])
         ->first();
