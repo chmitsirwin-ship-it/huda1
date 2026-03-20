@@ -2,6 +2,7 @@
 
 namespace App\Filament\Admin\Resources\PrayerTimes\Tables;
 
+use App\Support\LocalizedDate;
 use Filament\Actions\Action;
 use Filament\Actions\BulkAction;
 use Filament\Actions\BulkActionGroup;
@@ -23,43 +24,43 @@ class PrayerTimesTable
             ->columns([
                 TextColumn::make('date')
                     ->label(__('Date'))
-                    ->description(fn($record) => Carbon::parse($record->date)->translatedFormat('l'),'above')
-                    ->date()
+                    ->description(fn ($record) => LocalizedDate::weekday($record->date), 'above')
+                    ->formatStateUsing(fn ($state) => LocalizedDate::date($state))
                     ->sortable(),
 
                 TextColumn::make('fajr_adhan')
                     ->description(function ($record) {
-                        return $record->fajr_iqamah ? __('Iqamah').': ' . Carbon::parse($record->fajr_iqamah)->translatedFormat('g:i A') : null;
+                        return $record->fajr_iqamah ? __('Iqamah').': ' . LocalizedDate::time($record->fajr_iqamah) : null;
                     })
-                    ->time()
+                    ->formatStateUsing(fn ($state) => LocalizedDate::time($state))
                     ->label(__('Fajr')),
 
                 TextColumn::make('dhuhr_adhan')
-                     ->description(function ($record) {
-                        return $record->dhuhr_iqamah ? __('Iqamah').': ' . Carbon::parse($record->dhuhr_iqamah)->translatedFormat('g:i A') : null;
+                    ->description(function ($record) {
+                        return $record->dhuhr_iqamah ? __('Iqamah').': ' . LocalizedDate::time($record->dhuhr_iqamah) : null;
                     })
-                    ->time()
+                    ->formatStateUsing(fn ($state) => LocalizedDate::time($state))
                     ->label(__('Dhuhr')),
 
                 TextColumn::make('asr_adhan')
-                     ->description(function ($record) {
-                        return $record->asr_iqamah ? __('Iqamah').': ' . Carbon::parse($record->asr_iqamah)->translatedFormat('g:i A') : null;
+                    ->description(function ($record) {
+                        return $record->asr_iqamah ? __('Iqamah').': ' . LocalizedDate::time($record->asr_iqamah) : null;
                     })
-                    ->time()
+                    ->formatStateUsing(fn ($state) => LocalizedDate::time($state))
                     ->label(__('Asr')),
 
                 TextColumn::make('maghrib_adhan')
-                     ->description(function ($record) {
-                        return $record->maghrib_iqamah ? __('Iqamah').': ' . Carbon::parse($record->maghrib_iqamah)->translatedFormat('g:i A') : null;
+                    ->description(function ($record) {
+                        return $record->maghrib_iqamah ? __('Iqamah').': ' . LocalizedDate::time($record->maghrib_iqamah) : null;
                     })
-                    ->time()
+                    ->formatStateUsing(fn ($state) => LocalizedDate::time($state))
                     ->label(__('Maghrib')),
 
                 TextColumn::make('isha_adhan')
-                     ->description(function ($record) {
-                        return $record->isha_iqamah ? __('Iqamah').': ' . Carbon::parse($record->isha_iqamah)->translatedFormat('g:i A') : null;
+                    ->description(function ($record) {
+                        return $record->isha_iqamah ? __('Iqamah').': ' . LocalizedDate::time($record->isha_iqamah) : null;
                     })
-                    ->time()
+                    ->formatStateUsing(fn ($state) => LocalizedDate::time($state))
                     ->label(__('Isha')),
             ])
             ->defaultSort('date', 'desc')

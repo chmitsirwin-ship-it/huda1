@@ -2,6 +2,7 @@
 
 namespace App\Filament\Admin\Resources\Events\Tables;
 
+use App\Support\LocalizedDate;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
@@ -21,7 +22,7 @@ class EventsTable
 
                 TextColumn::make('starts_at')
                     ->label(__('Starts At'))
-                    ->dateTime()
+                    ->formatStateUsing(fn ($state) => LocalizedDate::dateTime($state))
                     ->sortable(),
 
                 TextColumn::make('status')

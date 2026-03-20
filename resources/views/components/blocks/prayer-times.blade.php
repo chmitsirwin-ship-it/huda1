@@ -22,7 +22,7 @@ $prayers = [
             </div>
             <h2 class="text-3xl md:text-4xl font-bold text-neutral-900">{{ __('Prayer Times') }}</h2>
             @if($today)
-                <p class="text-neutral-500 mt-2">{{ $today->date->translatedFormat('l, d F Y') }}</p>
+                <p class="text-neutral-500 mt-2">{{ \App\Support\LocalizedDate::date($today->date) }}</p>
             @endif
         </div>
 
@@ -51,12 +51,12 @@ $prayers = [
                                 </td>
                                 <td class="px-6 py-4 text-center">
                                     <span class="text-emerald-700 font-medium tabular-nums">
-                                        {{ $today->{$prayer['key'].'_adhan'} ?? $today->{$prayer['key']} ?? '—' }}
+                                        {{ \App\Support\LocalizedDate::time($today->{$prayer['key'].'_adhan'} ?? $today->{$prayer['key']} ?? null) ?? '—' }}
                                     </span>
                                 </td>
                                 <td class="px-6 py-4 text-center">
                                     <span class="text-amber-600 font-medium tabular-nums">
-                                        {{ $today->{$prayer['key'].'_iqamah'} ?? '—' }}
+                                        {{ \App\Support\LocalizedDate::time($today->{$prayer['key'].'_iqamah'} ?? null) ?? '—' }}
                                     </span>
                                 </td>
                             </tr>
@@ -72,11 +72,11 @@ $prayers = [
                             {{ $prayer['label'] }}
                         </p>
                         <p class="text-xl font-bold text-emerald-700 tabular-nums">
-                            {{ $today->{$prayer['key'].'_adhan'} ?? $today->{$prayer['key']} ?? '—' }}
+                            {{ \App\Support\LocalizedDate::time($today->{$prayer['key'].'_adhan'} ?? $today->{$prayer['key']} ?? null) ?? '—' }}
                         </p>
                         @if(isset($today->{$prayer['key'].'_iqamah'}) && $today->{$prayer['key'].'_iqamah'})
                             <p class="text-xs text-amber-600 font-medium mt-1 tabular-nums">
-                                {{ __('Iqamah') }}: {{ $today->{$prayer['key'].'_iqamah'} }}
+                                {{ __('Iqamah') }}: {{ \App\Support\LocalizedDate::time($today->{$prayer['key'].'_iqamah'}) }}
                             </p>
                         @endif
                     </div>
@@ -88,7 +88,7 @@ $prayers = [
                     <div class="flex items-center justify-between">
                         <div>
                             <h3 class="text-white font-bold text-xl">{{ __("Today's Prayers") }}</h3>
-                            <p class="text-emerald-200 text-sm mt-1">{{ $today->date->translatedFormat('l, d F Y') }}</p>
+                            <p class="text-emerald-200 text-sm mt-1">{{ \App\Support\LocalizedDate::date($today->date) }}</p>
                         </div>
                         <div class="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center">
                             <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
@@ -103,11 +103,11 @@ $prayers = [
                             <span class="text-emerald-100 font-medium">{{ $prayer['label'] }}</span>
                             <div class="flex items-center gap-4">
                                 <span class="text-white font-bold text-lg tabular-nums">
-                                    {{ $today->{$prayer['key'].'_adhan'} ?? $today->{$prayer['key']} ?? '—' }}
+                                    {{ \App\Support\LocalizedDate::time($today->{$prayer['key'].'_adhan'} ?? $today->{$prayer['key']} ?? null) ?? '—' }}
                                 </span>
                                 @if(isset($today->{$prayer['key'].'_iqamah'}) && $today->{$prayer['key'].'_iqamah'})
                                     <span class="text-amber-300 text-sm tabular-nums px-2 py-0.5 rounded bg-amber-400/10">
-                                        {{ $today->{$prayer['key'].'_iqamah'} }}
+                                        {{ \App\Support\LocalizedDate::time($today->{$prayer['key'].'_iqamah'}) }}
                                     </span>
                                 @endif
                             </div>

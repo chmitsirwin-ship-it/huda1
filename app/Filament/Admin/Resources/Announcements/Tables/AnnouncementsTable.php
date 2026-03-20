@@ -2,6 +2,7 @@
 
 namespace App\Filament\Admin\Resources\Announcements\Tables;
 
+use App\Support\LocalizedDate;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
@@ -28,7 +29,7 @@ class AnnouncementsTable
 
                 TextColumn::make('published_at')
                     ->label(__('Published At'))
-                    ->dateTime()
+                    ->formatStateUsing(fn ($state) => LocalizedDate::dateTime($state))
                     ->sortable(),
             ])
             ->defaultSort('created_at', 'desc')

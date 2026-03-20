@@ -123,5 +123,5 @@ it('loads today prayer times from the seeded current month data', function () {
     $this->get(route('prayer-times.index'))
         ->assertOk()
         ->assertSeeText("Today's Prayer Times")
-        ->assertSeeText($today->translatedFormat('l, F j, Y'));
+        ->assertSeeText($today->translatedFormat('j M Y'));
 });

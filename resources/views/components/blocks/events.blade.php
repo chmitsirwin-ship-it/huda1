@@ -35,8 +35,8 @@ $style = $data['style'] ?? 'grid';
                 @foreach($events as $event)
                     <div class="flex gap-6 bg-white rounded-xl p-6 shadow-sm border border-neutral-100 hover:border-emerald-200 hover:shadow-md transition-all duration-200 group">
                         <div class="shrink-0 flex flex-col items-center justify-center w-16 h-16 bg-emerald-600 rounded-xl text-white">
-                            <span class="text-2xl font-bold leading-none">{{ $event->starts_at->format('d') }}</span>
-                            <span class="text-xs uppercase tracking-wide mt-0.5">{{ $event->starts_at->format('M') }}</span>
+                            <span class="text-2xl font-bold leading-none">{{ \App\Support\LocalizedDate::day($event->starts_at) }}</span>
+                            <span class="text-xs uppercase tracking-wide mt-0.5">{{ \App\Support\LocalizedDate::monthShort($event->starts_at) }}</span>
                         </div>
                         <div class="flex-1 min-w-0">
                             <h3 class="font-bold text-neutral-900 text-lg mb-1 group-hover:text-emerald-600 transition-colors truncate">
@@ -58,7 +58,7 @@ $style = $data['style'] ?? 'grid';
                             @endif
                         </div>
                         <div class="shrink-0 self-center">
-                            <span class="text-sm text-neutral-400">{{ $event->starts_at->format('g:i A') }}</span>
+                            <span class="text-sm text-neutral-400">{{ \App\Support\LocalizedDate::time($event->starts_at) }}</span>
                         </div>
                     </div>
                 @endforeach
@@ -84,7 +84,7 @@ $style = $data['style'] ?? 'grid';
                                     <div class="p-6">
                                         <div class="flex items-center gap-2 mb-3">
                                             <span class="bg-emerald-100 text-emerald-700 text-xs font-semibold px-2.5 py-1 rounded-full">
-                                                {{ $event->starts_at->translatedFormat('d M Y') }}
+                                                {{ \App\Support\LocalizedDate::date($event->starts_at) }}
                                             </span>
                                         </div>
                                         <h3 class="text-xl font-bold text-neutral-900 mb-2">
@@ -118,8 +118,8 @@ $style = $data['style'] ?? 'grid';
                                      class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
                                 <div class="absolute top-4 left-4">
                                     <div class="bg-white rounded-lg px-3 py-1.5 shadow-md text-center min-w-[48px]">
-                                        <div class="text-xl font-bold text-emerald-600 leading-none">{{ $event->starts_at->format('d') }}</div>
-                                        <div class="text-xs text-neutral-500 uppercase tracking-wide">{{ $event->starts_at->format('M') }}</div>
+                                        <div class="text-xl font-bold text-emerald-600 leading-none">{{ \App\Support\LocalizedDate::day($event->starts_at) }}</div>
+                                        <div class="text-xs text-neutral-500 uppercase tracking-wide">{{ \App\Support\LocalizedDate::monthShort($event->starts_at) }}</div>
                                     </div>
                                 </div>
                             </div>
@@ -130,8 +130,8 @@ $style = $data['style'] ?? 'grid';
                                 </svg>
                                 <div class="absolute top-4 left-4">
                                     <div class="bg-white/20 backdrop-blur-sm rounded-lg px-3 py-1.5 text-center min-w-[48px]">
-                                        <div class="text-xl font-bold text-white leading-none">{{ $event->starts_at->format('d') }}</div>
-                                        <div class="text-xs text-white/80 uppercase tracking-wide">{{ $event->starts_at->format('M') }}</div>
+                                        <div class="text-xl font-bold text-white leading-none">{{ \App\Support\LocalizedDate::day($event->starts_at) }}</div>
+                                        <div class="text-xs text-white/80 uppercase tracking-wide">{{ \App\Support\LocalizedDate::monthShort($event->starts_at) }}</div>
                                     </div>
                                 </div>
                             </div>

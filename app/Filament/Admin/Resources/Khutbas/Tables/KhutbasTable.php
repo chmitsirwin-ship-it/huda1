@@ -2,6 +2,7 @@
 
 namespace App\Filament\Admin\Resources\Khutbas\Tables;
 
+use App\Support\LocalizedDate;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
@@ -24,7 +25,7 @@ class KhutbasTable
 
                 TextColumn::make('date')
                     ->label(__('Date'))
-                    ->date()
+                    ->formatStateUsing(fn ($state) => LocalizedDate::date($state))
                     ->sortable(),
 
                 ToggleColumn::make('is_published')

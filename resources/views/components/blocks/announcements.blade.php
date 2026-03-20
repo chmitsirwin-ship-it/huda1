@@ -54,7 +54,7 @@ $typeIconPaths = [
                                     </span>
                                     @if($announcement->published_at)
                                         <span class="text-xs text-neutral-400">
-                                            {{ $announcement->published_at->diffForHumans() }}
+                                            {{ \App\Support\LocalizedDate::date($announcement->published_at) }}
                                         </span>
                                     @endif
                                 </div>

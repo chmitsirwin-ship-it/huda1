@@ -50,7 +50,7 @@
                                 </h3>
                             </div>
                             <span class="text-xs text-neutral-400 whitespace-nowrap shrink-0">
-                                {{ $announcement->created_at->format('M d, Y') }}
+                                {{ \App\Support\LocalizedDate::date($announcement->published_at ?? $announcement->created_at) }}
                             </span>
                         </div>
                         <p class="text-neutral-600 leading-relaxed">

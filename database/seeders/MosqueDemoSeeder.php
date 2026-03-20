@@ -783,8 +783,8 @@ class MosqueDemoSeeder extends Seeder
             [
                 'date' => now()->subWeeks(1)->toDateString(),
                 'is_published' => true,
-                'audio_url' => 'https://example.com/audio/steadfastness.mp3',
-                'video_url' => 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+                'audio_url' => 'https://dl.espressif.com/dl/audio/ff-16b-2c-44100hz.mp3',
+                'video_url' => 'https://www.youtube.com/watch?v=vTIYqaj0xGk',
                 'title' => [
                     'en' => 'Steadfastness in Worship',
                     'ar' => 'الثبات على العبادة',
@@ -805,7 +805,7 @@ class MosqueDemoSeeder extends Seeder
             [
                 'date' => now()->subWeeks(2)->toDateString(),
                 'is_published' => true,
-                'audio_url' => 'https://example.com/audio/good-neighbor.mp3',
+                'audio_url' => 'https://dl.espressif.com/dl/audio/ff-16b-2c-44100hz.mp3',
                 'video_url' => null,
                 'title' => [
                     'en' => 'Honouring the Neighbour',

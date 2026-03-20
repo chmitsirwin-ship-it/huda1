@@ -75,6 +75,13 @@ final class MosqueDemoPageData
                                         'ar' => 'ساعة تطوع شهرياً',
                                     ],
                                 ],
+                                [
+                                    'value' => '360',
+                                    'label' => [
+                                        'en' => 'Years',
+                                        'ar' => 'سنة',
+                                    ],
+                                ],
                             ],
                         ],
                     ],
@@ -175,7 +182,7 @@ final class MosqueDemoPageData
                     [
                         'block_type' => \App\Filament\Admin\Blocks\VideoBlock::class,
                         'data' => [
-                            'video_url' => 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+                            'video_url' => 'https://www.youtube.com/watch?v=vTIYqaj0xGk',
                             'caption' => [
                                 'en' => 'A sample community update video.',
                                 'ar' => 'فيديو تجريبي لتحديثات المجتمع.',

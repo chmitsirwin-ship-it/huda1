@@ -15,7 +15,7 @@
                 <div class="flex items-center justify-between py-1 px-2 rounded bg-neutral-800/50 hover:bg-neutral-800 transition-colors">
                     <span class="text-xs text-neutral-400">{{ $prayer['name'] }}</span>
                     <span class="text-xs font-medium text-emerald-400 tabular-nums">
-                        {{ \Carbon\Carbon::parse($prayer['time'])->format('H:i') }}
+                        {{ \App\Support\LocalizedDate::time($prayer['time']) }}
                     </span>
                 </div>
             @endif
@@ -25,7 +25,7 @@
             <div class="flex items-center justify-between py-1 px-2 rounded bg-amber-900/20 border border-amber-800/30">
                 <span class="text-xs text-amber-500">{{ __("Jumu'ah") }}</span>
                 <span class="text-xs font-medium text-amber-400 tabular-nums">
-                    {{ \Carbon\Carbon::parse($today->jummah_time)->format('H:i') }}
+                    {{ \App\Support\LocalizedDate::time($today->jummah_time) }}
                 </span>
             </div>
         @endif

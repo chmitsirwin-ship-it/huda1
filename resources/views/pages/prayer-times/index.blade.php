@@ -8,7 +8,7 @@
 
                 <div class="mb-6">
                     <p class="text-xs font-medium text-emerald-400 uppercase tracking-widest mb-1">{{ __("Today's Prayer Times") }}</p>
-                    <h2 class="text-xl font-semibold text-white">{{ $today->date->translatedFormat('l, F j, Y') }}</h2>
+                    <h2 class="text-xl font-semibold text-white">{{ \App\Support\LocalizedDate::date($today->date) }}</h2>
                 </div>
 
                 @php
@@ -27,11 +27,11 @@
                         <div class="bg-white/8 border border-white/10 rounded-xl p-4 text-center">
                             <div class="text-xs font-medium text-emerald-400 uppercase tracking-wider mb-2">{{ $prayer['label'] }}</div>
                             <div class="text-lg font-semibold text-white tabular-nums">
-                                {{ $prayer['adhan'] ? \Carbon\Carbon::parse($prayer['adhan'])->translatedFormat('h:i A') : '—' }}
+                                {{ \App\Support\LocalizedDate::time($prayer['adhan']) ?? '—' }}
                             </div>
                             @if($prayer['iqamah'])
                                 <div class="text-xs text-emerald-300 mt-1.5 tabular-nums">
-                                    {{ \Carbon\Carbon::parse($prayer['iqamah'])->translatedFormat('h:i A') }}
+                                    {{ \App\Support\LocalizedDate::time($prayer['iqamah']) }}
                                 </div>
                             @endif
                         </div>
@@ -44,7 +44,7 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
                         </svg>
                         <span class="text-sm text-amber-200 font-medium">
-                            {{ __("Jumu'ah") }}: {{ \Carbon\Carbon::parse($today->jummah_time)->translatedFormat('h:i A') }}
+                            {{ __("Jumu'ah") }}: {{ \App\Support\LocalizedDate::time($today->jummah_time) }}
                         </span>
                     </div>
                 @endif
@@ -57,7 +57,7 @@
 
         <div class="flex flex-col sm:flex-row sm:items-center justify-between mb-6 gap-4">
             <h2 class="text-lg font-semibold text-neutral-900">
-                {{ \Carbon\Carbon::createFromDate($year, $month, 1)->translatedFormat('F Y') }}
+                {{ \App\Support\LocalizedDate::monthYear(\Carbon\Carbon::createFromDate($year, $month, 1)) }}
             </h2>
             <div class="flex items-center gap-2">
                 @php
@@ -102,7 +102,7 @@
                             <td class="px-3 py-3 whitespace-nowrap">
                                 <div class="flex items-center gap-2">
                                         <span class="font-medium {{ $isToday ? 'text-emerald-800' : 'text-neutral-800' }}">
-                                            {{ $pt->date->translatedFormat('j M Y') }}
+                                            {{ \App\Support\LocalizedDate::date($pt->date) }}
                                         </span>
                                     @if($isToday)
                                         <span class="text-[10px] font-medium bg-emerald-100 text-emerald-700 border border-emerald-200 rounded px-1.5 py-0.5 leading-none">
@@ -110,7 +110,7 @@
                                             </span>
                                     @endif
                                 </div>
-                                <div class="text-xs text-neutral-400 mt-0.5">{{ $pt->date->translatedFormat('l') }}</div>
+                                <div class="text-xs text-neutral-400 mt-0.5">{{ \App\Support\LocalizedDate::weekday($pt->date) }}</div>
                             </td>
 
                             @foreach(['fajr', 'sunrise', 'dhuhr', 'asr', 'maghrib', 'isha'] as $prayer)
@@ -124,11 +124,11 @@
                                 @endphp
                                 <td class="px-3 py-3 text-center tabular-nums">
                                     <div class="{{ $isToday ? 'text-emerald-800' : 'text-neutral-700' }}">
-                                        {{ $adhan ? \Carbon\Carbon::parse($adhan)->translatedFormat('h:i') : '—' }}
+                                        {{ \App\Support\LocalizedDate::time($adhan) ?? '—' }}
                                     </div>
                                     @if($iqamah)
                                         <div class="text-[11px] {{ $isToday ? 'text-emerald-500' : 'text-neutral-400' }} mt-0.5">
-                                            {{ \Carbon\Carbon::parse($iqamah)->translatedFormat('h:i') }}
+                                            {{ \App\Support\LocalizedDate::time($iqamah) }}
                                         </div>
                                     @endif
                                 </td>

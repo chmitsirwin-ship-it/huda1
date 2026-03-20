@@ -35,8 +35,8 @@ $khutbas = \App\Models\Khutba::published()->limit($data['limit'] ?? 5)->get();
                     <div class="bg-white rounded-xl border border-neutral-100 p-6 shadow-sm hover:shadow-md hover:border-emerald-200 transition-all duration-200 group">
                         <div class="flex items-start gap-5">
                             <div class="shrink-0 flex flex-col items-center justify-center w-16 h-16 bg-emerald-600 rounded-xl text-white">
-                                <span class="text-xl font-bold leading-none">{{ $khutba->date->format('d') }}</span>
-                                <span class="text-xs uppercase tracking-wide mt-0.5 opacity-80">{{ $khutba->date->format('M') }}</span>
+                                <span class="text-xl font-bold leading-none">{{ \App\Support\LocalizedDate::day($khutba->date) }}</span>
+                                <span class="text-xs uppercase tracking-wide mt-0.5 opacity-80">{{ \App\Support\LocalizedDate::monthShort($khutba->date) }}</span>
                             </div>
 
                             <div class="flex-1 min-w-0">
@@ -91,7 +91,7 @@ $khutbas = \App\Models\Khutba::published()->limit($data['limit'] ?? 5)->get();
                                     @endif
 
                                     <span class="text-sm text-neutral-400">
-                                        {{ $khutba->date->translatedFormat('l, d F Y') }}
+                                        {{ \App\Support\LocalizedDate::date($khutba->date) }}
                                     </span>
                                 </div>
 
