@@ -138,7 +138,10 @@ This runs `composer install`, copies `.env`, generates the app key, runs migrati
 
 **1. Clone**
 ````bash
-git clone <your-repository-url>
+git clone https://github.com/EG-Mohamed/Mosque.git
+````
+
+````bash
 cd Mosque
 ````
 
