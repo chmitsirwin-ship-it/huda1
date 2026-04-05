@@ -21,6 +21,7 @@ class StaffForm
                         FileUpload::make('photo')
                             ->label(__('Photo'))
                             ->image()
+                            ->directory('staff')
                             ->visibility('public')
                             ->columnSpanFull(),
                         TranslatableTabs::make()

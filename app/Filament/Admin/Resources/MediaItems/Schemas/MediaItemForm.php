@@ -21,6 +21,7 @@ class MediaItemForm
                         FileUpload::make('file_path')
                             ->label(__('File'))
                             ->image()
+                            ->directory('media-items')
                             ->visibility('public')
                             ->required()
                             ->columnSpanFull(),

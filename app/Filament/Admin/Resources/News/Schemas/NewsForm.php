@@ -37,6 +37,7 @@ class NewsForm
                             ->label(__('Featured Image'))
                             ->image()
                             ->imageEditor()
+                            ->directory('news')
                             ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp', 'image/gif', 'image/svg+xml'])
                             ->columnSpanFull(),
                         Select::make('categories')

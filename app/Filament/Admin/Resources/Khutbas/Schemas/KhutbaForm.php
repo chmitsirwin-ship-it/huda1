@@ -61,6 +61,7 @@ class KhutbaForm
                             ->label(__('Featured Image'))
                             ->image()
                             ->imageEditor()
+                            ->directory('khutbas/images')
                             ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp', 'image/gif', 'image/svg+xml'])
                             ->columnSpanFull(),
                     ]),

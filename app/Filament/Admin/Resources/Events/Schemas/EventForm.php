@@ -30,6 +30,7 @@ class EventForm
                         FileUpload::make('image')
                             ->label(__('Image'))
                             ->image()
+                            ->directory('events')
                             ->visibility('public')
                             ->columnSpanFull(),
                     ]),

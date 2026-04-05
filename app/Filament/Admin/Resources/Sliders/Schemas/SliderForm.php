@@ -20,6 +20,7 @@ class SliderForm
                         FileUpload::make('image')
                             ->label(__('Image'))
                             ->image()
+                            ->directory('sliders')
                             ->visibility('public')
                             ->required()
                             ->columnSpanFull(),
