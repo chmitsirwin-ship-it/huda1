@@ -19,7 +19,7 @@
 
 ## 🕌 About
 
-A **complete, production-ready** mosque website and admin panel covering the full range of a mosque's digital needs: public website, prayer times, events, announcements, a flexible page builder, Islamic content library, media gallery, contact management, and a powerful multilingual admin panel.
+A **complete, production-ready** mosque website and admin panel covering the full range of a mosque's digital needs: public website, prayer times, events, announcements, news, a flexible page builder, Islamic content library, media gallery, contact management, and a powerful multilingual admin panel.
 
 > **This project is 100% free for the sake of Allah.**
 >
@@ -76,9 +76,10 @@ Duration: fast — all tests run against an in-memory SQLite database
 | Prayer Times | Daily and monthly schedules |
 | Events | Upcoming programs and activities |
 | Announcements | News and community notices |
+| News | Category-based news archive with detail pages |
 | Gallery | Media items with collection filters |
 | Islamic Library | Quran verses and hadith archive |
-| Jumu'ah Khutba | Khutba archive |
+| Jumu'ah Khutba | Khutba archive with category filters and detail pages |
 | Staff | Scholar and team member profiles |
 | Contact | Live contact form with Google Maps embed |
 | Custom Pages | Flexible page builder with reusable blocks |
@@ -87,7 +88,9 @@ Duration: fast — all tests run against an in-memory SQLite database
 
 - Dashboard with mosque settings
 - Full CRUD for all content sections
+- Dedicated management for news, news categories, khutbas, and khutba categories
 - Page builder with 20+ block types
+- Home page toggle for pages that forces `home` slug, published state, and navigation visibility
 - Prayer time management (daily and monthly)
 - Language management — add/remove languages from the UI
 - Translation manager — edit all translation strings from the admin panel
@@ -98,7 +101,7 @@ Duration: fast — all tests run against an in-memory SQLite database
 
 ### Page Builder Blocks
 
-`Hero` · `Slider` · `Prayer Times` · `Events` · `Announcements` · `Quran Verse` · `Hadith` · `Staff` · `Gallery` · `Rich Text` · `Contact Map` · `Custom HTML` · `Spacer` · `Khutba Archive` · `Donation` · `Testimonial` · `FAQ` · `CTA` · `Video` · `Counter` · `Contact Form`
+`Hero` · `Slider` · `Prayer Times` · `Events` · `Announcements` · `News` · `Quran Verse` · `Hadith` · `Staff` · `Gallery` · `Rich Text` · `Contact Map` · `Custom HTML` · `Spacer` · `Khutba Archive` · `Donation` · `Testimonial` · `FAQ` · `CTA` · `Video` · `Counter` · `Contact Form`
 
 ---
 
@@ -227,9 +230,12 @@ After seeding, access the admin panel at `/admin`:
 /prayer-times        → Prayer schedule
 /events              → Events listing
 /announcements       → Announcements
+/news                → News archive
+/news/{slug}         → News detail
 /gallery             → Media gallery
 /islamic-library     → Quran & hadith
 /khutba              → Khutba archive
+/khutba/{slug}       → Khutba detail
 /staff               → Team & scholars
 /contact             → Contact form
 ````

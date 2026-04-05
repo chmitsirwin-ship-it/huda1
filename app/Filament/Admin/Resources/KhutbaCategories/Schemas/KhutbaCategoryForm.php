@@ -5,6 +5,7 @@ namespace App\Filament\Admin\Resources\KhutbaCategories\Schemas;
 use AbdulmajeedJamaan\FilamentTranslatableTabs\TranslatableTabs;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
+use Filament\Forms\Components\ToggleButtons;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 
@@ -28,7 +29,8 @@ class KhutbaCategoryForm
                             ->label(__('Sort Order'))
                             ->numeric()
                             ->default(0),
-                        Toggle::make('is_active')
+                        ToggleButtons::make('is_active')
+                            ->inline()
                             ->label(__('Active'))
                             ->default(true),
                     ]),

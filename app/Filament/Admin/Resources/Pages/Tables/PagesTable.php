@@ -31,12 +31,9 @@ class PagesTable
 
                 ToggleColumn::make('show_in_nav')
                     ->label(__('In Nav')),
-
-                TextColumn::make('sort_order')
-                    ->label(__('Sort Order'))
-                    ->sortable(),
             ])
             ->defaultSort('sort_order')
+            ->reorderable('sort_order')
             ->filters([])
             ->recordActions([
                 EditAction::make(),
