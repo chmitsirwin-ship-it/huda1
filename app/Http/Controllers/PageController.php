@@ -12,7 +12,10 @@ class PageController extends Controller
 
     public function home(): View
     {
-        $page = Page::with('pageBuilderBlocks')->where('slug', 'home')->where('is_published', true)->firstOrFail();
+        $page = Page::with('pageBuilderBlocks')
+            ->where('is_home', true)
+            ->where('is_published', true)
+            ->firstOrFail();
         $blocks = $this->blockRenderer->render($page);
 
         return view('pages.home', compact('page', 'blocks'));

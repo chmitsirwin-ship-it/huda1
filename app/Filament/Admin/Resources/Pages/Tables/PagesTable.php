@@ -23,6 +23,9 @@ class PagesTable
                     ->label(__('Slug'))
                     ->searchable(),
 
+                ToggleColumn::make('is_home')
+                    ->label(__('Home')),
+
                 ToggleColumn::make('is_published')
                     ->label(__('Published')),
 

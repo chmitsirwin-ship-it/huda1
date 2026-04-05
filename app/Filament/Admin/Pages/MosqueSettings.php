@@ -51,17 +51,6 @@ class MosqueSettings extends Settings
                                 Textarea::make('general.address')
                                     ->label(__('Address'))
                                     ->rows(2),
-
-                                PhoneInput::make('general.phone')
-                                    ->label(__('Phone')),
-
-                                TextInput::make('general.email')
-                                    ->label(__('Email'))
-                                    ->email(),
-                            ]),
-
-                        Tab::make(__('Location'))
-                            ->schema([
                                 Hidden::make('location.latitude'),
                                 Hidden::make('location.longitude'),
 
@@ -73,6 +62,13 @@ class MosqueSettings extends Settings
                                     ->draggable()
                                     ->height(320)
                                     ->dehydrated(false),
+                                PhoneInput::make('general.phone')
+                                    ->label(__('Phone')),
+
+                                TextInput::make('general.email')
+                                    ->label(__('Email'))
+                                    ->email(),
+
                             ]),
 
                         Tab::make(__('Branding'))

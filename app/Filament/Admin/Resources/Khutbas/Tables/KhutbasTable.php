@@ -23,6 +23,10 @@ class KhutbasTable
                 TextColumn::make('speaker')
                     ->label(__('Speaker')),
 
+                TextColumn::make('categories.name')
+                    ->label(__('Categories'))
+                    ->badge(),
+
                 TextColumn::make('date')
                     ->label(__('Date'))
                     ->formatStateUsing(fn ($state) => LocalizedDate::date($state))

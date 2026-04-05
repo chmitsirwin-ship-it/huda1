@@ -16,6 +16,7 @@ use App\Filament\Admin\Blocks\GalleryBlock;
 use App\Filament\Admin\Blocks\HadithBlock;
 use App\Filament\Admin\Blocks\HeroBlock;
 use App\Filament\Admin\Blocks\KhutbaArchiveBlock;
+use App\Filament\Admin\Blocks\NewsBlock;
 use App\Filament\Admin\Blocks\PrayerTimesBlock;
 use App\Filament\Admin\Blocks\QuranVerseBlock;
 use App\Filament\Admin\Blocks\RichTextBlock;
@@ -61,7 +62,7 @@ class AppServiceProvider extends ServiceProvider
 
     public function register(): void
     {
-        Panel::configureUsing(fn(Panel $panel) => $panel->maxContentWidth(Width::Full)
+        Panel::configureUsing(fn (Panel $panel) => $panel->maxContentWidth(Width::Full)
             ->font('Alexandria')
             ->readOnlyRelationManagersOnResourceViewPagesByDefault(false));
 
@@ -70,7 +71,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Model::unguard();
-        PageBuilder::configureUsing(fn(PageBuilder $pageBuilder) => $pageBuilder->blocks([
+        PageBuilder::configureUsing(fn (PageBuilder $pageBuilder) => $pageBuilder->blocks([
             HeroBlock::class,
             SliderBlock::class,
             PrayerTimesBlock::class,
@@ -80,6 +81,7 @@ class AppServiceProvider extends ServiceProvider
             HadithBlock::class,
             StaffBlock::class,
             GalleryBlock::class,
+            NewsBlock::class,
             RichTextBlock::class,
             ContactMapBlock::class,
             CustomHtmlBlock::class,
@@ -107,7 +109,7 @@ class AppServiceProvider extends ServiceProvider
             $switch
                 ->locales(array_keys($locales));
         });
-        Table::configureUsing(fn(Table $table) => $table->defaultDateTimeDisplayFormat('j M Y - g:i A')
+        Table::configureUsing(fn (Table $table) => $table->defaultDateTimeDisplayFormat('j M Y - g:i A')
             ->defaultDateDisplayFormat('j M Y')
             ->defaultTimeDisplayFormat('g:i A'));
         ToggleColumn::configureUsing(function (ToggleColumn $toggle): void {
@@ -116,28 +118,28 @@ class AppServiceProvider extends ServiceProvider
                 ->onIcon('fas-check-circle')
                 ->offIcon('fas-times-circle');
         });
-        Schema::configureUsing(fn(Schema $schema) => $schema->defaultDateTimeDisplayFormat('j M Y - g:i A')
+        Schema::configureUsing(fn (Schema $schema) => $schema->defaultDateTimeDisplayFormat('j M Y - g:i A')
             ->defaultDateDisplayFormat('j M Y')
             ->defaultTimeDisplayFormat('g:i A'));
-        ViewAction::configureUsing(fn(ViewAction $action) => $action->button()
+        ViewAction::configureUsing(fn (ViewAction $action) => $action->button()
             ->size(Size::ExtraSmall));
-        EditAction::configureUsing(fn(EditAction $action) => $action->button()
+        EditAction::configureUsing(fn (EditAction $action) => $action->button()
             ->size(Size::ExtraSmall));
-        DeleteAction::configureUsing(fn(DeleteAction $action) => $action->button()
+        DeleteAction::configureUsing(fn (DeleteAction $action) => $action->button()
             ->size(Size::ExtraSmall));
-        Column::configureUsing(fn(Column $column) => $column->translateLabel());
-        Field::configureUsing(fn(Field $field) => $field->translateLabel());
-        Entry::configureUsing(fn(Entry $entry) => $entry->translateLabel());
-        BaseFilter::configureUsing(fn(BaseFilter $baseFilter) => $baseFilter->translateLabel());
-        Action::configureUsing(fn(Action $action) => $action->size(Size::ExtraSmall));
-        Section::configureUsing(fn(Section $section) => $section->columnSpanFull());
-        ImageColumn::configureUsing(fn(ImageColumn $imageColumn) => $imageColumn->checkFileExistence(false)
+        Column::configureUsing(fn (Column $column) => $column->translateLabel());
+        Field::configureUsing(fn (Field $field) => $field->translateLabel());
+        Entry::configureUsing(fn (Entry $entry) => $entry->translateLabel());
+        BaseFilter::configureUsing(fn (BaseFilter $baseFilter) => $baseFilter->translateLabel());
+        Action::configureUsing(fn (Action $action) => $action->size(Size::ExtraSmall));
+        Section::configureUsing(fn (Section $section) => $section->columnSpanFull());
+        ImageColumn::configureUsing(fn (ImageColumn $imageColumn) => $imageColumn->checkFileExistence(false)
             ->visibility('public')
             ->extraImgAttributes(['loading' => 'lazy']));
-        ImageEntry::configureUsing(fn(ImageEntry $imageEntry) => $imageEntry->checkFileExistence(false)
+        ImageEntry::configureUsing(fn (ImageEntry $imageEntry) => $imageEntry->checkFileExistence(false)
             ->visibility('public')
             ->extraImgAttributes(['loading' => 'lazy']));
-        FileUpload::configureUsing(fn(FileUpload $fileUpload) => $fileUpload->visibility('public')
+        FileUpload::configureUsing(fn (FileUpload $fileUpload) => $fileUpload->visibility('public')
             ->fetchFileInformation(false));
     }
 
@@ -149,11 +151,11 @@ class AppServiceProvider extends ServiceProvider
         ];
 
         try {
-            if (!DatabaseSchema::hasTable('languages')) {
+            if (! DatabaseSchema::hasTable('languages')) {
                 return $fallbackLocales;
             }
 
-            $resolver = fn(): array => Language::query()
+            $resolver = fn (): array => Language::query()
                 ->where('is_active', true)
                 ->orderBy('sort_order', 'asc')
                 ->pluck('name', 'code')
@@ -162,6 +164,7 @@ class AppServiceProvider extends ServiceProvider
             $locales = app()->runningUnitTests() || config('cache.default') === 'array'
                 ? $resolver()
                 : Cache::flexible('local', [43200, 86400], $resolver);
+            //            dd($locales);
 
             return $locales !== [] ? $locales : $fallbackLocales;
         } catch (Throwable) {

@@ -18,6 +18,7 @@
                         ['route' => 'prayer-times.index', 'label' => __('Prayer Times')],
                         ['route' => 'events.index', 'label' => __('Events')],
                         ['route' => 'announcements.index', 'label' => __('Announcements')],
+                        ['route' => 'news.index', 'label' => __('News')],
                         ['route' => 'gallery.index', 'label' => __('Gallery')],
                         ['route' => 'islamic-library.index', 'label' => __('Library')],
                         ['route' => 'khutba.index', 'label' => __('Khutba')],

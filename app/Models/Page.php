@@ -19,6 +19,7 @@ class Page extends Model
         return [
             'is_published' => 'boolean',
             'show_in_nav' => 'boolean',
+            'is_home' => 'boolean',
         ];
     }
 
@@ -34,6 +35,24 @@ class Page extends Model
 
     protected static function booted(): void
     {
-        static::saved(fn (self $page) => Cache::forget("page_{$page->slug}_".app()->getLocale()));
+        static::saving(function (self $page): void {
+            if ($page->is_home) {
+                $page->slug = 'home';
+                $page->is_published = true;
+                $page->show_in_nav = true;
+                $page->sort_order = 0;
+            }
+        });
+
+        static::saved(function (self $page): void {
+            if ($page->is_home) {
+                self::query()
+                    ->whereKeyNot($page->getKey())
+                    ->where('is_home', true)
+                    ->update(['is_home' => false]);
+            }
+
+            Cache::forget("page_{$page->slug}_".app()->getLocale());
+        });
     }
 }

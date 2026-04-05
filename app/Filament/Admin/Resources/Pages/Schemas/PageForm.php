@@ -7,6 +7,8 @@ use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Schemas\Components\Section;
+use Filament\Schemas\Components\Utilities\Get;
+use Filament\Schemas\Components\Utilities\Set;
 use Filament\Schemas\Schema;
 use Redberry\PageBuilderPlugin\Components\Forms\Actions\EditPageBuilderBlockAction;
 use Redberry\PageBuilderPlugin\Components\Forms\Actions\SelectBlockAction;
@@ -25,21 +27,40 @@ class PageForm
                                 TextInput::make('title')->label(__('Title'))->required(),
                             ]),
 
+                        Toggle::make('is_home')
+                            ->label(__('Is Home'))
+                            ->live()
+                            ->afterStateUpdated(function (Set $set, bool $state): void {
+                                if (! $state) {
+                                    return;
+                                }
+
+                                $set('slug', 'home');
+                                $set('is_published', true);
+                                $set('show_in_nav', true);
+                                $set('sort_order', 0);
+                            }),
+
                         TextInput::make('slug')
                             ->label(__('Slug'))
                             ->required()
-                            ->unique(ignoreRecord: true),
+                            ->unique(ignoreRecord: true)
+                            ->disabled(fn (Get $get): bool => (bool) $get('is_home'))
+                            ->dehydrated(),
 
                         TextInput::make('sort_order')
                             ->label(__('Sort Order'))
                             ->numeric()
-                            ->default(0),
+                            ->default(0)
+                            ->disabled(fn (Get $get): bool => (bool) $get('is_home')),
 
                         Toggle::make('is_published')
-                            ->label(__('Published')),
+                            ->label(__('Published'))
+                            ->disabled(fn (Get $get): bool => (bool) $get('is_home')),
 
                         Toggle::make('show_in_nav')
-                            ->label(__('Show in Navigation')),
+                            ->label(__('Show in Navigation'))
+                            ->disabled(fn (Get $get): bool => (bool) $get('is_home')),
                     ]),
 
                 Section::make(__('SEO'))

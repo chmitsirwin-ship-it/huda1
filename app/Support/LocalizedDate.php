@@ -10,7 +10,7 @@ class LocalizedDate
 {
     public const DATE_FORMAT = 'j M Y';
 
-    public const TIME_FORMAT = 'g:i A';
+    public const TIME_FORMAT = 'H:i';
 
     public const DATE_TIME_FORMAT = self::DATE_FORMAT.' '.self::TIME_FORMAT;
 

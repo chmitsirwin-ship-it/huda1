@@ -1,6 +1,12 @@
 @php
 $data = $block['data'] ?? $data ?? [];
-$khutbas = \App\Models\Khutba::published()->limit($data['limit'] ?? 5)->get();
+$khutbasQuery = \App\Models\Khutba::query()->with('categories')->published();
+
+if (filled($data['category_ids'] ?? [])) {
+    $khutbasQuery->whereHas('categories', fn ($query) => $query->whereIn('khutba_categories.id', (array) $data['category_ids']));
+}
+
+$khutbas = $khutbasQuery->limit($data['limit'] ?? 5)->get();
 @endphp
 
 <section class="py-20 bg-neutral-50">
@@ -42,12 +48,14 @@ $khutbas = \App\Models\Khutba::published()->limit($data['limit'] ?? 5)->get();
                             <div class="flex-1 min-w-0">
                                 <div class="flex flex-wrap items-start justify-between gap-3 mb-2">
                                     <h3 class="font-bold text-neutral-900 text-lg group-hover:text-emerald-600 transition-colors leading-snug">
-                                        {{ $khutba->title }}
+                                        <a href="{{ route('khutba.show', $khutba->slug) }}">
+                                            {{ $khutba->title }}
+                                        </a>
                                     </h3>
 
                                     <div class="flex items-center gap-2 shrink-0">
                                         @if($khutba->audio_url)
-                                            <a href="{{ $khutba->audio_url }}"
+                                            <a href="{{ \App\Support\AssetPath::url($khutba->audio_url) }}"
                                                target="_blank"
                                                class="flex items-center gap-1.5 text-xs font-medium text-emerald-700 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 px-2.5 py-1.5 rounded-lg transition-colors">
                                                 <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -58,7 +66,7 @@ $khutbas = \App\Models\Khutba::published()->limit($data['limit'] ?? 5)->get();
                                         @endif
 
                                         @if($khutba->video_url)
-                                            <a href="{{ $khutba->video_url }}"
+                                            <a href="{{ \App\Support\AssetPath::url($khutba->video_url) }}"
                                                target="_blank"
                                                class="flex items-center gap-1.5 text-xs font-medium text-amber-700 bg-amber-50 hover:bg-amber-100 border border-amber-200 px-2.5 py-1.5 rounded-lg transition-colors">
                                                 <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -95,11 +103,20 @@ $khutbas = \App\Models\Khutba::published()->limit($data['limit'] ?? 5)->get();
                                     </span>
                                 </div>
 
-                                @if($khutba->summary)
-                                    <p class="text-neutral-500 text-sm mt-3 leading-relaxed line-clamp-2">
-                                        {{ $khutba->summary }}
+                                @if($khutba->content)
+                                    <p class="text-neutral-500 text-sm mt-3 leading-relaxed line-clamp-3 whitespace-pre-line">
+                                        {{ $khutba->content }}
                                     </p>
                                 @endif
+
+                                <div class="mt-4">
+                                    <a href="{{ route('khutba.show', $khutba->slug) }}" class="inline-flex items-center gap-2 text-sm font-semibold text-emerald-700 transition-colors hover:text-emerald-900">
+                                        {{ __('Read Full Khutba') }}
+                                        <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+                                        </svg>
+                                    </a>
+                                </div>
                             </div>
                         </div>
                     </div>

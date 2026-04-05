@@ -11,8 +11,8 @@
 
     <div class="max-w-4xl mx-auto px-6 py-12">
 
-        <form method="GET" action="{{ route('khutba.index', app()->getLocale()) }}" class="mb-10">
-            <div class="flex gap-3">
+        <form method="GET" action="{{ route('khutba.index', app()->getLocale()) }}" class="mb-10 space-y-4">
+            <div class="flex flex-col gap-3 md:flex-row">
                 <div class="relative flex-1">
                     <svg class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-neutral-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
@@ -23,11 +23,20 @@
                            placeholder="{{ __('Search by title, speaker, or topic...') }}"
                            class="w-full pl-12 pr-4 py-3 border border-neutral-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent text-neutral-800 placeholder-neutral-400 bg-white">
                 </div>
+                <div class="md:w-72">
+                    <select name="category"
+                            class="w-full px-4 py-3 border border-neutral-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent text-neutral-800 bg-white">
+                        <option value="">{{ __('All Categories') }}</option>
+                        @foreach($categories as $category)
+                            <option value="{{ $category->id }}" @selected($categoryId === $category->id)>{{ $category->name }}</option>
+                        @endforeach
+                    </select>
+                </div>
                 <button type="submit"
                         class="px-6 py-3 bg-emerald-700 text-white rounded-xl font-medium hover:bg-emerald-800 transition-colors">
                     {{ __('Search') }}
                 </button>
-                @if($search)
+                @if($search || $categoryId)
                     <a href="{{ route('khutba.index', app()->getLocale()) }}"
                        class="px-4 py-3 border border-neutral-200 text-neutral-600 rounded-xl hover:bg-neutral-50 transition-colors">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -38,9 +47,17 @@
             </div>
         </form>
 
-        @if($search)
+        @if($search || $activeCategory)
             <p class="text-sm text-neutral-500 mb-6">
-                {{ __('Results for') }}: <span class="font-medium text-neutral-700">"{{ $search }}"</span>
+                @if($search)
+                    {{ __('Results for') }}: <span class="font-medium text-neutral-700">"{{ $search }}"</span>
+                @endif
+                @if($activeCategory)
+                    @if($search)
+                        &mdash;
+                    @endif
+                    {{ __('Category') }}: <span class="font-medium text-neutral-700">{{ $activeCategory->name }}</span>
+                @endif
                 &mdash; {{ $khutbas->total() }} {{ __('found') }}
             </p>
         @endif
@@ -66,7 +83,9 @@
                         <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 mb-4">
                             <div>
                                 <h3 class="text-xl font-bold text-neutral-900 mb-1">
-                                    {{ $khutba->title }}
+                                    <a href="{{ route('khutba.show', $khutba->slug) }}" class="transition-colors hover:text-emerald-700">
+                                        {{ $khutba->title }}
+                                    </a>
                                 </h3>
                                 <div class="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-neutral-500">
                                     @if($khutba->date)
@@ -100,7 +119,7 @@
                         @if($khutba->audio_url)
                             <div class="mt-4">
                                 <p class="text-xs font-medium text-neutral-500 mb-2 uppercase tracking-wide">{{ __('Audio Recording') }}</p>
-                                <audio controls src="{{ $khutba->audio_url }}"
+                                <audio controls src="{{ \App\Support\AssetPath::url($khutba->audio_url) }}"
                                        class="w-full h-10 rounded-lg accent-emerald-600">
                                 </audio>
                             </div>
@@ -108,7 +127,7 @@
 
                         @if($khutba->video_url)
                             <div class="mt-4">
-                                <a href="{{ $khutba->video_url }}"
+                                <a href="{{ \App\Support\AssetPath::url($khutba->video_url) }}"
                                    target="_blank"
                                    rel="noopener noreferrer"
                                    class="inline-flex items-center gap-2 text-sm font-medium text-emerald-700 hover:text-emerald-900 transition-colors">
@@ -120,12 +139,27 @@
                                 </a>
                             </div>
                         @endif
+
+                        @if($khutba->content)
+                            <p class="mt-4 line-clamp-4 whitespace-pre-line text-sm leading-relaxed text-neutral-600">
+                                {{ $khutba->content }}
+                            </p>
+                        @endif
+
+                        <div class="mt-5">
+                            <a href="{{ route('khutba.show', $khutba->slug) }}" class="inline-flex items-center gap-2 text-sm font-semibold text-emerald-700 transition-colors hover:text-emerald-900">
+                                {{ __('Read Full Khutba') }}
+                                <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+                                </svg>
+                            </a>
+                        </div>
                     </div>
                 @endforeach
             </div>
 
             <div class="mt-10">
-                {{ $khutbas->appends(['search' => $search])->links() }}
+                {{ $khutbas->appends(['search' => $search, 'category' => $categoryId])->links() }}
             </div>
         @endif
 
