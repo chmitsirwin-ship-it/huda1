@@ -7,12 +7,8 @@
                 <div class="flex items-center gap-2.5">
                     @if(setting('branding.logo'))
                         <img src="{{ \Illuminate\Support\Facades\Storage::url(setting('branding.logo')) }}"
-                             alt="{{ setting('general.name') }}"
-                             class="h-7 w-auto brightness-0 invert">
+                             alt="{{ setting('general.name') }}" class="bg-white p-5 rounded">
                     @endif
-                    <span class="text-sm font-semibold text-white">
-                        {{ setting('general.name') ?? __('Mosque') }}
-                    </span>
                 </div>
 
                 @if(setting('general.description'))

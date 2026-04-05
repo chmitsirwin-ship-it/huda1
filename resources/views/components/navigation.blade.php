@@ -2,13 +2,14 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex items-center justify-between h-16">
 
-            <a href="{{ route('home') }}" class="flex items-center gap-3 shrink-0">
+            <a href="{{ route('home') }}" class="flex items-center shrink-0 h-16 py-2">
                 @if(setting('branding.logo'))
-                    <img src="{{ \Illuminate\Support\Facades\Storage::url(setting('branding.logo')) }}" alt="{{ setting('general.name') }}" class="h-10 w-auto">
+                    <img
+                            src="{{ \Illuminate\Support\Facades\Storage::url(setting('branding.logo')) }}"
+                            alt="{{ setting('general.name') }}"
+                            class="h-15 w-auto object-contain"
+                    >
                 @endif
-                <span class="text-lg font-semibold text-neutral-900 leading-tight">
-                    {{ setting('general.name') ?? __('Mosque') }}
-                </span>
             </a>
 
             <div class="hidden lg:flex items-center gap-1">

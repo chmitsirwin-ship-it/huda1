@@ -7,6 +7,7 @@ use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\ToggleButtons;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 
@@ -43,10 +44,11 @@ class ContactSubmissionForm
                             ->columnSpanFull(),
                     ]),
 
-                Section::make(__('Status'))
-                    ->aside()
+                Section::make()
                     ->schema([
-                        Select::make('status')
+                        ToggleButtons::make('status')
+                            ->required()
+                            ->inline()
                             ->label(__('Status'))
                             ->options(ContactSubmissionStatus::class),
                         DateTimePicker::make('read_at')
