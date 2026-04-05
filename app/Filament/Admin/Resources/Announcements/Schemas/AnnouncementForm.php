@@ -8,7 +8,7 @@ use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
-use Filament\Forms\Components\Toggle;
+use Filament\Forms\Components\ToggleButtons;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 
@@ -45,7 +45,9 @@ class AnnouncementForm
                 Section::make(__('Status'))
                     ->aside()
                     ->schema([
-                        Toggle::make('is_active')
+                        ToggleButtons::make('is_active')
+                            ->inline()
+                            ->boolean()
                             ->label(__('Active'))
                             ->default(true),
                     ]),

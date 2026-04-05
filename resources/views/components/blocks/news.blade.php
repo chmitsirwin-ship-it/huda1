@@ -8,7 +8,6 @@ if (filled($data['category_ids'] ?? [])) {
 
 $newsItems = $newsQuery->limit($data['limit'] ?? 6)->get();
 $isGrid = ($data['style'] ?? 'grid') === 'grid';
-$buttonUrl = $data['button_url'] ?? route('news.index');
 @endphp
 
 <section class="bg-white py-20">
@@ -21,8 +20,8 @@ $buttonUrl = $data['button_url'] ?? route('news.index');
                 </div>
                 <h2 class="text-3xl font-bold text-neutral-900 md:text-4xl">{{ $data['heading'] ?? __('Latest News') }}</h2>
             </div>
-            <a href="{{ $buttonUrl }}" class="inline-flex items-center gap-2 text-sm font-semibold text-emerald-700 transition-colors hover:text-emerald-900">
-                {{ $data['button_text'] ?? __('View All News') }}
+            <a href="{{ route('news.index') }}" class="inline-flex items-center gap-2 text-sm font-semibold text-emerald-700 transition-colors hover:text-emerald-900">
+                {{ __('View All News') }}
                 <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
                 </svg>

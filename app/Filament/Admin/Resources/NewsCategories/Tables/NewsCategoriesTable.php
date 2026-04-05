@@ -24,6 +24,7 @@ class NewsCategoriesTable
                     ->label(__('Active')),
             ])
             ->defaultSort('sort_order')
+            ->reorderable('sort_order')
             ->filters([])
             ->recordActions([
                 EditAction::make(),

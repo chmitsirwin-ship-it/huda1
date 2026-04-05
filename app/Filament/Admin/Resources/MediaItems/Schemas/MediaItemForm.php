@@ -43,15 +43,6 @@ class MediaItemForm
                             ->label(__('Collection'))
                             ->columnSpanFull(),
                     ]),
-
-                Section::make(__('Settings'))
-                    ->aside()
-                    ->schema([
-                        TextInput::make('sort_order')
-                            ->label(__('Sort Order'))
-                            ->numeric()
-                            ->default(0),
-                    ]),
             ]);
     }
 }

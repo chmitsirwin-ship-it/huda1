@@ -6,7 +6,7 @@ use AbdulmajeedJamaan\FilamentTranslatableTabs\TranslatableTabs;
 use App\Models\NewsCategory;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
-use Filament\Forms\Components\Toggle;
+use Filament\Forms\Components\ToggleButtons;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 
@@ -34,11 +34,9 @@ class NewsCategoryForm
                 Section::make(__('Settings'))
                     ->aside()
                     ->schema([
-                        TextInput::make('sort_order')
-                            ->label(__('Sort Order'))
-                            ->numeric()
-                            ->default(0),
-                        Toggle::make('is_active')
+                        ToggleButtons::make('is_active')
+                            ->inline()
+                            ->boolean()
                             ->label(__('Active'))
                             ->default(true),
                     ]),

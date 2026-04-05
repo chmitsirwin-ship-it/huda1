@@ -2,6 +2,7 @@
 
 namespace App\Filament\Admin\Blocks;
 
+use AbdulmajeedJamaan\FilamentTranslatableTabs\TranslatableTabs;
 use App\Models\NewsCategory;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
@@ -13,9 +14,10 @@ class NewsBlock extends BaseBlock
     public static function getBlockSchema(): array
     {
         return [
-            TextInput::make('heading')
-                ->label(__('Heading'))
-                ->default(__('Latest News')),
+            TranslatableTabs::make()
+                ->schema([
+                    TextInput::make('heading')->label(__('Heading'))
+                ]),
             Select::make('category_ids')
                 ->label(__('Categories'))
                 ->options(fn (): array => NewsCategory::query()
@@ -36,12 +38,6 @@ class NewsBlock extends BaseBlock
                     'list' => __('List'),
                 ])
                 ->default('grid'),
-            TextInput::make('button_text')
-                ->label(__('Button Text'))
-                ->default(__('View All News')),
-            TextInput::make('button_url')
-                ->label(__('Button URL'))
-                ->default('/news'),
         ];
     }
 
@@ -49,7 +45,18 @@ class NewsBlock extends BaseBlock
     {
         return (data_get($state, 'order') + 1).' - '.class_basename(data_get($state, 'block_type'));
     }
+    public static function formatForSingleView(array $data): array
+    {
+        $locale = app()->getLocale();
 
+        foreach (['heading'] as $field) {
+            if (array_key_exists($field, $data) && is_array($data[$field])) {
+                $data[$field] = $data[$field][$locale] ?? collect($data[$field])->first(fn ($v) => filled($v)) ?? '';
+            }
+        }
+
+        return $data;
+    }
     public static function getThumbnail(): string|Htmlable|null
     {
         return asset('images/blocks/'.class_basename(self::class).'.png');
