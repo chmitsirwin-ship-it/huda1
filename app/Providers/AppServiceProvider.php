@@ -16,16 +16,21 @@ use App\Filament\Admin\Blocks\GalleryBlock;
 use App\Filament\Admin\Blocks\HadithBlock;
 use App\Filament\Admin\Blocks\HeroBlock;
 use App\Filament\Admin\Blocks\IframeBlock;
+use App\Filament\Admin\Blocks\IslamicCalendarBlock;
 use App\Filament\Admin\Blocks\KhutbaArchiveBlock;
+use App\Filament\Admin\Blocks\LiveStreamBlock;
 use App\Filament\Admin\Blocks\NewsBlock;
 use App\Filament\Admin\Blocks\PrayerTimesBlock;
+use App\Filament\Admin\Blocks\QiblaDirectionBlock;
 use App\Filament\Admin\Blocks\QuranVerseBlock;
+use App\Filament\Admin\Blocks\RamadanScheduleBlock;
 use App\Filament\Admin\Blocks\RichTextBlock;
 use App\Filament\Admin\Blocks\SliderBlock;
 use App\Filament\Admin\Blocks\SpacerBlock;
 use App\Filament\Admin\Blocks\StaffBlock;
 use App\Filament\Admin\Blocks\TestimonialBlock;
 use App\Filament\Admin\Blocks\VideoBlock;
+use App\Filament\Admin\Blocks\ZakatCalculatorBlock;
 use App\Models\Language;
 use BezhanSalleh\LanguageSwitch\LanguageSwitch;
 use Filament\Actions\Action;
@@ -76,6 +81,10 @@ class AppServiceProvider extends ServiceProvider
             HeroBlock::class,
             SliderBlock::class,
             PrayerTimesBlock::class,
+            IslamicCalendarBlock::class,
+            RamadanScheduleBlock::class,
+            ZakatCalculatorBlock::class,
+            QiblaDirectionBlock::class,
             EventsBlock::class,
             AnnouncementsBlock::class,
             QuranVerseBlock::class,
@@ -94,6 +103,7 @@ class AppServiceProvider extends ServiceProvider
             FaqBlock::class,
             CtaBlock::class,
             VideoBlock::class,
+            LiveStreamBlock::class,
             CounterBlock::class,
             ContactFormBlock::class,
         ]));
