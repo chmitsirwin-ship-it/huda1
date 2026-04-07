@@ -27,6 +27,7 @@ class LanguageForm
                             ->required()
                             ->unique(ignoreRecord: true),
                         Select::make('direction')
+                            ->required()
                             ->label(__('Direction'))
                             ->options(TextDirection::class),
                     ]),
@@ -37,10 +38,14 @@ class LanguageForm
                         ToggleButtons::make('is_active')
                             ->inline()
                             ->boolean()
+                            ->required()
+                            ->default(false)
                             ->label(__('Active')),
                         ToggleButtons::make('is_default')
                             ->inline()
                             ->boolean()
+                            ->required()
+                            ->default(false)
                             ->label(__('Default')),
                     ]),
             ]);
