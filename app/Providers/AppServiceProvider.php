@@ -15,6 +15,7 @@ use App\Filament\Admin\Blocks\FaqBlock;
 use App\Filament\Admin\Blocks\GalleryBlock;
 use App\Filament\Admin\Blocks\HadithBlock;
 use App\Filament\Admin\Blocks\HeroBlock;
+use App\Filament\Admin\Blocks\IframeBlock;
 use App\Filament\Admin\Blocks\KhutbaArchiveBlock;
 use App\Filament\Admin\Blocks\NewsBlock;
 use App\Filament\Admin\Blocks\PrayerTimesBlock;
@@ -85,6 +86,7 @@ class AppServiceProvider extends ServiceProvider
             RichTextBlock::class,
             ContactMapBlock::class,
             CustomHtmlBlock::class,
+            IframeBlock::class,
             SpacerBlock::class,
             KhutbaArchiveBlock::class,
             DonationBlock::class,

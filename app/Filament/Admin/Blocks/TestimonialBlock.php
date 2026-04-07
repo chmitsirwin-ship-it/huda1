@@ -3,6 +3,7 @@
 namespace App\Filament\Admin\Blocks;
 
 use AbdulmajeedJamaan\FilamentTranslatableTabs\TranslatableTabs;
+use App\Filament\Admin\BlockCategories\Community;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
@@ -57,6 +58,11 @@ class TestimonialBlock extends BaseBlock
         return $data;
     }
 
+    public static function getCategory(): string
+    {
+        return Community::class;
+    }
+
     public static function getBlockLabel(array $state, ?int $index = null): mixed
     {
         return (data_get($state, 'order') + 1).' - '.class_basename(data_get($state, 'block_type'));
@@ -66,6 +72,7 @@ class TestimonialBlock extends BaseBlock
     {
         return asset('images/blocks/'.class_basename(self::class).'.png');
     }
+
     public static function getView(): ?string
     {
         return 'components.blocks.testimonial';

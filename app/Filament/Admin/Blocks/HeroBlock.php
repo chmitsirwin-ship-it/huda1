@@ -3,6 +3,7 @@
 namespace App\Filament\Admin\Blocks;
 
 use AbdulmajeedJamaan\FilamentTranslatableTabs\TranslatableTabs;
+use App\Filament\Admin\BlockCategories\Layout;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\TextInput;
 use Illuminate\Contracts\Support\Htmlable;
@@ -39,10 +40,17 @@ class HeroBlock extends BaseBlock
 
         return $data;
     }
+
     public static function getThumbnail(): string|Htmlable|null
     {
         return asset('images/blocks/'.class_basename(self::class).'.png');
     }
+
+    public static function getCategory(): string
+    {
+        return Layout::class;
+    }
+
     public static function getBlockLabel(array $state, ?int $index = null): mixed
     {
         return (data_get($state, 'order') + 1).' - '.class_basename(data_get($state, 'block_type'));

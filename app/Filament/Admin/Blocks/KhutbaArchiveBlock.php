@@ -2,6 +2,7 @@
 
 namespace App\Filament\Admin\Blocks;
 
+use App\Filament\Admin\BlockCategories\Worship;
 use App\Models\KhutbaCategory;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
@@ -34,6 +35,11 @@ class KhutbaArchiveBlock extends BaseBlock
                 ])
                 ->default('list'),
         ];
+    }
+
+    public static function getCategory(): string
+    {
+        return Worship::class;
     }
 
     public static function getBlockLabel(array $state, ?int $index = null): mixed
