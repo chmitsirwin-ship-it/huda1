@@ -35,7 +35,7 @@ A **complete, production-ready** mosque website and admin panel covering the ful
 The system is built around a **fully dynamic, database-driven language architecture**. Languages are not hardcoded — they are managed entirely from the admin panel.
 
 - **Add any language** at runtime without touching code or config files
-- Ships with **Arabic and English pre-configured**, including full RTL/LTR layout switching
+- Ships with **Arabic, English, and Polish pre-configured**, including full RTL/LTR layout switching
 - Every content model uses **Spatie Laravel Translatable**, so all fields are translatable per language
 - The **Filament admin panel switches language context** on the fly using `bezhansalleh/filament-language-switch`
 - Translation strings are managed directly from the admin using `statikbe/laravel-filament-chained-translation-manager` — no `.php` file editing required
@@ -73,7 +73,7 @@ Duration: fast — all tests run against an in-memory SQLite database
 | Section | Description |
 |---|---|
 | Home | Dynamic content blocks via page builder |
-| Prayer Times | Daily and monthly schedules |
+| Prayer Times | Daily and monthly schedules with configurable adjustment factors |
 | Events | Upcoming programs and activities |
 | Announcements | News and community notices |
 | News | Category-based news archive with detail pages |
@@ -89,9 +89,11 @@ Duration: fast — all tests run against an in-memory SQLite database
 - Dashboard with mosque settings
 - Full CRUD for all content sections
 - Dedicated management for news, news categories, khutbas, and khutba categories
-- Page builder with 20+ block types
+- Page builder with 25+ block types organized into categories (Content, Contact, Community, Layout, Media, Worship)
 - Home page toggle for pages that forces `home` slug, published state, and navigation visibility
-- Prayer time management (daily and monthly)
+- Prayer time management (daily and monthly) with configurable adjustment factor
+- Dynamic navigation links for non-home pages
+- Model caching support via Cacheable trait for improved performance
 - Language management — add/remove languages from the UI
 - Translation manager — edit all translation strings from the admin panel
 - Contact submission inbox
@@ -101,7 +103,7 @@ Duration: fast — all tests run against an in-memory SQLite database
 
 ### Page Builder Blocks
 
-`Hero` · `Slider` · `Prayer Times` · `Events` · `Announcements` · `News` · `Quran Verse` · `Hadith` · `Staff` · `Gallery` · `Rich Text` · `Contact Map` · `Custom HTML` · `Spacer` · `Khutba Archive` · `Donation` · `Testimonial` · `FAQ` · `CTA` · `Video` · `Counter` · `Contact Form`
+`Hero` · `Slider` · `Prayer Times` · `Events` · `Announcements` · `News` · `Quran Verse` · `Hadith` · `Staff` · `Gallery` · `Rich Text` · `Contact Map` · `Custom HTML` · `Spacer` · `Khutba Archive` · `Donation` · `Testimonial` · `FAQ` · `CTA` · `Video` · `Counter` · `Contact Form` · `Qibla Direction` · `Islamic Calendar` · `Ramadan Schedule` · `Live Stream` · `Zakat Calculator` · `Iframe`
 
 ---
 
