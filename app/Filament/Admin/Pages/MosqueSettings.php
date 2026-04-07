@@ -120,6 +120,9 @@ class MosqueSettings extends Settings
                                 TextInput::make('prayer.timezone')
                                     ->label(__('Timezone'))
                                     ->placeholder('America/New_York'),
+
+                                TextInput::make('prayer.adjustment_factor')
+                                    ->label(__('Adjustment Factor (minutes)'))->numeric(),
                             ]),
 
                         Tab::make(__('SEO'))

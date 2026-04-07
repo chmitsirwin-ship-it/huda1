@@ -59,14 +59,24 @@ class PrayerTimeService
         }
 
         $timings = $response->json('data.timings');
+        $adjustment = (int) setting('prayer.adjustment_factor');
 
         return [
-            'fajr_adhan' => $timings['Fajr'] ?? null,
-            'sunrise' => $timings['Sunrise'] ?? null,
-            'dhuhr_adhan' => $timings['Dhuhr'] ?? null,
-            'asr_adhan' => $timings['Asr'] ?? null,
-            'maghrib_adhan' => $timings['Maghrib'] ?? null,
-            'isha_adhan' => $timings['Isha'] ?? null,
+            'fajr_adhan' => $this->adjustTime($timings['Fajr'] ?? null, $adjustment),
+            'sunrise' => $this->adjustTime($timings['Sunrise'] ?? null, $adjustment),
+            'dhuhr_adhan' => $this->adjustTime($timings['Dhuhr'] ?? null, $adjustment),
+            'asr_adhan' => $this->adjustTime($timings['Asr'] ?? null, $adjustment),
+            'maghrib_adhan' => $this->adjustTime($timings['Maghrib'] ?? null, $adjustment),
+            'isha_adhan' => $this->adjustTime($timings['Isha'] ?? null, $adjustment),
         ];
+    }
+
+    private function adjustTime(?string $time, int $minutes): ?string
+    {
+        if (! $time || $minutes === 0) {
+            return $time;
+        }
+
+        return Carbon::parse($time)->addMinutes($minutes)->format('H:i');
     }
 }
