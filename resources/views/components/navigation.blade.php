@@ -1,5 +1,5 @@
 <nav class="bg-white shadow-sm sticky top-0 z-50" x-data="{ open: false }">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="mx-auto px-4 sm:px-6 lg:px-10">
         <div class="flex items-center justify-between h-16">
 
             <a href="{{ route('home') }}" class="flex items-center shrink-0 h-16 py-2">
@@ -26,6 +26,7 @@
                         ['route' => 'staff.index', 'label' => __('Staff')],
                         ['route' => 'contact.index', 'label' => __('Contact')],
                     ];
+                    $navPages = \App\Models\Page::nav()->where('is_home', false)->get();
                 @endphp
 
                 @foreach($navLinks as $link)
@@ -35,6 +36,16 @@
                     <a href="{{ route($link['route']) }}"
                        class="px-3 py-2 rounded-md text-sm font-medium transition-colors duration-150 {{ $isActive ? 'text-emerald-600 bg-emerald-50' : 'text-neutral-600 hover:text-emerald-600 hover:bg-neutral-50' }}">
                         {{ $link['label'] }}
+                    </a>
+                @endforeach
+
+                @foreach($navPages as $navPage)
+                    @php
+                        $isActive = request()->is('page/' . $navPage->slug);
+                    @endphp
+                    <a href="{{ route('page.show', $navPage->slug) }}"
+                       class="px-3 py-2 rounded-md text-sm font-medium transition-colors duration-150 {{ $isActive ? 'text-emerald-600 bg-emerald-50' : 'text-neutral-600 hover:text-emerald-600 hover:bg-neutral-50' }}">
+                        {{ $navPage->title }}
                     </a>
                 @endforeach
             </div>
@@ -81,6 +92,16 @@
                 <a href="{{ route($link['route']) }}"
                    class="block px-3 py-2 rounded-md text-sm font-medium transition-colors {{ $isActive ? 'text-emerald-600 bg-emerald-50' : 'text-neutral-600 hover:text-emerald-600 hover:bg-neutral-50' }}">
                     {{ $link['label'] }}
+                </a>
+            @endforeach
+
+            @foreach($navPages as $navPage)
+                @php
+                    $isActive = request()->is('page/' . $navPage->slug);
+                @endphp
+                <a href="{{ route('page.show', $navPage->slug) }}"
+                   class="block px-3 py-2 rounded-md text-sm font-medium transition-colors {{ $isActive ? 'text-emerald-600 bg-emerald-50' : 'text-neutral-600 hover:text-emerald-600 hover:bg-neutral-50' }}">
+                    {{ $navPage->title }}
                 </a>
             @endforeach
 
