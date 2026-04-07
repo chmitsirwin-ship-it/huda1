@@ -2,10 +2,12 @@
 
 namespace App\Models;
 
+use ElipZis\Cacheable\Models\Traits\Cacheable;
 use Illuminate\Database\Eloquent\Model;
 
 class PrayerTime extends Model
 {
+    use Cacheable;
     protected function casts(): array
     {
         return [

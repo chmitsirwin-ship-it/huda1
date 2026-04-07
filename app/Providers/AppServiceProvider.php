@@ -76,6 +76,7 @@ class AppServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
+        Model::automaticallyEagerLoadRelationships();
         Model::unguard();
         PageBuilder::configureUsing(fn (PageBuilder $pageBuilder) => $pageBuilder->blocks([
             HeroBlock::class,

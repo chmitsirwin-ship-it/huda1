@@ -11,29 +11,20 @@ class SetLocale
 {
     public function handle(Request $request, Closure $next): Response
     {
-        if ($request->has('lang')) {
-            $lang = $request->get('lang');
-            $language = Language::where('code', $lang)->where('is_active', true)->first();
+        $languages = Language::where('is_active', true)->get();
+        $activeCodes = $languages->pluck('code')->all();
 
-            if ($language) {
-                session(['locale' => $language->code]);
-            }
+        if ($request->has('lang') && in_array($request->get('lang'), $activeCodes)) {
+            session(['locale' => $request->get('lang')]);
         }
 
         $locale = session('locale');
 
-        if ($locale) {
-            $language = Language::where('code', $locale)->where('is_active', true)->first();
-        }
-
-        if (empty($language)) {
-            $acceptLanguage = substr($request->header('Accept-Language', ''), 0, 2);
-            $language = Language::where('code', $acceptLanguage)->where('is_active', true)->first();
-        }
-
-        if (empty($language)) {
-            $language = Language::where('is_default', true)->first();
-        }
+        $language = match (true) {
+            $locale && in_array($locale, $activeCodes) => $languages->firstWhere('code', $locale),
+            in_array($accept = substr($request->header('Accept-Language', ''), 0, 2), $activeCodes) => $languages->firstWhere('code', $accept),
+            default => $languages->firstWhere('is_default', true),
+        };
 
         if ($language) {
             app()->setLocale($language->code);

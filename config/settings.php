@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-use Outerweb\Settings\Models\Setting;
+
 
 return [
-    'model' => Setting::class,
+    'model' => \App\Models\Setting::class,
     'database' => [
         'table' => 'settings',
     ],

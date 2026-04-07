@@ -17,26 +17,28 @@
                     $navLinks = [
                         ['route' => 'home', 'label' => __('Home')],
                         ['route' => 'prayer-times.index', 'label' => __('Prayer Times')],
-                        ['route' => 'events.index', 'label' => __('Events')],
-                        ['route' => 'announcements.index', 'label' => __('Announcements')],
+                        ['route' => 'events.index', 'label' => __('Events'), 'when' => \App\Models\Event::published()->exists()],
+                        ['route' => 'announcements.index', 'label' => __('Announcements'), 'when' => \App\Models\Announcement::active()->exists()],
                         ['route' => 'news.index', 'label' => __('News')],
-                        ['route' => 'gallery.index', 'label' => __('Gallery')],
-                        ['route' => 'islamic-library.index', 'label' => __('Library')],
+                        ['route' => 'gallery.index', 'label' => __('Gallery'), 'when' => \App\Models\MediaItem::query()->exists()],
+                        ['route' => 'islamic-library.index', 'label' => __('Library'), 'when' => \App\Models\QuranVerse::query()->exists() || \App\Models\Hadith::query()->exists()],
                         ['route' => 'khutba.index', 'label' => __('Khutba')],
-                        ['route' => 'staff.index', 'label' => __('Staff')],
+                        ['route' => 'staff.index', 'label' => __('Staff'), 'when' => \App\Models\Staff::query()->exists()],
                         ['route' => 'contact.index', 'label' => __('Contact')],
                     ];
                     $navPages = \App\Models\Page::nav()->where('is_home', false)->get();
                 @endphp
 
                 @foreach($navLinks as $link)
-                    @php
-                        $isActive = request()->routeIs($link['route']);
-                    @endphp
-                    <a href="{{ route($link['route']) }}"
-                       class="px-3 py-2 rounded-md text-sm font-medium transition-colors duration-150 {{ $isActive ? 'text-emerald-600 bg-emerald-50' : 'text-neutral-600 hover:text-emerald-600 hover:bg-neutral-50' }}">
-                        {{ $link['label'] }}
-                    </a>
+                    @if(($link['when'] ?? true) === true)
+                        @php
+                            $isActive = request()->routeIs($link['route']);
+                        @endphp
+                        <a href="{{ route($link['route']) }}"
+                           class="px-3 py-2 rounded-md text-sm font-medium transition-colors duration-150 {{ $isActive ? 'text-emerald-600 bg-emerald-50' : 'text-neutral-600 hover:text-emerald-600 hover:bg-neutral-50' }}">
+                            {{ $link['label'] }}
+                        </a>
+                    @endif
                 @endforeach
 
                 @foreach($navPages as $navPage)
@@ -86,13 +88,15 @@
          @click.away="open = false">
         <div class="px-4 py-3 space-y-1">
             @foreach($navLinks as $link)
-                @php
-                    $isActive = request()->routeIs($link['route']);
-                @endphp
-                <a href="{{ route($link['route']) }}"
-                   class="block px-3 py-2 rounded-md text-sm font-medium transition-colors {{ $isActive ? 'text-emerald-600 bg-emerald-50' : 'text-neutral-600 hover:text-emerald-600 hover:bg-neutral-50' }}">
-                    {{ $link['label'] }}
-                </a>
+                @if(($link['when'] ?? true) === true)
+                    @php
+                        $isActive = request()->routeIs($link['route']);
+                    @endphp
+                    <a href="{{ route($link['route']) }}"
+                       class="block px-3 py-2 rounded-md text-sm font-medium transition-colors {{ $isActive ? 'text-emerald-600 bg-emerald-50' : 'text-neutral-600 hover:text-emerald-600 hover:bg-neutral-50' }}">
+                        {{ $link['label'] }}
+                    </a>
+                @endif
             @endforeach
 
             @foreach($navPages as $navPage)
