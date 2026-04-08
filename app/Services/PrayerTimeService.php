@@ -31,7 +31,7 @@ class PrayerTimeService
             $gregorianDate = Carbon::createFromDate($year, $month, $day);
             $formattedGregorianDate = $gregorianDate->format('d-m-Y');
 
-            $response = $this->fetchFromApi($formattedGregorianDate);
+            $response = $this->fetchFromApi($formattedGregorianDate, $gregorianDate);
             if ($response) {
                 PrayerTime::updateOrCreate(
                     ['date' => $gregorianDate->toDateString()],
@@ -46,7 +46,7 @@ class PrayerTimeService
         return $generated;
     }
 
-    private function fetchFromApi(string $date): ?array
+    private function fetchFromApi(string $date, Carbon $carbonDate): ?array
     {
         $response = Http::get('https://api.aladhan.com/v1/timings/'.$date, [
             'latitude' => setting('location.latitude') ?? 40.7128,
@@ -60,15 +60,36 @@ class PrayerTimeService
 
         $timings = $response->json('data.timings');
         $adjustment = (int) setting('prayer.adjustment_factor');
+        $iqamahOffset = (int) setting('prayer.iqamah_offset');
 
-        return [
-            'fajr_adhan' => $this->adjustTime($timings['Fajr'] ?? null, $adjustment),
+        $fajrAdhan = $this->adjustTime($timings['Fajr'] ?? null, $adjustment);
+        $dhuhrAdhan = $this->adjustTime($timings['Dhuhr'] ?? null, $adjustment);
+        $asrAdhan = $this->adjustTime($timings['Asr'] ?? null, $adjustment);
+        $maghribAdhan = $this->adjustTime($timings['Maghrib'] ?? null, $adjustment);
+        $ishaAdhan = $this->adjustTime($timings['Isha'] ?? null, $adjustment);
+
+        $data = [
+            'fajr_adhan' => $fajrAdhan,
+            'fajr_iqamah' => $this->adjustTime($fajrAdhan, $iqamahOffset),
             'sunrise' => $this->adjustTime($timings['Sunrise'] ?? null, $adjustment),
-            'dhuhr_adhan' => $this->adjustTime($timings['Dhuhr'] ?? null, $adjustment),
-            'asr_adhan' => $this->adjustTime($timings['Asr'] ?? null, $adjustment),
-            'maghrib_adhan' => $this->adjustTime($timings['Maghrib'] ?? null, $adjustment),
-            'isha_adhan' => $this->adjustTime($timings['Isha'] ?? null, $adjustment),
+            'dhuhr_adhan' => $dhuhrAdhan,
+            'dhuhr_iqamah' => $this->adjustTime($dhuhrAdhan, $iqamahOffset),
+            'asr_adhan' => $asrAdhan,
+            'asr_iqamah' => $this->adjustTime($asrAdhan, $iqamahOffset),
+            'maghrib_adhan' => $maghribAdhan,
+            'maghrib_iqamah' => $this->adjustTime($maghribAdhan, $iqamahOffset),
+            'isha_adhan' => $ishaAdhan,
+            'isha_iqamah' => $this->adjustTime($ishaAdhan, $iqamahOffset),
         ];
+
+        if ($carbonDate->isFriday() && $dhuhrAdhan) {
+            $jummahOffset = (int) setting('prayer.jummah_offset');
+            $data['jummah_time'] = $dhuhrAdhan;
+            $data['jummah_khutba_time'] = $this->adjustTime($dhuhrAdhan, -15);
+            $data['jummah_iqamah'] = $this->adjustTime($dhuhrAdhan, $jummahOffset ?: $iqamahOffset);
+        }
+
+        return $data;
     }
 
     private function adjustTime(?string $time, int $minutes): ?string

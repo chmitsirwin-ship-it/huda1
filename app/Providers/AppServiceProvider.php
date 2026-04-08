@@ -27,6 +27,7 @@ use App\Filament\Admin\Blocks\RamadanScheduleBlock;
 use App\Filament\Admin\Blocks\RichTextBlock;
 use App\Filament\Admin\Blocks\SliderBlock;
 use App\Filament\Admin\Blocks\SpacerBlock;
+use App\Filament\Admin\Blocks\SpecialPrayersBlock;
 use App\Filament\Admin\Blocks\StaffBlock;
 use App\Filament\Admin\Blocks\TestimonialBlock;
 use App\Filament\Admin\Blocks\VideoBlock;
@@ -84,6 +85,7 @@ class AppServiceProvider extends ServiceProvider
             PrayerTimesBlock::class,
             IslamicCalendarBlock::class,
             RamadanScheduleBlock::class,
+            SpecialPrayersBlock::class,
             ZakatCalculatorBlock::class,
             QiblaDirectionBlock::class,
             EventsBlock::class,

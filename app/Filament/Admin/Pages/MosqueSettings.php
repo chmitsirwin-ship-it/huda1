@@ -71,10 +71,10 @@ class MosqueSettings extends Settings
                                         Repeater\TableColumn::make(__('Phone')),
                                     ])
                                     ->schema([
-                                    TextInput::make('label')->required(),
-                                    PhoneInput::make('phone')
-                                        ->label(__('Phone'))
-                                ])->grid(2),
+                                        TextInput::make('label')->required(),
+                                        PhoneInput::make('phone')
+                                            ->label(__('Phone')),
+                                    ])->grid(2),
 
                                 TextInput::make('general.email')
                                     ->label(__('Email'))
@@ -135,8 +135,23 @@ class MosqueSettings extends Settings
                                 TextInput::make('prayer.adjustment_factor')
                                     ->label(__('Adjustment Factor (minutes)'))->numeric(),
 
+                                TextInput::make('prayer.iqamah_offset')
+                                    ->label(__('Time to Iqamah (minutes)'))
+                                    ->hint(__('Added to adhan time to calculate iqamah when generating'))
+                                    ->numeric(),
+
+                                TextInput::make('prayer.jummah_offset')
+                                    ->label(__('Jummah Iqamah Offset (minutes)'))
+                                    ->hint(__('Minutes after Dhuhr adhan for Jummah iqamah'))
+                                    ->numeric(),
+
+                                TextInput::make('prayer.taraweeh_offset')
+                                    ->label(__('Taraweeh After Isha (minutes)'))
+                                    ->hint(__('Minutes after Isha for Taraweeh prayer'))
+                                    ->numeric(),
+
                                 TextInput::make('hijri.adjustment_factor')->numeric()
-                                    ->label(__('Hijri Adjustment Factor (days)'))
+                                    ->label(__('Hijri Adjustment Factor (days)')),
                             ]),
 
                         Tab::make(__('SEO'))

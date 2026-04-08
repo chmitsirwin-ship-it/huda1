@@ -73,7 +73,8 @@ Duration: fast — all tests run against an in-memory SQLite database
 | Section | Description |
 |---|---|
 | Home | Dynamic content blocks via page builder |
-| Prayer Times | Daily and monthly schedules with configurable adjustment factors |
+| Prayer Times | Daily and monthly schedules with configurable adjustment factors, auto-generated iqamah times, and Jummah scheduling |
+| Special Prayers | Upcoming special prayers (Ramadan, Eid, weekly, etc.) with grouping and type-based display |
 | Events | Upcoming programs and activities |
 | Announcements | News and community notices |
 | News | Category-based news archive with detail pages |
@@ -91,7 +92,9 @@ Duration: fast — all tests run against an in-memory SQLite database
 - Dedicated management for news, news categories, khutbas, and khutba categories
 - Page builder with 25+ block types organized into categories (Content, Contact, Community, Layout, Media, Worship)
 - Home page toggle for pages that forces `home` slug, published state, and navigation visibility
-- Prayer time management (daily and monthly) with configurable adjustment factor
+- Prayer time management (daily and monthly) with configurable adjustment factor, iqamah offset, Jummah offset, and Taraweeh offset
+- Special prayer management — CRUD for special prayers with type classification (Ramadan, Eid, Weekly, Other), grouping, and recurring support
+- Prayer times table with date range filters and default "from today" filtering
 - Dynamic navigation links for non-home pages
 - Model caching support via Cacheable trait for improved performance
 - Language management — add/remove languages from the UI
@@ -103,7 +106,7 @@ Duration: fast — all tests run against an in-memory SQLite database
 
 ### Page Builder Blocks
 
-`Hero` · `Slider` · `Prayer Times` · `Events` · `Announcements` · `News` · `Quran Verse` · `Hadith` · `Staff` · `Gallery` · `Rich Text` · `Contact Map` · `Custom HTML` · `Spacer` · `Khutba Archive` · `Donation` · `Testimonial` · `FAQ` · `CTA` · `Video` · `Counter` · `Contact Form` · `Qibla Direction` · `Islamic Calendar` · `Ramadan Schedule` · `Live Stream` · `Zakat Calculator` · `Iframe`
+`Hero` · `Slider` · `Prayer Times` · `Special Prayers` · `Events` · `Announcements` · `News` · `Quran Verse` · `Hadith` · `Staff` · `Gallery` · `Rich Text` · `Contact Map` · `Custom HTML` · `Spacer` · `Khutba Archive` · `Donation` · `Testimonial` · `FAQ` · `CTA` · `Video` · `Counter` · `Contact Form` · `Qibla Direction` · `Islamic Calendar` · `Ramadan Schedule` · `Live Stream` · `Zakat Calculator` · `Iframe`
 
 ---
 

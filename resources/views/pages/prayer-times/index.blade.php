@@ -235,4 +235,77 @@
         </div>
     </div>
 
+    @php
+        $specialPrayers = \App\Models\SpecialPrayer::where('date', '>=', today())
+            ->orderBy('date')
+            ->orderBy('time')
+            ->limit(10)
+            ->get();
+    @endphp
+
+    @if($specialPrayers->isNotEmpty())
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 pb-10">
+            <h2 class="text-lg font-semibold text-neutral-900 mb-4">{{ __('Upcoming Special Prayers') }}</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                @foreach($specialPrayers as $sp)
+                    @php $isToday = $sp->date->isToday(); @endphp
+                    <div class="relative border {{ $isToday ? 'border-emerald-300 bg-emerald-50' : 'border-neutral-200 bg-white' }} rounded-xl p-4 transition-colors hover:shadow-sm">
+                        @if($isToday)
+                            <span class="absolute top-3 right-3 text-[10px] font-medium bg-emerald-100 text-emerald-700 border border-emerald-200 rounded px-1.5 py-0.5">{{ __('Today') }}</span>
+                        @endif
+                        <div class="flex items-start gap-3">
+                            <div class="flex-shrink-0 w-10 h-10 rounded-lg flex items-center justify-center
+                                {{ match($sp->type->value) {
+                                    'ramadan' => 'bg-emerald-100',
+                                    'eid' => 'bg-amber-100',
+                                    'weekly' => 'bg-blue-100',
+                                    default => 'bg-neutral-100',
+                                } }}">
+                                <svg class="w-5 h-5 {{ match($sp->type->value) {
+                                    'ramadan' => 'text-emerald-600',
+                                    'eid' => 'text-amber-600',
+                                    'weekly' => 'text-blue-600',
+                                    default => 'text-neutral-600',
+                                } }}" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                                </svg>
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <h3 class="font-semibold text-neutral-900 text-sm">{{ $sp->name }}</h3>
+                                <span class="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-medium mt-1
+                                    {{ match($sp->type->value) {
+                                        'ramadan' => 'bg-emerald-100 text-emerald-700',
+                                        'eid' => 'bg-amber-100 text-amber-700',
+                                        'weekly' => 'bg-blue-100 text-blue-700',
+                                        default => 'bg-neutral-100 text-neutral-600',
+                                    } }}">
+                                    {{ $sp->type->getLabel() }}
+                                </span>
+                            </div>
+                        </div>
+                        <div class="mt-3 space-y-1 text-xs">
+                            <div class="flex justify-between">
+                                <span class="text-neutral-500">{{ __('Date') }}</span>
+                                <span class="text-neutral-700 font-medium">{{ \App\Support\LocalizedDate::date($sp->date) }} &middot; {{ \App\Support\LocalizedDate::weekday($sp->date) }}</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-neutral-500">{{ __('Time') }}</span>
+                                <span class="text-neutral-900 font-semibold">{{ \Carbon\Carbon::parse($sp->time)->format('g:i A') }}</span>
+                            </div>
+                            @if($sp->end_time)
+                                <div class="flex justify-between">
+                                    <span class="text-neutral-500">{{ __('Ends') }}</span>
+                                    <span class="text-neutral-700">{{ \Carbon\Carbon::parse($sp->end_time)->format('g:i A') }}</span>
+                                </div>
+                            @endif
+                        </div>
+                        @if($sp->description)
+                            <p class="text-neutral-500 text-xs mt-2">{{ $sp->description }}</p>
+                        @endif
+                    </div>
+                @endforeach
+            </div>
+        </div>
+    @endif
+
 @endsection
