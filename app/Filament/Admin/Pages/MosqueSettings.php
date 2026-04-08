@@ -69,7 +69,7 @@ class MosqueSettings extends Settings
                                     TextInput::make('label')->required(),
                                     PhoneInput::make('phone')
                                         ->label(__('Phone'))
-                                ]),
+                                ])->grid(2),
 
                                 TextInput::make('general.email')
                                     ->label(__('Email'))
