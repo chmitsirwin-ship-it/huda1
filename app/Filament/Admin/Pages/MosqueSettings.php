@@ -4,8 +4,10 @@ namespace App\Filament\Admin\Pages;
 
 use App\Enums\CalculationMethod;
 use App\Enums\PrayerMethod;
+use BackedEnum;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Hidden;
+use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
@@ -15,9 +17,8 @@ use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Outerweb\FilamentSettings\Pages\Settings;
 use SalemAljebaly\FilamentMapPicker\MapPicker;
-use Ysfkaya\FilamentPhoneInput\Forms\PhoneInput;
-use BackedEnum;
 use UnitEnum;
+use Ysfkaya\FilamentPhoneInput\Forms\PhoneInput;
 
 class MosqueSettings extends Settings
 {
@@ -64,8 +65,8 @@ class MosqueSettings extends Settings
                                     ->draggable()
                                     ->height(320)
                                     ->dehydrated(false),
-                                PhoneInput::make('general.phone')
-                                    ->label(__('Phone')),
+                                Repeater::make('general.phones')->simple(PhoneInput::make('phone')
+                                    ->label(__('Phone'))),
 
                                 TextInput::make('general.email')
                                     ->label(__('Email'))
