@@ -65,8 +65,11 @@ class MosqueSettings extends Settings
                                     ->draggable()
                                     ->height(320)
                                     ->dehydrated(false),
-                                Repeater::make('general.phones')->simple(PhoneInput::make('phone')
-                                    ->label(__('Phone'))),
+                                Repeater::make('general.phones')->schema([
+                                    TextInput::make('label')->required(),
+                                    PhoneInput::make('phone')
+                                        ->label(__('Phone'))
+                                ]),
 
                                 TextInput::make('general.email')
                                     ->label(__('Email'))
