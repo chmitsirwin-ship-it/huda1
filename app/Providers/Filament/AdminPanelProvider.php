@@ -3,6 +3,7 @@
 namespace App\Providers\Filament;
 
 use App\Filament\Admin\Pages\MosqueSettings;
+use CmsMulti\FilamentClearCache\FilamentClearCachePlugin;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -48,6 +49,7 @@ class AdminPanelProvider extends PanelProvider
                     MosqueSettings::class,
                 ]),
                 PageBuilderPluginPlugin::make(),
+                FilamentClearCachePlugin::make(),
             ])
             ->middleware([
                 EncryptCookies::class,
