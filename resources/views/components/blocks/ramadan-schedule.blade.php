@@ -131,7 +131,8 @@
                                     {{ $entry['day'] ?? '' }}
                                 </span>
                                 <span class="text-xs text-slate-400">
-                                    {{ !empty($entry['date']) ? \Carbon\Carbon::parse($entry['date'])->format('j M') : '' }}
+                                    {{ !empty($entry['date']) ? \Carbon\Carbon::parse($entry['date'])->format('j M') : '' }}<br>
+                                    <sub>{{ !empty($entry['date']) ? \GeniusTS\HijriDate\Hijri::convertToHijri($entry['date'])->format('d F o'): '' }}</sub>
                                 </span>
                                 @if($isToday)
                                     <span class="bg-emerald-400 text-emerald-900 text-[10px] font-black px-1.5 py-0.5 rounded-full uppercase tracking-wide">{{ __('Today') }}</span>
@@ -183,7 +184,8 @@
                                 @endif
                             </td>
                             <td class="px-4 py-3 text-slate-400 text-xs">
-                                {{ !empty($entry['date']) ? \Carbon\Carbon::parse($entry['date'])->format('j M Y') : '' }}
+                                {{ !empty($entry['date']) ? \Carbon\Carbon::parse($entry['date'])->format('j M Y') : '' }}<br>
+                                <sub>{{ !empty($entry['date']) ? \GeniusTS\HijriDate\Hijri::convertToHijri($entry['date'])->format('d F o'): '' }}</sub>
                             </td>
                             <td class="px-4 py-3 text-slate-300">
                                 {{ !empty($entry['suhoor']) ? \Carbon\Carbon::parse($entry['suhoor'])->format('g:i A') : '-' }}

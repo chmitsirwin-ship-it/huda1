@@ -14,6 +14,8 @@ class LocalizedDate
 
     public const DATE_TIME_FORMAT = self::DATE_FORMAT.' '.self::TIME_FORMAT;
 
+    public const HIJRI_FORMAT = 'd F o';
+
     public static function date(mixed $value): ?string
     {
         return self::parse($value)?->translatedFormat(self::DATE_FORMAT);
@@ -47,6 +49,17 @@ class LocalizedDate
     public static function monthShort(mixed $value): ?string
     {
         return self::parse($value)?->translatedFormat('M');
+    }
+
+    public static function hijri(mixed $value): ?string
+    {
+        $parsed = self::parse($value);
+
+        if (! $parsed) {
+            return null;
+        }
+
+        return \GeniusTS\HijriDate\Hijri::convertToHijri($parsed)->format(self::HIJRI_FORMAT);
     }
 
     private static function parse(mixed $value): ?CarbonInterface

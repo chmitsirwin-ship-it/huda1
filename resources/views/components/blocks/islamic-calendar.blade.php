@@ -4,17 +4,17 @@
     $style = $data['style'] ?? 'timeline';
     $showPast = (bool) ($data['show_past'] ?? true);
     $today = now()->startOfDay();
-    $icons = [
-        'moon' => 'M21.752 15.002A9.718 9.718 0 0 1 12.75 21a9.75 9.75 0 0 1 0-19.5c.34 0 .678.018 1.01.052A8.25 8.25 0 1 0 21.752 15Z',
-        'star' => 'm9.813 15.904 3.737-2.166 3.737 2.166-.99-4.282 3.302-2.83-4.35-.372L13.55 4.25l-1.699 4.17-4.35.372 3.302 2.83-.99 4.282Z',
-        'mosque' => 'M3.75 21h16.5M5.25 21V10.5L12 6l6.75 4.5V21M9 21v-4.5a3 3 0 1 1 6 0V21M10.5 6V4.875a1.5 1.5 0 1 1 3 0V6',
-        'book' => 'M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5 5.257 5 3.277 5.786 2 7v11c1.277-1.214 3.257-2 5.5-2 1.746 0 3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c2.243 0 4.223.786 5.5 2v11c-1.277-1.214-3.257-2-5.5-2-1.746 0-3.332.477-4.5 1.253',
-        'calendar' => 'M8.25 2.25v2.25m7.5-2.25v2.25M3.75 8.25h16.5M4.5 5.25h15a.75.75 0 0 1 .75.75v12a.75.75 0 0 1-.75.75h-15a.75.75 0 0 1-.75-.75V6a.75.75 0 0 1 .75-.75Z',
+    $iconMap = [
+        'moon' => 'heroicon-o-moon',
+        'star' => 'heroicon-o-star',
+        'mosque' => 'fas-mosque',
+        'book' => 'heroicon-o-book-open',
+        'calendar' => 'heroicon-o-calendar-date-range',
     ];
 
     $events = collect($data['events'] ?? [])
         ->filter(fn ($event) => is_array($event))
-        ->map(function (array $event) use ($today, $icons): array {
+        ->map(function (array $event) use ($today, $iconMap): array {
             $parsedDate = null;
 
             try {
@@ -31,8 +31,8 @@
 
             $event['name'] = trim((string) ($event['name'] ?? ''));
             $event['description'] = trim((string) ($event['description'] ?? ''));
-            $event['hijri_date'] = trim((string) ($event['hijri_date'] ?? ''));
-            $event['icon'] = array_key_exists($event['icon'] ?? 'calendar', $icons) ? $event['icon'] : 'calendar';
+            $event['hijri_date'] = \GeniusTS\HijriDate\Hijri::convertToHijri($parsedDate)->format('d F o');
+            $event['icon'] = array_key_exists($event['icon'] ?? 'calendar', $iconMap) ? $event['icon'] : 'calendar';
             $event['highlight'] = (bool) ($event['highlight'] ?? false);
             $event['_parsed_date'] = $parsedDate;
             $event['_gregorian_label'] = $parsedDate ? \App\Support\LocalizedDate::date($parsedDate) : null;
@@ -68,9 +68,9 @@
 
         @if($events->isEmpty())
             <div class="rounded-2xl border border-neutral-200 bg-neutral-50 px-6 py-12 text-center text-neutral-500 shadow-sm">
-                <svg class="mx-auto mb-4 h-12 w-12 text-neutral-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="{{ $icons['calendar'] }}" />
-                </svg>
+                <div class="mx-auto mb-4 h-12 w-12 text-neutral-300">
+                    <x-icon name="calendar" class="h-full w-full" />
+                </div>
                 <p>{{ __('No Islamic calendar events available.') }}</p>
             </div>
         @elseif($style === 'list')
@@ -92,9 +92,7 @@
                         <div class="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
                             <div class="flex min-w-0 gap-4">
                                 <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl {{ $event['_is_past'] ? 'bg-neutral-100 text-neutral-400' : 'bg-emerald-100 text-emerald-700' }}">
-                                    <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="{{ $icons[$event['icon']] }}" />
-                                    </svg>
+                                    <x-icon :name="$iconMap[$event['icon']]" class="h-5 w-5" />
                                 </div>
                                 <div class="min-w-0">
                                     <div class="mb-2 flex flex-wrap items-center gap-2">
@@ -140,9 +138,7 @@
                     <article class="{{ $cardClasses }}">
                         <div class="mb-5 flex items-start justify-between gap-4">
                             <div class="flex h-12 w-12 items-center justify-center rounded-xl {{ $event['_is_past'] ? 'bg-neutral-100 text-neutral-400' : 'bg-emerald-100 text-emerald-700' }}">
-                                <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="{{ $icons[$event['icon']] }}" />
-                                </svg>
+                                <x-icon :name="$iconMap[$event['icon']]" class="h-5 w-5" />
                             </div>
                             @if($event['_is_today'])
                                 <span class="rounded-full bg-emerald-600 px-2.5 py-1 text-xs font-semibold text-white">{{ __('Today') }}</span>
@@ -164,7 +160,7 @@
                 @endforeach
             </div>
         @else
-            <div class="relative space-y-6 before:absolute before:bottom-0 before:left-[1.45rem] before:top-0 before:w-px before:bg-neutral-200 md:before:left-1/2 md:before:-translate-x-1/2">
+            <div class="relative space-y-6 before:absolute before:bottom-0 before:start-[1.45rem] before:top-0 before:w-px before:bg-neutral-200 md:before:start-1/2 md:before:-translate-x-1/2">
                 @foreach($events as $index => $event)
                     @php
                         $isFeatured = $featuredIndex === $index;
@@ -182,8 +178,8 @@
                             $cardClasses .= ' border-neutral-100';
                         }
                     @endphp
-                    <div class="relative grid gap-4 pl-12 md:grid-cols-2 md:gap-10 md:pl-0">
-                        <div class="hidden md:flex {{ $index % 2 === 0 ? 'justify-end text-right' : 'order-2 justify-start text-left' }}">
+                    <div class="relative grid gap-4 ps-12 md:grid-cols-2 md:gap-10 md:ps-0">
+                        <div class="hidden md:flex {{ $index % 2 === 0 ? 'justify-end text-end' : 'order-2 justify-start text-start' }}">
                             <div class="max-w-sm">
                                 <p class="text-sm font-semibold {{ $event['_is_past'] ? 'text-neutral-400' : 'text-emerald-700' }}">{{ $event['hijri_date'] }}</p>
                                 <p class="mt-1 text-sm {{ $event['_is_past'] ? 'text-neutral-400' : 'text-neutral-500' }}">{{ $event['_gregorian_label'] }}</p>
@@ -191,14 +187,12 @@
                         </div>
 
                         <div class="relative {{ $index % 2 === 0 ? 'md:col-start-2' : 'md:col-start-1 md:row-start-1' }}">
-                            <span class="absolute left-[-2.25rem] top-8 flex h-6 w-6 items-center justify-center rounded-full border-4 border-white {{ $event['_is_past'] ? 'bg-neutral-300' : 'bg-emerald-600' }} shadow md:left-auto {{ $index % 2 === 0 ? 'md:-left-[3.25rem]' : 'md:-right-[3.25rem]' }}"></span>
+
                             <article class="{{ $cardClasses }}">
                                 <div class="mb-4 flex items-start justify-between gap-4">
                                     <div class="flex items-center gap-3">
                                         <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl {{ $event['_is_past'] ? 'bg-neutral-100 text-neutral-400' : 'bg-emerald-100 text-emerald-700' }}">
-                                            <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-                                                <path stroke-linecap="round" stroke-linejoin="round" d="{{ $icons[$event['icon']] }}" />
-                                            </svg>
+                                            <x-icon :name="$iconMap[$event['icon']]" class="h-5 w-5" />
                                         </div>
                                         <div class="md:hidden">
                                             <p class="text-sm font-semibold {{ $event['_is_past'] ? 'text-neutral-400' : 'text-emerald-700' }}">{{ $event['hijri_date'] }}</p>
