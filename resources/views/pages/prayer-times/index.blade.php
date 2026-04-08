@@ -67,7 +67,6 @@
                                 </p>
                             </div>
                         </div>
-
                         {{-- Khutbah time --}}
                         @if($today->jummah_khutba_time)
                             <div class="inline-flex items-center gap-2.5 bg-amber-500/10 border border-amber-400/20
@@ -83,6 +82,24 @@
                                     </p>
                                     <p class="text-sm font-semibold text-amber-200/80 tabular-nums">
                                         {{ \App\Support\LocalizedDate::time($today->jummah_khutba_time) }}
+                                    </p>
+                                </div>
+                            </div>
+                        @endif
+                        {{-- Jumu'ah Iqamah time --}}
+                        @if($today->jummah_iqamah)
+                            <div class="inline-flex items-center gap-2.5 bg-amber-500/10 border border-amber-400/20
+                                        rounded-lg px-4 py-2.5">
+                                <svg class="w-4 h-4 text-amber-400/70 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                          d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                </svg>
+                                <div class="leading-tight">
+                                    <p class="text-[10px] font-medium text-amber-400/80 uppercase tracking-wider">
+                                        {{ __('Iqamah') }}
+                                    </p>
+                                    <p class="text-sm font-semibold text-amber-200/80 tabular-nums">
+                                        {{ \App\Support\LocalizedDate::time($today->jummah_iqamah) }}
                                     </p>
                                 </div>
                             </div>
@@ -195,6 +212,11 @@
                                             <div class="text-[11px] font-semibold text-amber-700 tabular-nums">
                                                 {{ \App\Support\LocalizedDate::time($pt->jummah_time) }}
                                             </div>
+                                            @if($pt->jummah_iqamah ?? null)
+                                                <div class="text-[10px] text-amber-500 tabular-nums">
+                                                    {{ \App\Support\LocalizedDate::time($pt->jummah_iqamah) }}
+                                                </div>
+                                            @endif
                                             @if($pt->jummah_khutba_time ?? null)
                                                 <div class="text-[10px] text-amber-500 tabular-nums">
                                                     {{ __('Khutbah') }}: {{ \App\Support\LocalizedDate::time($pt->jummah_khutba_time) }}

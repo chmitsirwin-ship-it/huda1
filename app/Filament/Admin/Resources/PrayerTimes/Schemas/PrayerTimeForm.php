@@ -76,13 +76,15 @@ class PrayerTimeForm
                     ]),
 
                 Section::make(__('Jummah'))
-                    ->columns(2)
+                    ->columns(3)
                     ->collapsible()
                     ->schema([
                         TimePicker::make('jummah_time')
                             ->label(__('Jummah Time')),
                         TimePicker::make('jummah_khutba_time')
                             ->label(__('Jummah Khutba Time')),
+                        TimePicker::make('jummah_iqamah')
+                            ->label(__('Jummah Iqamah')),
                     ]),
             ]);
     }

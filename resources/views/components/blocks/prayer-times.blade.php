@@ -18,6 +18,9 @@
 
     $hasJummah    = $today && ($today->jummah_time ?? null);
     $jummahTime   = $hasJummah ? \App\Support\LocalizedDate::time($today->jummah_time) : null;
+    $jummahIqamah = ($today && ($today->jummah_iqamah ?? null))
+                        ? \App\Support\LocalizedDate::time($today->jummah_iqamah)
+                        : null;
     $khutbaTime   = ($today && ($today->jummah_khutba_time ?? null))
                         ? \App\Support\LocalizedDate::time($today->jummah_khutba_time)
                         : null;
@@ -83,15 +86,17 @@
                                         <span class="font-semibold text-neutral-800">{{ __("Jumu'ah") }}</span>
                                         @if($isFriday)
                                             <span class="text-xs font-medium text-white bg-amber-500 rounded-full px-2 py-0.5">
-                                                    {{ __('Today') }}
-                                                </span>
+                                                {{ __('Today') }}
+                                            </span>
                                         @endif
                                     </div>
                                 </td>
                                 <td class="px-6 py-4 text-center text-emerald-700 font-medium tabular-nums">
                                     {{ $jummahTime ?? '—' }}
                                 </td>
-                                <td class="px-6 py-4 text-center text-neutral-400 text-sm">—</td>
+                                <td class="px-6 py-4 text-center text-amber-600 font-medium tabular-nums">
+                                    {{ $jummahIqamah ?? '—' }}
+                                </td>
                             </tr>
                             {{-- Khutbah row --}}
                             @if($khutbaTime)
@@ -146,6 +151,11 @@
                                 <span class="inline-block text-xs text-amber-500 mb-2">{{ __('Today') }}</span>
                             @endif
                             <p class="text-xl font-bold text-amber-700 tabular-nums">{{ $jummahTime }}</p>
+                            @if($jummahIqamah)
+                                <p class="text-xs text-amber-600 font-medium mt-1 tabular-nums">
+                                    {{ __('Iqamah') }}: {{ $jummahIqamah }}
+                                </p>
+                            @endif
                             @if($khutbaTime)
                                 <p class="text-xs text-amber-600 font-medium mt-1 tabular-nums">
                                     {{ __('Khutbah') }}: {{ $khutbaTime }}
@@ -224,9 +234,16 @@
                                         @endif
                                     </span>
                                 </div>
-                                <span class="text-amber-200 font-bold text-lg tabular-nums">
-                                    {{ $jummahTime ?? '—' }}
-                                </span>
+                                <div class="flex items-center gap-4">
+                                    <span class="text-amber-200 font-bold text-lg tabular-nums">
+                                        {{ $jummahTime ?? '—' }}
+                                    </span>
+                                    @if($jummahIqamah)
+                                        <span class="text-amber-300 text-sm tabular-nums px-2 py-0.5 rounded bg-amber-400/10">
+                                            {{ $jummahIqamah }}
+                                        </span>
+                                    @endif
+                                </div>
                             </div>
 
                             {{-- Khutbah row --}}
