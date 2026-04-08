@@ -31,7 +31,7 @@
 
             $event['name'] = trim((string) ($event['name'] ?? ''));
             $event['description'] = trim((string) ($event['description'] ?? ''));
-            $event['hijri_date'] = \GeniusTS\HijriDate\Hijri::convertToHijri($parsedDate)->format('d F o');
+            $event['hijri_date'] = \App\Support\LocalizedDate::hijri($parsedDate);
             $event['icon'] = array_key_exists($event['icon'] ?? 'calendar', $iconMap) ? $event['icon'] : 'calendar';
             $event['highlight'] = (bool) ($event['highlight'] ?? false);
             $event['_parsed_date'] = $parsedDate;

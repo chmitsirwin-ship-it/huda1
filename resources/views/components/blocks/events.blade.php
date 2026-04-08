@@ -34,9 +34,10 @@ $style = $data['style'] ?? 'grid';
             <div class="space-y-4">
                 @foreach($events as $event)
                     <div class="flex gap-6 bg-white rounded-xl p-6 shadow-sm border border-neutral-100 hover:border-emerald-200 hover:shadow-md transition-all duration-200 group">
-                        <div class="shrink-0 flex flex-col items-center justify-center w-16 h-16 bg-emerald-600 rounded-xl text-white">
+                        <div class="shrink-0 flex flex-col items-center justify-center w-16 bg-emerald-600 rounded-xl text-white px-2 py-2">
                             <span class="text-2xl font-bold leading-none">{{ \App\Support\LocalizedDate::day($event->starts_at) }}</span>
                             <span class="text-xs uppercase tracking-wide mt-0.5">{{ \App\Support\LocalizedDate::monthShort($event->starts_at) }}</span>
+                            <span class="text-[9px] text-emerald-200 mt-1 leading-tight text-center">{{ \App\Support\LocalizedDate::hijri($event->starts_at) }}</span>
                         </div>
                         <div class="flex-1 min-w-0">
                             <h3 class="font-bold text-neutral-900 text-lg mb-1 group-hover:text-emerald-600 transition-colors truncate">
@@ -86,6 +87,7 @@ $style = $data['style'] ?? 'grid';
                                             <span class="bg-emerald-100 text-emerald-700 text-xs font-semibold px-2.5 py-1 rounded-full">
                                                 {{ \App\Support\LocalizedDate::date($event->starts_at) }}
                                             </span>
+                                            <span class="text-xs text-neutral-400">{{ \App\Support\LocalizedDate::hijri($event->starts_at) }}</span>
                                         </div>
                                         <h3 class="text-xl font-bold text-neutral-900 mb-2">
                                             {{ $event->title }}
@@ -120,6 +122,7 @@ $style = $data['style'] ?? 'grid';
                                     <div class="bg-white rounded-lg px-3 py-1.5 shadow-md text-center min-w-[48px]">
                                         <div class="text-xl font-bold text-emerald-600 leading-none">{{ \App\Support\LocalizedDate::day($event->starts_at) }}</div>
                                         <div class="text-xs text-neutral-500 uppercase tracking-wide">{{ \App\Support\LocalizedDate::monthShort($event->starts_at) }}</div>
+                                        <div class="text-[8px] text-neutral-400 mt-0.5 leading-tight">{{ \App\Support\LocalizedDate::hijri($event->starts_at) }}</div>
                                     </div>
                                 </div>
                             </div>
@@ -132,6 +135,7 @@ $style = $data['style'] ?? 'grid';
                                     <div class="bg-white/20 backdrop-blur-sm rounded-lg px-3 py-1.5 text-center min-w-[48px]">
                                         <div class="text-xl font-bold text-white leading-none">{{ \App\Support\LocalizedDate::day($event->starts_at) }}</div>
                                         <div class="text-xs text-white/80 uppercase tracking-wide">{{ \App\Support\LocalizedDate::monthShort($event->starts_at) }}</div>
+                                        <div class="text-[8px] text-white/60 mt-0.5 leading-tight">{{ \App\Support\LocalizedDate::hijri($event->starts_at) }}</div>
                                     </div>
                                 </div>
                             </div>

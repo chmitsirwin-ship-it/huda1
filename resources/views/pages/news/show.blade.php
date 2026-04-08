@@ -9,7 +9,10 @@
                 <a href="{{ route('news.index') }}" class="transition-colors hover:text-white">{{ __('News') }}</a>
                 <span>/</span>
                 @if($newsItem->published_at)
-                    <span>{{ \App\Support\LocalizedDate::date($newsItem->published_at) }}</span>
+                    <span>
+                        {{ \App\Support\LocalizedDate::date($newsItem->published_at) }}
+                        <span class="block text-xs text-neutral-400">{{ \App\Support\LocalizedDate::hijri($newsItem->published_at) }}</span>
+                    </span>
                 @endif
             </div>
             <h1 class="max-w-4xl text-4xl font-bold tracking-tight md:text-5xl">{{ $newsItem->title }}</h1>
@@ -45,7 +48,10 @@
                 <div class="grid gap-6 md:grid-cols-3">
                     @foreach($relatedNews as $item)
                         <article class="rounded-2xl border border-neutral-100 bg-white p-5 shadow-sm transition-shadow hover:shadow-md">
-                            <div class="mb-3 text-xs text-neutral-400">{{ \App\Support\LocalizedDate::date($item->published_at) }}</div>
+                            <div class="mb-3 text-xs text-neutral-400">
+                                {{ \App\Support\LocalizedDate::date($item->published_at) }}
+                                <span class="block text-[10px] opacity-70">{{ \App\Support\LocalizedDate::hijri($item->published_at) }}</span>
+                            </div>
                             <h3 class="mb-3 text-lg font-bold text-neutral-900">
                                 <a href="{{ route('news.show', $item->slug) }}" class="transition-colors hover:text-emerald-700">{{ $item->title }}</a>
                             </h3>

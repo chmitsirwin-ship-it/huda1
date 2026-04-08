@@ -40,9 +40,10 @@ $khutbas = $khutbasQuery->limit($data['limit'] ?? 5)->get();
                 @foreach($khutbas as $khutba)
                     <div class="bg-white rounded-xl border border-neutral-100 p-6 shadow-sm hover:shadow-md hover:border-emerald-200 transition-all duration-200 group">
                         <div class="flex items-start gap-5">
-                            <div class="shrink-0 flex flex-col items-center justify-center w-16 h-16 bg-emerald-600 rounded-xl text-white">
+                            <div class="shrink-0 flex flex-col items-center justify-center w-16 bg-emerald-600 rounded-xl text-white px-2 py-2">
                                 <span class="text-xl font-bold leading-none">{{ \App\Support\LocalizedDate::day($khutba->date) }}</span>
                                 <span class="text-xs uppercase tracking-wide mt-0.5 opacity-80">{{ \App\Support\LocalizedDate::monthShort($khutba->date) }}</span>
+                                <span class="text-[9px] text-emerald-200 mt-1 leading-tight text-center">{{ \App\Support\LocalizedDate::hijri($khutba->date) }}</span>
                             </div>
 
                             <div class="flex-1 min-w-0">
@@ -98,8 +99,9 @@ $khutbas = $khutbasQuery->limit($data['limit'] ?? 5)->get();
                                         </span>
                                     @endif
 
-                                    <span class="text-sm text-neutral-400">
+                                    <span class="text-sm text-neutral-400 leading-relaxed">
                                         {{ \App\Support\LocalizedDate::date($khutba->date) }}
+                                        <span class="block text-xs opacity-70">{{ \App\Support\LocalizedDate::hijri($khutba->date) }}</span>
                                     </span>
                                 </div>
 

@@ -53,8 +53,9 @@ $typeIconPaths = [
                                         {{ $announcement->type?->getLabel() ?? __('General') }}
                                     </span>
                                     @if($announcement->published_at)
-                                        <span class="text-xs text-neutral-400">
+                                        <span class="text-xs text-neutral-400 leading-relaxed">
                                             {{ \App\Support\LocalizedDate::date($announcement->published_at) }}
+                                            <span class="block text-[10px] opacity-70">{{ \App\Support\LocalizedDate::hijri($announcement->published_at) }}</span>
                                         </span>
                                     @endif
                                 </div>

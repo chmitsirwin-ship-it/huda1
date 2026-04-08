@@ -37,6 +37,7 @@
             <h2 class="text-3xl md:text-4xl font-bold text-neutral-900">{{ __('Prayer Times') }}</h2>
             @if($today)
                 <p class="text-neutral-500 mt-2">{{ \App\Support\LocalizedDate::date($today->date) }}</p>
+                <p class="text-neutral-400 text-sm mt-0.5">{{ \App\Support\LocalizedDate::hijri($today->date) }}</p>
             @endif
         </div>
 
@@ -166,6 +167,9 @@
                             <h3 class="text-white font-bold text-xl">{{ __("Today's Prayers") }}</h3>
                             <p class="text-emerald-200 text-sm mt-1">
                                 {{ \App\Support\LocalizedDate::date($today->date) }}
+                            </p>
+                            <p class="text-emerald-300/70 text-xs mt-0.5">
+                                {{ \App\Support\LocalizedDate::hijri($today->date) }}
                             </p>
                         </div>
                         <div class="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center">

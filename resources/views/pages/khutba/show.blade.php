@@ -9,7 +9,10 @@
                 <a href="{{ route('khutba.index') }}" class="transition-colors hover:text-white">{{ __('Khutba') }}</a>
                 <span>/</span>
                 @if($khutba->date)
-                    <span>{{ \App\Support\LocalizedDate::date($khutba->date) }}</span>
+                    <span>
+                        {{ \App\Support\LocalizedDate::date($khutba->date) }}
+                        <span class="block text-xs text-emerald-300/70">{{ \App\Support\LocalizedDate::hijri($khutba->date) }}</span>
+                    </span>
                 @endif
             </div>
 
@@ -75,7 +78,10 @@
                 <div class="grid gap-6 md:grid-cols-3">
                     @foreach($relatedKhutbas as $item)
                         <article class="rounded-2xl border border-neutral-100 bg-white p-5 shadow-sm transition-shadow hover:shadow-md">
-                            <div class="mb-3 text-xs text-neutral-400">{{ \App\Support\LocalizedDate::date($item->date) }}</div>
+                            <div class="mb-3 text-xs text-neutral-400">
+                                {{ \App\Support\LocalizedDate::date($item->date) }}
+                                <span class="block text-[10px] opacity-70">{{ \App\Support\LocalizedDate::hijri($item->date) }}</span>
+                            </div>
                             <h3 class="mb-3 text-lg font-bold text-neutral-900">
                                 <a href="{{ route('khutba.show', $item->slug) }}" class="transition-colors hover:text-emerald-700">{{ $item->title }}</a>
                             </h3>

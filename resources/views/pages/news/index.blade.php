@@ -75,20 +75,34 @@
                 @foreach($newsItems as $newsItem)
                     <article class="overflow-hidden rounded-2xl border border-neutral-100 bg-white shadow-sm transition-shadow hover:shadow-md">
                         @if($newsItem->featured_image)
-                            <a href="{{ route('news.show', $newsItem->slug) }}" class="block aspect-[16/10] overflow-hidden bg-neutral-100">
+                            <a href="{{ route('news.show', $newsItem->slug) }}" class="relative block aspect-[16/10] overflow-hidden bg-neutral-100">
                                 <img src="{{ \App\Support\AssetPath::url($newsItem->featured_image) }}" alt="{{ $newsItem->title }}" class="h-full w-full object-cover transition-transform duration-300 hover:scale-105">
+                                @if($newsItem->categories->isNotEmpty())
+                                    <div class="absolute top-3 start-3 flex flex-wrap gap-1.5">
+                                        @foreach($newsItem->categories as $category)
+                                            <span class="rounded-full bg-white/90 backdrop-blur-sm px-2.5 py-1 text-[11px] font-semibold text-emerald-700 shadow-sm">{{ $category->name }}</span>
+                                        @endforeach
+                                    </div>
+                                @endif
                             </a>
                         @endif
                         <div class="p-6">
-                            <div class="mb-4 flex flex-wrap items-center gap-2 text-xs text-neutral-500">
+                            <div class="mb-4 text-xs text-neutral-500">
                                 @if($newsItem->published_at)
-                                    <span>{{ \App\Support\LocalizedDate::date($newsItem->published_at) }}</span>
+                                    <span class="leading-relaxed">
+                                        {{ \App\Support\LocalizedDate::date($newsItem->published_at) }}
+                                        <span class="block text-[10px] opacity-70">{{ \App\Support\LocalizedDate::hijri($newsItem->published_at) }}</span>
+                                    </span>
                                 @endif
-                                @foreach($newsItem->categories as $category)
-                                    <a href="{{ route('news.index', ['category' => $category->id]) }}" class="rounded-full bg-emerald-50 px-2.5 py-1 font-medium text-emerald-700 transition-colors hover:bg-emerald-100">
-                                        {{ $category->name }}
-                                    </a>
-                                @endforeach
+                                @if(!$newsItem->featured_image && $newsItem->categories->isNotEmpty())
+                                    <div class="mt-2 flex flex-wrap gap-1.5">
+                                        @foreach($newsItem->categories as $category)
+                                            <a href="{{ route('news.index', ['category' => $category->id]) }}" class="rounded-full bg-emerald-50 px-2.5 py-1 font-medium text-emerald-700 transition-colors hover:bg-emerald-100">
+                                                {{ $category->name }}
+                                            </a>
+                                        @endforeach
+                                    </div>
+                                @endif
                             </div>
                             <h2 class="mb-3 text-xl font-bold text-neutral-900">
                                 <a href="{{ route('news.show', $newsItem->slug) }}" class="transition-colors hover:text-emerald-700">

@@ -13,6 +13,7 @@
                     <h2 class="text-xl font-semibold text-white">
                         {{ \App\Support\LocalizedDate::date($today->date) }}
                     </h2>
+                    <p class="text-emerald-300/80 text-sm mt-0.5">{{ \App\Support\LocalizedDate::hijri($today->date) }}</p>
                 </div>
 
                 @php
@@ -150,6 +151,7 @@
                                 <div class="flex items-center gap-2">
                                         <span class="font-medium {{ $isToday ? 'text-emerald-800' : ($isFriday ? 'text-amber-800' : 'text-neutral-800') }}">
                                             {{ \App\Support\LocalizedDate::date($pt->date) }}
+                                            <span class="block text-[10px] font-normal {{ $isToday ? 'text-emerald-600' : ($isFriday ? 'text-amber-600' : 'text-neutral-400') }}">{{ \App\Support\LocalizedDate::hijri($pt->date) }}</span>
                                         </span>
                                     @if($isToday)
                                         <span class="text-[10px] font-medium bg-emerald-100 text-emerald-700

@@ -49,8 +49,9 @@
                                     {{ $announcement->title }}
                                 </h3>
                             </div>
-                            <span class="text-xs text-neutral-400 whitespace-nowrap shrink-0">
+                            <span class="text-xs text-neutral-400 whitespace-nowrap shrink-0 text-end">
                                 {{ \App\Support\LocalizedDate::date($announcement->published_at ?? $announcement->created_at) }}
+                                <span class="block text-[10px] opacity-70">{{ \App\Support\LocalizedDate::hijri($announcement->published_at ?? $announcement->created_at) }}</span>
                             </span>
                         </div>
                         <p class="text-neutral-600 leading-relaxed">
