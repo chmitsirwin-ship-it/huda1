@@ -9,7 +9,7 @@ class Slider extends Model
 {
     use HasTranslations;
 
-    public array $translatable = ['title', 'subtitle'];
+    public array $translatable = ['title', 'subtitle','button_text'];
 
     protected function casts(): array
     {

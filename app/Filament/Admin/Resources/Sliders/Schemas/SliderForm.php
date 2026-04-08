@@ -35,6 +35,8 @@ class SliderForm
                     ->columns(2)
                     ->schema([
                         TextInput::make('button_text')
+                            ->translatableTabs()
+                            ->columnSpanFull()
                             ->label(__('Button Text')),
                         TextInput::make('button_url')
                             ->label(__('Button URL'))
