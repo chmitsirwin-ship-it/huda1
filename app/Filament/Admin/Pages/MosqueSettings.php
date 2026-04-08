@@ -16,12 +16,14 @@ use Filament\Support\Icons\Heroicon;
 use Outerweb\FilamentSettings\Pages\Settings;
 use SalemAljebaly\FilamentMapPicker\MapPicker;
 use Ysfkaya\FilamentPhoneInput\Forms\PhoneInput;
+use BackedEnum;
+use UnitEnum;
 
 class MosqueSettings extends Settings
 {
-    protected static string|\BackedEnum|null $navigationIcon = Heroicon::OutlinedCog6Tooth;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedCog6Tooth;
 
-    public static function getNavigationGroup(): string|\UnitEnum|null
+    public static function getNavigationGroup(): string|UnitEnum|null
     {
         return __('Settings');
     }
@@ -123,6 +125,9 @@ class MosqueSettings extends Settings
 
                                 TextInput::make('prayer.adjustment_factor')
                                     ->label(__('Adjustment Factor (minutes)'))->numeric(),
+
+                                TextInput::make('hijri.adjustment_factor')->numeric()
+                                    ->label(__('Hijri Adjustment Factor (days)'))
                             ]),
 
                         Tab::make(__('SEO'))
