@@ -12,7 +12,7 @@ class PrayerTimeService
 {
     public function getTodayPrayer(): ?PrayerTime
     {
-        return Cache::remember('prayer_today', 86400, fn () => PrayerTime::query()
+        return Cache::flexible('prayer_today', [90,180], fn () => PrayerTime::query()
             ->whereDate('date', today())
             ->first());
     }
