@@ -65,6 +65,14 @@ $slides = \App\Models\Slider::active()->get();
                             {{ $slide->subtitle }}
                         </p>
                     @endif
+                        @if($slide->button_text && $slide->button_url)
+                            <div class="mt-8">
+                                <a href="{{ $slide->button_url }}"
+                                   class="inline-flex items-center px-8 py-3 bg-emerald-500 hover:bg-emerald-600 text-white font-semibold rounded-lg transition-colors duration-200">
+                                    {{ $slide->button_text }}
+                                </a>
+                            </div>
+                        @endif
                 </div>
             @endforeach
         </div>
