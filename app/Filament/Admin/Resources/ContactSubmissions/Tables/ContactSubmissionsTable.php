@@ -8,6 +8,7 @@ use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Ysfkaya\FilamentPhoneInput\Tables\PhoneColumn;
 
 class ContactSubmissionsTable
 {
@@ -17,6 +18,9 @@ class ContactSubmissionsTable
             ->columns([
                 TextColumn::make('name')
                     ->label(__('Name'))
+                    ->searchable(),
+                PhoneColumn::make('phone')
+                    ->label(__('Phone'))
                     ->searchable(),
                 TextColumn::make('email')
                     ->label(__('Email'))
