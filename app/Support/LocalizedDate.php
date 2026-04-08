@@ -58,7 +58,7 @@ class LocalizedDate
         if (! $parsed) {
             return null;
         }
-        \GeniusTS\HijriDate\Hijri::setDefaultAdjustment(config('hijri.adjustment_factor',0));
+        \GeniusTS\HijriDate\Hijri::setDefaultAdjustment(setting('hijri.adjustment_factor',0));
         return \GeniusTS\HijriDate\Hijri::convertToHijri($parsed)->format(self::HIJRI_FORMAT);
     }
 
