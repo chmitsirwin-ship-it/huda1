@@ -63,8 +63,7 @@ class ListPrayerTimes extends ListRecords
                             ->label(__('Jummah Time'))
                             ->required(),
                         TimePicker::make('jummah_khutba_time')
-                            ->label(__('Jummah Khutba Time'))
-                            ->required(),
+                            ->label(__('Jummah Khutba Time')),
                         TimePicker::make('jummah_iqamah')
                             ->label(__('Jummah Iqamah'))
                             ->required(),
