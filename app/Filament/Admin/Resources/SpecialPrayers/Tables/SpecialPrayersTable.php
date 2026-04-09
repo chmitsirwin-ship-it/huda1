@@ -13,6 +13,7 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Grouping\Group;
 use Filament\Tables\Table;
+use Malzariey\FilamentDaterangepickerFilter\Filters\DateRangeFilter;
 
 class SpecialPrayersTable
 {
@@ -36,17 +37,17 @@ class SpecialPrayersTable
 
                 TextColumn::make('date')
                     ->label(__('Date'))
-                    ->formatStateUsing(fn ($state) => LocalizedDate::date($state))
-                    ->description(fn ($record) => LocalizedDate::weekday($record->date), 'above')
+                    ->formatStateUsing(fn($state) => LocalizedDate::date($state))
+                    ->description(fn($record) => LocalizedDate::weekday($record->date), 'above')
                     ->sortable(),
 
                 TextColumn::make('time')
                     ->label(__('Start Time'))
-                    ->formatStateUsing(fn ($state) => LocalizedDate::time($state)),
+                    ->formatStateUsing(fn($state) => LocalizedDate::time($state)),
 
                 TextColumn::make('end_time')
                     ->label(__('End Time'))
-                    ->formatStateUsing(fn ($state) => $state ? LocalizedDate::time($state) : '-'),
+                    ->formatStateUsing(fn($state) => $state ? LocalizedDate::time($state) : '-'),
 
                 IconColumn::make('is_recurring')
                     ->label(__('Recurring'))
@@ -68,14 +69,19 @@ class SpecialPrayersTable
                 Group::make('name')
                     ->label(__('Name'))
                     ->collapsible(),
+                Group::make('date')
+                    ->label(__('Date'))
+                    ->date()
+                    ->collapsible(),
             ])
             ->filters([
+                DateRangeFilter::make('date'),
                 SelectFilter::make('type')
                     ->label(__('Type'))
                     ->options(SpecialPrayerType::class),
                 SelectFilter::make('group')
                     ->label(__('Group'))
-                    ->options(fn () => SpecialPrayer::whereNotNull('group')
+                    ->options(fn() => SpecialPrayer::whereNotNull('group')
                         ->distinct()
                         ->pluck('group', 'group')
                         ->toArray()),

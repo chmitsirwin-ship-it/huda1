@@ -5,3 +5,4 @@
 @source '../../../../resources/views/components/blocks/**/*';
 @source '../../../../vendor/statikbe/laravel-filament-chained-translation-manager/resources/**/*.blade.php';
 @source '../../../../vendor/bezhansalleh/filament-language-switch/resources/views/**/*.blade.php';
+@source '../../../../vendor/redberry/page-builder-plugin/**/*';
