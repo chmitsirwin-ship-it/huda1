@@ -718,5 +718,21 @@
     "filament-translation-manager::messages.filter_action": "Filtruj",
     "filament-translation-manager::messages.filter_results": "Filtruj wyniki",
     "filament-translation-manager::messages.filter_results_missing_translations": "Filtruj wyniki — brakujące tłumaczenia",
-    "filament-translation-manager::messages.error_no_translations_for_filters": "Brak tłumaczeń pasujących do zastosowanych filtrów"
+    "filament-translation-manager::messages.error_no_translations_for_filters": "Brak tłumaczeń pasujących do zastosowanych filtrów",
+    "Always Show Next Jummah": "",
+    "Display the next upcoming Friday Jummah times at the bottom of this block.": "",
+    "Custom Code": "",
+    "Header Code": "",
+    "Injected inside <head> tag (e.g. GA4, Meta Pixel, custom scripts)": "",
+    "Body Code": "",
+    "Injected after <body> tag (e.g. tracking pixels, chat widgets)": "",
+    "Tomorrow": "",
+    "Salah": "",
+    "day": "",
+    "days": "",
+    "Friday Prayer": "",
+    "Monthly Schedule": "",
+    "Iqamah: :time": "",
+    "No iqamah": "",
+    "Friday Prayer Schedule": ""
 }

@@ -62,7 +62,7 @@ class LocalizedDate
         }
         $parsed->addDays(setting('hijri.adjustment_factor',0));
         Hijri::setLang(app()->getLocale() == 'ar' ? 'ar' : 'en');
-        return Hijri::Date('l ، j F ، Y', $parsed);
+        return Hijri::Date('j F ، Y', $parsed);
     }
 
     private static function parse(mixed $value): ?CarbonInterface
