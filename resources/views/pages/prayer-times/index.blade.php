@@ -359,7 +359,7 @@
                         <div class="mt-3 space-y-1 text-xs">
                             <div class="flex justify-between">
                                 <span class="text-neutral-500">{{ __('Date') }}</span>
-                                <span class="text-neutral-700 font-medium">{{ \App\Support\LocalizedDate::date($sp->date) }} &middot; {{ \App\Support\LocalizedDate::weekday($sp->date) }} &middot; {{ \App\Support\LocalizedDate::hijri($sp->date) }}</span>
+                                <span class="text-neutral-700 font-medium">{{ \App\Support\LocalizedDate::date($sp->date) }} &middot; {{ \App\Support\LocalizedDate::weekday($sp->date) }} <br> <sub>{{ \App\Support\LocalizedDate::hijri($sp->date) }}</sub></span>
                             </div>
                             <div class="flex justify-between">
                                 <span class="text-neutral-500">{{ __('Time') }}</span>
