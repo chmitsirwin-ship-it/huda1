@@ -7,7 +7,7 @@ if (!empty($data['collection'])) {
 }
 @endphp
 
-@if($images->isNotEmpty())
+@if(\App\Support\PublicNavigation::isEnabled('gallery') && $images->isNotEmpty())
 <section class="py-20 bg-neutral-50"
     x-data="{
         lightbox: false,

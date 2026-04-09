@@ -3,6 +3,7 @@ $data = $block['data'] ?? $data ?? [];
 $members = \App\Models\Staff::active()->get();
 @endphp
 
+@if(\App\Support\PublicNavigation::isEnabled('staff'))
 <section class="py-20 bg-white">
     <div class="max-w-7xl mx-auto px-6">
         <div class="text-center mb-14">
@@ -63,3 +64,4 @@ $members = \App\Models\Staff::active()->get();
         @endif
     </div>
 </section>
+@endif

@@ -10,6 +10,7 @@ $newsItems = $newsQuery->limit($data['limit'] ?? 6)->get();
 $isGrid = ($data['style'] ?? 'grid') === 'grid';
 @endphp
 
+@if(\App\Support\PublicNavigation::isEnabled('news'))
 <section class="bg-white py-20">
     <div class="mx-auto max-w-7xl px-6">
         <div class="mb-12 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
@@ -111,3 +112,4 @@ $isGrid = ($data['style'] ?? 'grid') === 'grid';
         @endif
     </div>
 </section>
+@endif

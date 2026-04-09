@@ -16,21 +16,21 @@
                 @php
                     $navLinks = [
                         ['route' => 'home', 'label' => __('Home')],
-                        ['route' => 'prayer-times.index', 'label' => __('Prayer Times')],
-                        ['route' => 'events.index', 'label' => __('Events'), 'when' => \App\Models\Event::published()->exists()],
-                        ['route' => 'announcements.index', 'label' => __('Announcements'), 'when' => \App\Models\Announcement::active()->exists()],
-                        ['route' => 'news.index', 'label' => __('News')],
-                        ['route' => 'gallery.index', 'label' => __('Gallery'), 'when' => \App\Models\MediaItem::query()->exists()],
-                        ['route' => 'islamic-library.index', 'label' => __('Library'), 'when' => \App\Models\QuranVerse::query()->exists() || \App\Models\Hadith::query()->exists()],
-                        ['route' => 'khutba.index', 'label' => __('Khutba')],
-                        ['route' => 'staff.index', 'label' => __('Staff'), 'when' => \App\Models\Staff::query()->exists()],
-                        ['route' => 'contact.index', 'label' => __('Contact')],
+                        ['route' => 'prayer-times.index', 'label' => __('Prayer Times'), 'enabled' => \App\Support\PublicNavigation::isEnabled('prayer_times')],
+                        ['route' => 'events.index', 'label' => __('Events'), 'enabled' => \App\Support\PublicNavigation::isEnabled('events'), 'when' => \App\Models\Event::published()->exists()],
+                        ['route' => 'announcements.index', 'label' => __('Announcements'), 'enabled' => \App\Support\PublicNavigation::isEnabled('announcements'), 'when' => \App\Models\Announcement::active()->exists()],
+                        ['route' => 'news.index', 'label' => __('News'), 'enabled' => \App\Support\PublicNavigation::isEnabled('news')],
+                        ['route' => 'gallery.index', 'label' => __('Gallery'), 'enabled' => \App\Support\PublicNavigation::isEnabled('gallery'), 'when' => \App\Models\MediaItem::query()->exists()],
+                        ['route' => 'islamic-library.index', 'label' => __('Library'), 'enabled' => \App\Support\PublicNavigation::isEnabled('library'), 'when' => \App\Models\QuranVerse::query()->exists() || \App\Models\Hadith::query()->exists()],
+                        ['route' => 'khutba.index', 'label' => __('Khutba'), 'enabled' => \App\Support\PublicNavigation::isEnabled('khutba')],
+                        ['route' => 'staff.index', 'label' => __('Staff'), 'enabled' => \App\Support\PublicNavigation::isEnabled('staff'), 'when' => \App\Models\Staff::query()->exists()],
+                        ['route' => 'contact.index', 'label' => __('Contact'), 'enabled' => \App\Support\PublicNavigation::isEnabled('contact')],
                     ];
                     $navPages = \App\Models\Page::nav()->where('is_home', false)->get();
                 @endphp
 
                 @foreach($navLinks as $link)
-                    @if(($link['when'] ?? true) === true)
+                    @if(($link['enabled'] ?? true) === true && ($link['when'] ?? true) === true)
                         @php
                             $isActive = request()->routeIs($link['route']);
                         @endphp
@@ -88,7 +88,7 @@
          @click.away="open = false">
         <div class="px-4 py-3 space-y-1">
             @foreach($navLinks as $link)
-                @if(($link['when'] ?? true) === true)
+                @if(($link['enabled'] ?? true) === true && ($link['when'] ?? true) === true)
                     @php
                         $isActive = request()->routeIs($link['route']);
                     @endphp

@@ -13,6 +13,7 @@ $typeIconPaths = [
 ];
 @endphp
 
+@if(\App\Support\PublicNavigation::isEnabled('announcements'))
 <section class="py-20 bg-white">
     <div class="max-w-7xl mx-auto px-6">
         <div class="text-center mb-12">
@@ -75,3 +76,4 @@ $typeIconPaths = [
         @endif
     </div>
 </section>
+@endif

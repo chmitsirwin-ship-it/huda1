@@ -4,6 +4,7 @@ namespace App\Filament\Admin\Pages;
 
 use App\Enums\CalculationMethod;
 use App\Enums\PrayerMethod;
+use App\Support\PublicNavigation;
 use BackedEnum;
 use BezhanSalleh\FilamentShield\Traits\HasPageShield;
 use Filament\Forms\Components\CodeEditor;
@@ -14,6 +15,7 @@ use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
 use Filament\Schemas\Components\Tabs;
 use Filament\Schemas\Components\Tabs\Tab;
 use Filament\Schemas\Schema;
@@ -168,6 +170,16 @@ class MosqueSettings extends Settings
                                     ->label(__('Meta Description'))
                                     ->rows(3),
                             ]),
+
+                        Tab::make(__('Navigation'))
+                            ->schema([
+                                ...collect(PublicNavigation::sections())
+                                    ->map(fn (string $label, string $section): Toggle => Toggle::make(PublicNavigation::settingKey($section))
+                                        ->label($label)
+                                        ->default(true))
+                                    ->all(),
+                            ])
+                            ->columns(2),
 
                         Tab::make(__('Custom Code'))
                             ->schema([

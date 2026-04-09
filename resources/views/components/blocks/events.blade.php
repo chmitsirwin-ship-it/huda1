@@ -4,6 +4,7 @@ $events = \App\Models\Event::published()->limit($data['limit'] ?? 3)->get();
 $style = $data['style'] ?? 'grid';
 @endphp
 
+@if(\App\Support\PublicNavigation::isEnabled('events'))
 <section class="py-20 bg-neutral-50">
     <div class="max-w-7xl mx-auto px-6">
         <div class="flex items-end justify-between mb-12">
@@ -172,3 +173,4 @@ $style = $data['style'] ?? 'grid';
         </div>
     </div>
 </section>
+@endif

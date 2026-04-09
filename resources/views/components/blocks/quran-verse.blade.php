@@ -14,7 +14,7 @@ if (!$verse) {
 }
 @endphp
 
-@if($verse)
+@if(\App\Support\PublicNavigation::isEnabled('library') && $verse)
 <section class="py-20 bg-gradient-to-br from-emerald-950 to-emerald-900 relative overflow-hidden">
     <div class="absolute inset-0 opacity-5">
         <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%">

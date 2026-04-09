@@ -5,6 +5,7 @@ $description = $data['description'] ?? null;
 
 @endphp
 
+@if(\App\Support\PublicNavigation::isEnabled('contact'))
 <section class="py-16 bg-white">
     <div class="max-w-3xl mx-auto px-6">
 
@@ -23,3 +24,4 @@ $description = $data['description'] ?? null;
         </div>
     </div>
 </section>
+@endif

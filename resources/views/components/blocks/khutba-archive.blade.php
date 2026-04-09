@@ -9,6 +9,7 @@ if (filled($data['category_ids'] ?? [])) {
 $khutbas = $khutbasQuery->limit($data['limit'] ?? 5)->get();
 @endphp
 
+@if(\App\Support\PublicNavigation::isEnabled('khutba'))
 <section class="py-20 bg-neutral-50">
     <div class="max-w-7xl mx-auto px-6">
         <div class="flex items-end justify-between mb-12">
@@ -137,3 +138,4 @@ $khutbas = $khutbasQuery->limit($data['limit'] ?? 5)->get();
         @endif
     </div>
 </section>
+@endif

@@ -12,7 +12,7 @@ if (!$hadith) {
 }
 @endphp
 
-@if($hadith)
+@if(\App\Support\PublicNavigation::isEnabled('library') && $hadith)
 <section class="py-20 bg-stone-50 relative overflow-hidden">
     <div class="absolute top-0 left-0 w-48 h-48 bg-emerald-100 rounded-full blur-3xl opacity-40 -translate-x-1/2 -translate-y-1/2"></div>
     <div class="absolute bottom-0 right-0 w-64 h-64 bg-amber-100 rounded-full blur-3xl opacity-30 translate-x-1/2 translate-y-1/2"></div>
