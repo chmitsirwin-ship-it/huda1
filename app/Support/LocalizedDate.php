@@ -2,9 +2,11 @@
 
 namespace App\Support;
 
+use Alkoumi\LaravelHijriDate\Hijri;
 use Carbon\CarbonInterface;
 use DateTimeInterface;
 use Illuminate\Support\Carbon;
+use Kindy\HijriDate\HijriDateTime;
 
 class LocalizedDate
 {
@@ -58,8 +60,9 @@ class LocalizedDate
         if (! $parsed) {
             return null;
         }
-        \GeniusTS\HijriDate\Hijri::setDefaultAdjustment(setting('hijri.adjustment_factor',0));
-        return \GeniusTS\HijriDate\Hijri::convertToHijri($parsed)->format(self::HIJRI_FORMAT);
+        $parsed->addDays(setting('hijri.adjustment_factor',0));
+        Hijri::setLang(app()->getLocale() == 'ar' ? 'ar' : 'en');
+        return Hijri::Date('l ، j F ، Y', $parsed);
     }
 
     private static function parse(mixed $value): ?CarbonInterface
