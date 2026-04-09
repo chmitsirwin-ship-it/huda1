@@ -25,6 +25,14 @@
                         ? \App\Support\LocalizedDate::time($today->jummah_khutba_time)
                         : null;
     $isFriday     = today()->isFriday();
+
+    $showJummah  = (bool) ($data['show_jummah'] ?? true);
+    $nextJummah  = $showJummah
+        ? \App\Models\PrayerTime::whereNotNull('jummah_time')
+            ->where('date', '>=', today()->toDateString())
+            ->orderBy('date')
+            ->first()
+        : null;
 @endphp
 
 <section class="py-16 bg-white">
@@ -262,6 +270,76 @@
                             @endif
                         @endif
                     @endforeach
+                </div>
+            </div>
+        @endif
+
+        {{-- Next Jummah Banner --}}
+        @if($nextJummah)
+            @php
+                $isNextFriday   = $nextJummah->date->isToday();
+                $daysUntil      = (int) today()->startOfDay()->diffInDays($nextJummah->date->startOfDay(), false);
+                $nextJummahDate = \App\Support\LocalizedDate::date($nextJummah->date);
+                $nextJummahDay  = \App\Support\LocalizedDate::weekday($nextJummah->date);
+            @endphp
+            <div class="mt-10 mx-auto max-w-3xl">
+                <div class="relative overflow-hidden rounded-2xl bg-gradient-to-br from-emerald-500 to-emerald-600 shadow-lg shadow-emerald-500/20">
+
+                    {{-- decorative circles --}}
+                    <div class="absolute -top-8 -end-8 w-40 h-40 rounded-full bg-white/10 pointer-events-none"></div>
+                    <div class="absolute -bottom-10 -start-6 w-32 h-32 rounded-full bg-white/5 pointer-events-none"></div>
+
+                    <div class="relative px-6 py-5 sm:px-8 sm:py-6 flex flex-col sm:flex-row sm:items-center gap-5">
+
+                        {{-- icon + label --}}
+                        <div class="flex items-center gap-4 sm:border-e border-emerald-400/40 sm:pe-8">
+                            <div class="w-12 h-12 rounded-xl bg-white/15 flex items-center justify-center shrink-0">
+                                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="{{ $jummahIcon }}"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <p class="text-[10px] font-semibold text-emerald-100/80 uppercase tracking-widest">
+                                    {{ $isNextFriday ? __('Today') : ($daysUntil === 1 ? __('Tomorrow') : __('Upcoming')) }}
+                                </p>
+                                <p class="text-lg font-bold text-white leading-tight">{{ __("Jumu'ah") }}</p>
+                                <p class="text-xs text-emerald-100/70 mt-0.5">{{ $nextJummahDay }}, {{ $nextJummahDate }}</p>
+                            </div>
+                        </div>
+
+                        {{-- times --}}
+                        <div class="flex flex-wrap gap-x-8 gap-y-3 sm:ps-2">
+                            <div>
+                                <p class="text-[10px] font-semibold text-emerald-100/70 uppercase tracking-wider">{{ __('Salah') }}</p>
+                                <p class="text-xl font-bold text-white tabular-nums mt-0.5">{{ \App\Support\LocalizedDate::time($nextJummah->jummah_time) }}</p>
+                            </div>
+                            @if($nextJummah->jummah_khutba_time)
+                                <div>
+                                    <p class="text-[10px] font-semibold text-emerald-100/70 uppercase tracking-wider">{{ __('Khutbah') }}</p>
+                                    <p class="text-xl font-bold text-white tabular-nums mt-0.5">{{ \App\Support\LocalizedDate::time($nextJummah->jummah_khutba_time) }}</p>
+                                </div>
+                            @endif
+                            @if($nextJummah->jummah_iqamah)
+                                <div>
+                                    <p class="text-[10px] font-semibold text-emerald-100/70 uppercase tracking-wider">{{ __('Iqamah') }}</p>
+                                    <p class="text-xl font-bold text-white tabular-nums mt-0.5">{{ \App\Support\LocalizedDate::time($nextJummah->jummah_iqamah) }}</p>
+                                </div>
+                            @endif
+                        </div>
+
+                        {{-- days-until pill (only when not today) --}}
+                        @if(!$isNextFriday)
+                            <div class="sm:ms-auto shrink-0">
+                                <div class="inline-flex flex-col items-center justify-center w-14 h-14 rounded-xl bg-white/20 text-white">
+                                    <span class="text-2xl font-bold leading-none">{{ $daysUntil }}</span>
+                                    <span class="text-[9px] font-medium uppercase tracking-wide mt-0.5 text-emerald-100/80">
+                                        {{ $daysUntil === 1 ? __('day') : __('days') }}
+                                    </span>
+                                </div>
+                            </div>
+                        @endif
+
+                    </div>
                 </div>
             </div>
         @endif

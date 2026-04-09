@@ -45,66 +45,39 @@
                     @endforeach
                 </div>
 
-                {{-- Jumu'ah strip — shown whenever jummah_time is set --}}
                 @if($today->jummah_time)
-                    <div class="mt-5 flex flex-wrap items-center gap-3">
-
-                        {{-- Jumu'ah time --}}
-                        <div class="inline-flex items-center gap-2.5 bg-amber-500/15 border border-amber-400/25
-                                    rounded-lg px-4 py-2.5">
-                            <svg class="w-4 h-4 text-amber-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                      d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857
-                                         M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857
-                                         m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/>
-                            </svg>
-                            <div class="leading-tight">
-                                <p class="text-[10px] font-medium text-amber-400 uppercase tracking-wider">
-                                    {{ __("Jumu'ah") }}
-                                </p>
-                                <p class="text-sm font-semibold text-amber-200 tabular-nums">
-                                    {{ \App\Support\LocalizedDate::time($today->jummah_time) }}
-                                </p>
+                    <div class="mt-5 bg-amber-500/10 border border-amber-400/25 rounded-xl px-5 py-4 flex flex-col sm:flex-row sm:items-center gap-4">
+                        <div class="flex items-center gap-3 sm:border-e border-amber-400/20 sm:pe-5">
+                            <div class="w-9 h-9 rounded-lg bg-amber-400/15 flex items-center justify-center shrink-0">
+                                <svg class="w-5 h-5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75"
+                                          d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <p class="text-[10px] font-medium text-amber-400 uppercase tracking-widest">{{ __("Jumu'ah") }}</p>
+                                <p class="text-xs text-amber-300/70 mt-0.5">{{ __('Friday Prayer') }}</p>
                             </div>
                         </div>
-                        {{-- Khutbah time --}}
-                        @if($today->jummah_khutba_time)
-                            <div class="inline-flex items-center gap-2.5 bg-amber-500/10 border border-amber-400/20
-                                        rounded-lg px-4 py-2.5">
-                                <svg class="w-4 h-4 text-amber-400/70 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                          d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4
-                                             m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"/>
-                                </svg>
-                                <div class="leading-tight">
-                                    <p class="text-[10px] font-medium text-amber-400/80 uppercase tracking-wider">
-                                        {{ __('Khutbah') }}
-                                    </p>
-                                    <p class="text-sm font-semibold text-amber-200/80 tabular-nums">
-                                        {{ \App\Support\LocalizedDate::time($today->jummah_khutba_time) }}
-                                    </p>
-                                </div>
-                            </div>
-                        @endif
-                        {{-- Jumu'ah Iqamah time --}}
-                        @if($today->jummah_iqamah)
-                            <div class="inline-flex items-center gap-2.5 bg-amber-500/10 border border-amber-400/20
-                                        rounded-lg px-4 py-2.5">
-                                <svg class="w-4 h-4 text-amber-400/70 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                          d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                                </svg>
-                                <div class="leading-tight">
-                                    <p class="text-[10px] font-medium text-amber-400/80 uppercase tracking-wider">
-                                        {{ __('Iqamah') }}
-                                    </p>
-                                    <p class="text-sm font-semibold text-amber-200/80 tabular-nums">
-                                        {{ \App\Support\LocalizedDate::time($today->jummah_iqamah) }}
-                                    </p>
-                                </div>
-                            </div>
-                        @endif
+                        <div class="flex flex-wrap gap-x-6 gap-y-3">
 
+                            <div>
+                                <p class="text-[10px] font-medium text-amber-400 uppercase tracking-wider">{{ __('Salah') }}</p>
+                                <p class="text-base font-bold text-amber-100 tabular-nums mt-0.5">{{ \App\Support\LocalizedDate::time($today->jummah_time) }}</p>
+                            </div>
+                            @if($today->jummah_khutba_time)
+                                <div>
+                                    <p class="text-[10px] font-medium text-amber-400/70 uppercase tracking-wider">{{ __('Khutbah') }}</p>
+                                    <p class="text-base font-bold text-amber-200 tabular-nums mt-0.5">{{ \App\Support\LocalizedDate::time($today->jummah_khutba_time) }}</p>
+                                </div>
+                            @endif
+                            @if($today->jummah_iqamah)
+                                <div>
+                                    <p class="text-[10px] font-medium text-amber-400/70 uppercase tracking-wider">{{ __('Iqamah') }}</p>
+                                    <p class="text-base font-bold text-amber-200 tabular-nums mt-0.5">{{ \App\Support\LocalizedDate::time($today->jummah_iqamah) }}</p>
+                                </div>
+                            @endif
+                        </div>
                     </div>
                 @endif
 
@@ -203,25 +176,27 @@
                                         </div>
                                     @endif
 
-                                    {{-- Jumu'ah sub-row inside Dhuhr cell --}}
                                     @if($prayer === 'dhuhr' && $hasJummah)
-                                        <div class="mt-1.5 pt-1.5 border-t border-amber-200/60 space-y-0.5">
-                                            <div class="text-[10px] font-medium text-amber-600 uppercase tracking-wide">
-                                                {{ __("Jumu'ah") }}
-                                            </div>
-                                            <div class="text-[11px] font-semibold text-amber-700 tabular-nums">
-                                                {{ \App\Support\LocalizedDate::time($pt->jummah_time) }}
-                                            </div>
-                                            @if($pt->jummah_iqamah ?? null)
-                                                <div class="text-[10px] text-amber-500 tabular-nums">
-                                                    {{ \App\Support\LocalizedDate::time($pt->jummah_iqamah) }}
+                                        <div class="mt-2 pt-2 border-t border-amber-200/50">
+                                            <div class="text-[10px] font-semibold text-amber-600 uppercase tracking-wider mb-1.5">{{ __("Jumu'ah") }}</div>
+                                            <div class="flex flex-wrap justify-center gap-x-3 gap-y-1">
+                                                <div class="text-center">
+                                                    <div class="text-[9px] text-amber-500 uppercase tracking-wide">{{ __('Salah') }}</div>
+                                                    <div class="text-[12px] font-bold text-amber-700 tabular-nums">{{ \App\Support\LocalizedDate::time($pt->jummah_time) }}</div>
                                                 </div>
-                                            @endif
-                                            @if($pt->jummah_khutba_time ?? null)
-                                                <div class="text-[10px] text-amber-500 tabular-nums">
-                                                    {{ __('Khutbah') }}: {{ \App\Support\LocalizedDate::time($pt->jummah_khutba_time) }}
-                                                </div>
-                                            @endif
+                                                @if($pt->jummah_khutba_time ?? null)
+                                                    <div class="text-center">
+                                                        <div class="text-[9px] text-amber-400 uppercase tracking-wide">{{ __('Khutbah') }}</div>
+                                                        <div class="text-[11px] font-medium text-amber-600 tabular-nums">{{ \App\Support\LocalizedDate::time($pt->jummah_khutba_time) }}</div>
+                                                    </div>
+                                                @endif
+                                                @if($pt->jummah_iqamah ?? null)
+                                                    <div class="text-center">
+                                                        <div class="text-[9px] text-amber-400 uppercase tracking-wide">{{ __('Iqamah') }}</div>
+                                                        <div class="text-[11px] font-medium text-amber-600 tabular-nums">{{ \App\Support\LocalizedDate::time($pt->jummah_iqamah) }}</div>
+                                                    </div>
+                                                @endif
+                                            </div>
                                         </div>
                                     @endif
                                 </td>

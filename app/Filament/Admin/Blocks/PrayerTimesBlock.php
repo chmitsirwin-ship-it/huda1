@@ -4,6 +4,7 @@ namespace App\Filament\Admin\Blocks;
 
 use App\Filament\Admin\BlockCategories\Worship;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Toggle;
 use Illuminate\Contracts\Support\Htmlable;
 use Redberry\PageBuilderPlugin\Abstracts\BaseBlock;
 
@@ -20,6 +21,10 @@ class PrayerTimesBlock extends BaseBlock
                     'card' => __('Card'),
                 ])
                 ->default('compact'),
+            Toggle::make('show_jummah')
+                ->label(__('Always Show Next Jummah'))
+                ->helperText(__('Display the next upcoming Friday Jummah times at the bottom of this block.'))
+                ->default(true),
         ];
     }
 
