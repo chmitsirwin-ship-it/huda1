@@ -48,7 +48,7 @@
                                     <div>
                                         <p class="font-semibold text-neutral-800 mb-0.5">{{ data_get($phone,'label',__('Phone')) }}</p>
                                         <a href="tel:{{ data_get($phone,'phone','-') }}" class="text-emerald-700 hover:text-emerald-900 transition-colors">
-                                            {{ data_get($phone,'phone','-') }}
+                                            <bdi>{{ data_get($phone,'phone','-') }}</bdi>
                                         </a>
                                     </div>
                                 </div>
