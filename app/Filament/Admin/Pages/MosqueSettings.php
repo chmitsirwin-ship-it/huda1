@@ -6,6 +6,8 @@ use App\Enums\CalculationMethod;
 use App\Enums\PrayerMethod;
 use BackedEnum;
 use BezhanSalleh\FilamentShield\Traits\HasPageShield;
+use Filament\Forms\Components\CodeEditor;
+use Filament\Forms\Components\CodeEditor\Enums\Language;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Repeater;
@@ -24,6 +26,7 @@ use Ysfkaya\FilamentPhoneInput\Forms\PhoneInput;
 class MosqueSettings extends Settings
 {
     use HasPageShield;
+
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedCog6Tooth;
 
     public static function getNavigationGroup(): string|UnitEnum|null
@@ -164,6 +167,21 @@ class MosqueSettings extends Settings
                                 Textarea::make('seo.meta_description')
                                     ->label(__('Meta Description'))
                                     ->rows(3),
+                            ]),
+
+                        Tab::make(__('Custom Code'))
+                            ->schema([
+                                CodeEditor::make('custom_code.header')
+                                    ->label(__('Header Code'))
+                                    ->hint(__('Injected inside <head> tag (e.g. GA4, Meta Pixel, custom scripts)'))
+                                    ->language(Language::Html)
+                                    ->columnSpanFull(),
+
+                                CodeEditor::make('custom_code.body')
+                                    ->label(__('Body Code'))
+                                    ->hint(__('Injected after <body> tag (e.g. tracking pixels, chat widgets)'))
+                                    ->language(Language::Html)
+                                    ->columnSpanFull(),
                             ]),
                     ]),
             ]);
