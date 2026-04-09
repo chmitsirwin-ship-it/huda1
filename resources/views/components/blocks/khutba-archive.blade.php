@@ -5,7 +5,6 @@ $khutbasQuery = \App\Models\Khutba::query()->with('categories')->published();
 if (filled($data['category_ids'] ?? [])) {
     $khutbasQuery->whereHas('categories', fn ($query) => $query->whereIn('khutba_categories.id', (array) $data['category_ids']));
 }
-
 $khutbas = $khutbasQuery->limit($data['limit'] ?? 5)->get();
 @endphp
 
@@ -20,7 +19,7 @@ $khutbas = $khutbasQuery->limit($data['limit'] ?? 5)->get();
                 </div>
                 <h2 class="text-3xl md:text-4xl font-bold text-neutral-900">{{ __("Jumu'ah Khutba Archive") }}</h2>
             </div>
-            <a href="{{ route('khutba.index', app()->getLocale()) }}"
+            <a href="{{ route('khutba.index') }}"
                class="hidden sm:inline-flex items-center gap-2 text-emerald-600 font-semibold hover:text-emerald-700 transition-colors group">
                 {{ __('View All') }}
                 <svg class="w-4 h-4 transition-transform group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -102,7 +101,7 @@ $khutbas = $khutbasQuery->limit($data['limit'] ?? 5)->get();
 
                                     <span class="text-sm text-neutral-400 leading-relaxed">
                                         {{ \App\Support\LocalizedDate::date($khutba->date) }}
-                                        <span class="block text-xs opacity-70">{{ \App\Support\LocalizedDate::hijri($khutba->date) }}</span>
+                                        <span class="inline text-xs opacity-70"> - {{ \App\Support\LocalizedDate::hijri($khutba->date) }}</span>
                                     </span>
                                 </div>
 
@@ -127,7 +126,7 @@ $khutbas = $khutbasQuery->limit($data['limit'] ?? 5)->get();
             </div>
 
             <div class="sm:hidden mt-8 text-center">
-                <a href="{{ route('khutba.index', app()->getLocale()) }}"
+                <a href="{{ route('khutba.index') }}"
                    class="inline-flex items-center gap-2 text-emerald-600 font-semibold hover:text-emerald-700 transition-colors">
                     {{ __('View All') }}
                     <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
