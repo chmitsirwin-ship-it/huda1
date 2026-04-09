@@ -359,16 +359,16 @@
                         <div class="mt-3 space-y-1 text-xs">
                             <div class="flex justify-between">
                                 <span class="text-neutral-500">{{ __('Date') }}</span>
-                                <span class="text-neutral-700 font-medium">{{ \App\Support\LocalizedDate::date($sp->date) }} &middot; {{ \App\Support\LocalizedDate::weekday($sp->date) }}</span>
+                                <span class="text-neutral-700 font-medium">{{ \App\Support\LocalizedDate::date($sp->date) }} &middot; {{ \App\Support\LocalizedDate::weekday($sp->date) }} &middot; {{ \App\Support\LocalizedDate::hijri($sp->date) }}</span>
                             </div>
                             <div class="flex justify-between">
                                 <span class="text-neutral-500">{{ __('Time') }}</span>
-                                <span class="text-neutral-900 font-semibold">{{ \Carbon\Carbon::parse($sp->time)->format('g:i A') }}</span>
+                                <span class="text-neutral-900 font-semibold">{{ \App\Support\LocalizedDate::time($sp->time) }}</span>
                             </div>
                             @if($sp->end_time)
                                 <div class="flex justify-between">
                                     <span class="text-neutral-500">{{ __('Ends') }}</span>
-                                    <span class="text-neutral-700">{{ \Carbon\Carbon::parse($sp->end_time)->format('g:i A') }}</span>
+                                    <span class="text-neutral-700">{{ \App\Support\LocalizedDate::time($sp->end_time) }}</span>
                                 </div>
                             @endif
                             @if($address)
