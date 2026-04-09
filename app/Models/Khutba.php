@@ -30,4 +30,14 @@ class Khutba extends Model
     {
         $query->where('is_published', true)->orderByDesc('date');
     }
+
+    public function getSitemapUrl(): string
+    {
+        return route('khutba.show', $this->slug);
+    }
+
+    public function getSitemapLastModified(): \DateTimeInterface
+    {
+        return $this->updated_at;
+    }
 }

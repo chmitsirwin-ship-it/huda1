@@ -32,4 +32,14 @@ class Event extends Model
     {
         $query->published()->where('starts_at', '>=', now());
     }
+
+    public function getSitemapUrl(): string
+    {
+        return route('events.show', $this);
+    }
+
+    public function getSitemapLastModified(): \DateTimeInterface
+    {
+        return $this->updated_at;
+    }
 }

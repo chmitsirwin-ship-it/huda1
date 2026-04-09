@@ -35,4 +35,14 @@ class News extends Model
             ->orderByDesc('published_at')
             ->orderByDesc('id');
     }
+
+    public function getSitemapUrl(): string
+    {
+        return route('news.show', $this->slug);
+    }
+
+    public function getSitemapLastModified(): \DateTimeInterface
+    {
+        return $this->updated_at;
+    }
 }

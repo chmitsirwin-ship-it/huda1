@@ -18,6 +18,7 @@
         "laravel/framework": "^12.56.0",
         "laravel/tinker": "^2.11.1",
         "malzariey/filament-daterangepicker-filter": "^5.0",
+        "muhammad-nawlo/filament-sitemap-generator": "^1.0",
         "outerweb/filament-settings": "^2.3.1",
         "owenvoke/blade-fontawesome": "^3.2.2",
         "redberry/page-builder-plugin": "^3.0",

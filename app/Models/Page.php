@@ -33,6 +33,16 @@ class Page extends Model
         $query->published()->where('show_in_nav', true);
     }
 
+    public function getSitemapUrl(): string
+    {
+        return route('page.show', $this->slug);
+    }
+
+    public function getSitemapLastModified(): \DateTimeInterface
+    {
+        return $this->updated_at;
+    }
+
     protected static function booted(): void
     {
         static::saving(function (self $page): void {
