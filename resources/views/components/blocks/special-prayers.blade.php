@@ -61,15 +61,35 @@
                         </div>
                         <div class="space-y-1">
                             @foreach($datePrayers as $prayer)
+                                @php
+                                    $location = $prayer->location ?? [];
+                                    $latitude = data_get($location, 'latitude');
+                                    $longitude = data_get($location, 'longitude');
+                                    $address = data_get($location, 'address');
+                                    $googleMapsUrl = filled($latitude) && filled($longitude)
+                                        ? 'https://www.google.com/maps/search/?api=1&query='.$latitude.','.$longitude
+                                        : null;
+                                @endphp
                                 <div class="flex items-center justify-between py-1">
-                                    <div class="flex items-center gap-2">
-                                        <span class="text-sm text-white font-medium">{{ $prayer->name }}</span>
+                                    <div class="min-w-0 flex items-center gap-2">
+                                        <span class="truncate text-sm font-medium text-white">{{ $prayer->name }}</span>
                                         <span class="text-[9px] px-1.5 py-0.5 rounded-full font-semibold uppercase bg-emerald-500/20 text-emerald-300">{{ $prayer->type->getLabel() }}</span>
                                     </div>
                                     <span class="text-sm text-white font-bold tabular-nums">
                                         {{ \Carbon\Carbon::parse($prayer->time)->format('g:i A') }}
                                     </span>
                                 </div>
+                                @if($address || $googleMapsUrl)
+                                    <div class="flex flex-wrap items-center justify-between gap-2 pb-1 text-[11px] text-emerald-200/80">
+                                        <span class="truncate">{{ $address ?: __('Mapped location') }}</span>
+                                        @if($googleMapsUrl)
+                                            <a href="{{ $googleMapsUrl }}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 font-semibold text-emerald-300 transition-colors hover:text-white">
+                                                <x-icon name="heroicon-o-map-pin" class="h-3.5 w-3.5" />
+                                                {{ __('Open map') }}
+                                            </a>
+                                        @endif
+                                    </div>
+                                @endif
                             @endforeach
                         </div>
                     </div>

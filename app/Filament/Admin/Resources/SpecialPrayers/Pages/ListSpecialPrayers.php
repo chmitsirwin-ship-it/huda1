@@ -87,6 +87,7 @@ class ListSpecialPrayers extends ListRecords
                         ->addActionLabel(__('Add Prayer')),
                 ])
                 ->action(function (array $data): void {
+                    $locale = config('app.fallback_locale', config('app.locale', 'en'));
                     $year = (int) $data['year'];
                     $month = (int) $data['month'];
                     $group = $data['group'];
@@ -114,18 +115,31 @@ class ListSpecialPrayers extends ListRecords
                                 }
                             }
 
-                            SpecialPrayer::updateOrCreate(
-                                [
-                                    'name' => $prayerConfig['name'],
-                                    'date' => $date->toDateString(),
-                                    'group' => $group,
-                                ],
-                                [
-                                    'time' => $time ?? '21:00',
-                                    'type' => $type,
-                                    'is_recurring' => true,
-                                ]
-                            );
+                            $specialPrayerQuery = SpecialPrayer::query()
+                                ->where("name->{$locale}", $prayerConfig['name'])
+                                ->whereDate('date', $date->toDateString());
+
+                            if (filled($group)) {
+                                $specialPrayerQuery->where("group->{$locale}", $group);
+                            } else {
+                                $specialPrayerQuery->whereNull('group');
+                            }
+
+                            $specialPrayer = $specialPrayerQuery->first() ?? new SpecialPrayer;
+                            $specialPrayer->setTranslation('name', $locale, $prayerConfig['name']);
+                            $specialPrayer->date = $date->toDateString();
+                            $specialPrayer->time = $time ?? '21:00';
+                            $specialPrayer->type = $type;
+                            $specialPrayer->is_recurring = true;
+
+                            if (filled($group)) {
+                                $specialPrayer->setTranslation('group', $locale, $group);
+                            } else {
+                                $specialPrayer->group = null;
+                            }
+
+                            $specialPrayer->save();
+
                             $generated++;
                         }
                     }

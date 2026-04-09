@@ -312,7 +312,16 @@
             <h2 class="text-lg font-semibold text-neutral-900 mb-4">{{ __('Upcoming Special Prayers') }}</h2>
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                 @foreach($specialPrayers as $sp)
-                    @php $isToday = $sp->date->isToday(); @endphp
+                    @php
+                        $isToday = $sp->date->isToday();
+                        $location = $sp->location ?? [];
+                        $latitude = data_get($location, 'latitude');
+                        $longitude = data_get($location, 'longitude');
+                        $address = data_get($location, 'address');
+                        $googleMapsUrl = filled($latitude) && filled($longitude)
+                            ? 'https://www.google.com/maps/search/?api=1&query='.$latitude.','.$longitude
+                            : null;
+                    @endphp
                     <div class="relative border {{ $isToday ? 'border-emerald-300 bg-emerald-50' : 'border-neutral-200 bg-white' }} rounded-xl p-4 transition-colors hover:shadow-sm">
                         @if($isToday)
                             <span class="absolute top-3 right-3 text-[10px] font-medium bg-emerald-100 text-emerald-700 border border-emerald-200 rounded px-1.5 py-0.5">{{ __('Today') }}</span>
@@ -362,9 +371,24 @@
                                     <span class="text-neutral-700">{{ \Carbon\Carbon::parse($sp->end_time)->format('g:i A') }}</span>
                                 </div>
                             @endif
+                            @if($address)
+                                <div class="flex justify-between gap-3">
+                                    <span class="text-neutral-500">{{ __('Location') }}</span>
+                                    <span class="text-end text-neutral-700 font-medium">{{ $address }}</span>
+                                </div>
+                            @endif
                         </div>
                         @if($sp->description)
                             <p class="text-neutral-500 text-xs mt-2">{{ $sp->description }}</p>
+                        @endif
+                        @if($googleMapsUrl)
+                            <a href="{{ $googleMapsUrl }}"
+                               target="_blank"
+                               rel="noopener noreferrer"
+                               class="mt-3 inline-flex items-center gap-2 rounded-lg bg-emerald-50 px-3 py-2 text-xs font-semibold text-emerald-700 transition-colors hover:bg-emerald-100">
+                                <x-icon name="heroicon-o-map-pin" class="h-4 w-4" />
+                                {{ __('Open in Google Maps') }}
+                            </a>
                         @endif
                     </div>
                 @endforeach

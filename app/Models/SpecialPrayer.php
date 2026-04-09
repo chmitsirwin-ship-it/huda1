@@ -6,10 +6,14 @@ use App\Enums\SpecialPrayerType;
 use ElipZis\Cacheable\Models\Traits\Cacheable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Translatable\HasTranslations;
 
 class SpecialPrayer extends Model
 {
     use Cacheable;
+    use HasTranslations;
+
+    public array $translatable = ['name', 'group', 'description'];
 
     protected function casts(): array
     {
@@ -17,6 +21,7 @@ class SpecialPrayer extends Model
             'date' => 'date',
             'type' => SpecialPrayerType::class,
             'is_recurring' => 'boolean',
+            'location' => 'array',
         ];
     }
 
