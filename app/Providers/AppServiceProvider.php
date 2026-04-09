@@ -45,6 +45,7 @@ use Filament\Infolists\Components\ImageEntry;
 use Filament\Panel;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
+use Filament\Support\Colors\Color;
 use Filament\Support\Enums\Size;
 use Filament\Support\Enums\Width;
 use Filament\Tables\Columns\Column;
@@ -71,6 +72,9 @@ class AppServiceProvider extends ServiceProvider
     {
         Panel::configureUsing(fn (Panel $panel) => $panel->maxContentWidth(Width::Full)
             ->font('Alexandria')
+            ->colors([
+                'primary' => Color::Emerald,
+            ])
             ->readOnlyRelationManagersOnResourceViewPagesByDefault(false));
 
     }

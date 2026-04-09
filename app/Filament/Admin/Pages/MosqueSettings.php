@@ -5,6 +5,7 @@ namespace App\Filament\Admin\Pages;
 use App\Enums\CalculationMethod;
 use App\Enums\PrayerMethod;
 use BackedEnum;
+use BezhanSalleh\FilamentShield\Traits\HasPageShield;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Repeater;
@@ -22,6 +23,7 @@ use Ysfkaya\FilamentPhoneInput\Forms\PhoneInput;
 
 class MosqueSettings extends Settings
 {
+    use HasPageShield;
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedCog6Tooth;
 
     public static function getNavigationGroup(): string|UnitEnum|null

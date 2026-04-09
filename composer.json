@@ -9,6 +9,7 @@
         "php": "^8.2",
         "abdulmajeed-jamaan/filament-translatable-tabs": "^5.0",
         "bezhansalleh/filament-language-switch": "^4.3",
+        "bezhansalleh/filament-shield": "^4.2",
         "cms-multi/filament-clear-cache": "^3.0",
         "elipzis/laravel-cacheable-model": "^0.5.1",
         "filament/filament": "^5.4.4",
