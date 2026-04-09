@@ -642,7 +642,7 @@
     "Try Again": "Spróbuj ponownie",
     "Try changing your search or selected category.": "Spróbuj zmienić wyszukiwanie lub wybraną kategorię.",
     "Tunisia": "Tunezja",
-    "Twitter / X": "Twitter / X",
+    "Twitter \/ X": "Twitter \/ X",
     "Type": "Typ",
     "Umm Al-Qura University, Makkah": "Uniwersytet Umm Al-Qura, Mekka",
     "Unauthorized": "Nieautoryzowany Dostęp",
@@ -709,5 +709,14 @@
     "Zakat Calculator": "Kalkulator Zakatu",
     "Zakat Guidance": "Wytyczne do Zakatu",
     "Zakat is not obligatory based on the values entered.": "Zakat nie jest obowiązkowy na podstawie wprowadzonych wartości.",
-    "Zoom Level": "Poziom powiększenia"
+    "Zoom Level": "Poziom powiększenia",
+    "filament-translation-manager::messages.missing_translation": "Brakujące tłumaczenie",
+    "filament-translation-manager::messages.toggle_multi_line_btn": "Przełącz wieloliniowy",
+    "filament-translation-manager::messages.cancel_translation_btn": "Anuluj tłumaczenie",
+    "filament-translation-manager::messages.previous_page": "Poprzednia strona",
+    "filament-translation-manager::messages.next_page": "Następna strona",
+    "filament-translation-manager::messages.filter_action": "Filtruj",
+    "filament-translation-manager::messages.filter_results": "Filtruj wyniki",
+    "filament-translation-manager::messages.filter_results_missing_translations": "Filtruj wyniki — brakujące tłumaczenia",
+    "filament-translation-manager::messages.error_no_translations_for_filters": "Brak tłumaczeń pasujących do zastosowanych filtrów"
 }

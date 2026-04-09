@@ -507,5 +507,14 @@
     "Minutes after Isha for Taraweeh prayer": "الدقائق بعد العشاء لصلاة التراويح",
     "Upcoming Special Prayers": "الصلوات الخاصة القادمة",
     "Time": "الوقت",
-    "Ends": "ينتهي"
+    "Ends": "ينتهي",
+    "filament-translation-manager::messages.missing_translation": "ترجمة مفقودة",
+    "filament-translation-manager::messages.toggle_multi_line_btn": "تبديل النصوص متعددة الأسطر",
+    "filament-translation-manager::messages.cancel_translation_btn": "إلغاء الترجمة",
+    "filament-translation-manager::messages.previous_page": "الصفحة السابقة",
+    "filament-translation-manager::messages.next_page": "الصفحة التالية",
+    "filament-translation-manager::messages.filter_action": "تطبيق التصفية",
+    "filament-translation-manager::messages.filter_results": "تصفية النتائج",
+    "filament-translation-manager::messages.filter_results_missing_translations": "تصفية الترجمات المفقودة",
+    "filament-translation-manager::messages.error_no_translations_for_filters": "لم يتم العثور على ترجمات مطابقة للمعايير المحددة"
 }
