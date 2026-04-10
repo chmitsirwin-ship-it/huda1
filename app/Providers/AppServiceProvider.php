@@ -84,7 +84,7 @@ class AppServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
-        PhoneInput::configureUsing(fn(PhoneInput $phoneInput) => $phoneInput->ipLookup(function () {
+        PhoneInput::configureUsing(fn(PhoneInput $phoneInput) => $phoneInput->disableLookup()->ipLookup(function () {
             return rescue(fn () => Http::get('https://ipinfo.io/'.request()->ip().'/json')->json('country'), app()->getLocale(), report: false);
 
         }));
