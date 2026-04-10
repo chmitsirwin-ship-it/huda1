@@ -454,8 +454,8 @@
                         </div>
 
                         {{-- times --}}
-                        <div class="grid flex-1 grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
-                            <div class="rounded-2xl bg-white/16 px-4 py-3 shadow-sm ring-1 ring-white/10 sm:col-span-2 lg:col-span-1">
+                        <div class="grid flex-1 gap-3 {{ $nextJummah->jummah_khutba_time && $nextJummah->jummah_iqamah ? 'grid-cols-3' : 'grid-cols-2' }}">
+                            <div class="rounded-2xl bg-white/16 px-4 py-3 shadow-sm ring-1 ring-white/10">
                                 <p class="text-[10px] font-semibold uppercase tracking-[0.2em] text-emerald-100/75">{{ __('Salah Time') }}</p>
                                 <p class="mt-1 text-2xl font-bold text-white tabular-nums">{{ \App\Support\LocalizedDate::time($nextJummah->jummah_time) }}</p>
                             </div>
@@ -466,7 +466,7 @@
                                 </div>
                             @endif
                             @if($nextJummah->jummah_iqamah)
-                                <div class="rounded-2xl bg-white/10 px-4 py-3 ring-1 ring-white/8 {{ $nextJummah->jummah_khutba_time ? '' : 'sm:col-span-1 lg:col-span-1' }}">
+                                <div class="rounded-2xl bg-white/10 px-4 py-3 ring-1 ring-white/8">
                                     <p class="text-[10px] font-semibold uppercase tracking-[0.2em] text-emerald-100/70">{{ __('Iqamah') }}</p>
                                     <p class="mt-1 text-xl font-bold text-white tabular-nums">{{ \App\Support\LocalizedDate::time($nextJummah->jummah_iqamah) }}</p>
                                 </div>
