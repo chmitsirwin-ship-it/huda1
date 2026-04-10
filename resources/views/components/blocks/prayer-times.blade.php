@@ -161,7 +161,7 @@
                     <table class="w-full">
                         <thead>
                         <tr class="bg-emerald-600 text-white">
-                            <th class="px-6 py-4 text-left font-semibold">{{ __('Prayer') }}</th>
+                            <th class="px-6 py-4 text-start font-semibold">{{ __('Prayer') }}</th>
                             <th class="px-6 py-4 text-center font-semibold">{{ __('Adhan') }}</th>
                             <th class="px-6 py-4 text-center font-semibold">{{ __('Iqamah') }}</th>
                         </tr>
