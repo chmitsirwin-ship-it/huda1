@@ -548,5 +548,13 @@
     "Please enter a valid address or latitude\/longitude coordinates.": "يرجى إدخال عنوان صالح أو إحداثيات خط العرض\/خط الطول.",
     "Unable to determine location from the provided address. Please try again with a more specific address.": "غير قادر على تحديد الموقع من العنوان المقدم. يرجى المحاولة مرة أخرى بعنوان أكثر تحديدًا.",
     "Please ensure both latitude and longitude are provided in the correct format (e.g., 24.7136, 46.6753).": "يرجى التأكد من توفير كل من خط العرض وخط الطول بالتنسيق الصحيح (مثال: 24.7136, 46.6753).",
-    "Navigation": "التنقل"
+    "Navigation": "التنقل",
+    "Show Next Salah Countdown": "عرض العد التنازلي للصلاة القادمة",
+    "Display a live countdown to the upcoming salah time above the Jummah section.": "عرض عد تنازلي مباشر لوقت الصلاة القادمة فوق قسم الجمعة.",
+    "Next Salah": "الصلاة القادمة",
+    "Begins in": "يبدأ في",
+    "Hours": "ساعات",
+    "Minutes": "دقائق",
+    "Seconds": "ثوانٍ",
+    "Salah Time": "وقت الصلاة"
 }
