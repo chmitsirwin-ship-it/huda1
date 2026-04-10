@@ -84,8 +84,9 @@ class AppServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
+        dd(Http::get('https://ipinfo.io/json')->json());
         PhoneInput::configureUsing(fn(PhoneInput $phoneInput) => $phoneInput->ipLookup(function () {
-            return rescue(fn() => dd(Http::get('https://ipinfo.io/json')), app()->getLocale(), report: false);
+            return dd(Http::get('https://ipinfo.io/json'));
         }));
         TimePicker::configureUsing(fn(TimePicker $picker) => $picker->seconds(false));
         Model::automaticallyEagerLoadRelationships();
