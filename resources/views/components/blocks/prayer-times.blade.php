@@ -192,8 +192,14 @@
                                 </tr>
                                 @if($khutbaTime)
                                     <tr class="bg-amber-50/40 border-b border-neutral-100">
-                                        <td class="px-6 py-4 pl-10 text-neutral-500 text-sm font-medium">↳ {{ __('Khutbah') }}</td>
-                                        <td class="px-6 py-4 text-center text-amber-600 font-medium tabular-nums text-sm">{{ $khutbaTime }}</td>
+                                        <td class="px-6 py-4 ps-10 text-neutral-500 text-sm font-medium">
+                                            <span class="inline-flex items-center gap-x-1.5">
+                                                {{ __('Khutbah') }}
+                                            </span>
+                                        </td>
+                                        <td class="px-6 py-4 text-center text-amber-600 font-medium tabular-nums text-sm">
+                                            {{ $khutbaTime }}
+                                        </td>
                                         <td class="px-6 py-4 text-center text-neutral-400 text-sm">—</td>
                                     </tr>
                                 @endif
