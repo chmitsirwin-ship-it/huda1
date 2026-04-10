@@ -83,7 +83,6 @@
 <section class="py-16 bg-white">
     <div class="max-w-7xl mx-auto px-4 sm:px-6">
 
-        {{-- Header --}}
         <div class="text-center mb-12">
             <div class="inline-flex items-center gap-2 text-emerald-600 font-medium text-sm uppercase tracking-widest mb-3">
                 <span class="w-8 h-px bg-emerald-600"></span>
@@ -96,8 +95,6 @@
                 <p class="text-neutral-400 text-sm mt-0.5">{{ \App\Support\LocalizedDate::hijri($today->date) }}</p>
             @endif
         </div>
-
-        {{-- No data fallback --}}
         @if(!$today)
             <div class="text-center py-12 text-neutral-500">
                 <svg class="w-12 h-12 mx-auto mb-3 text-neutral-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -106,8 +103,6 @@
                 </svg>
                 <p>{{ __('Prayer times not available for today.') }}</p>
             </div>
-
-            {{-- ───────────────────────── DETAILED ───────────────────────── --}}
         @elseif($style === 'detailed')
             <div class="max-w-3xl mx-auto">
                 <div class="overflow-hidden rounded-2xl border border-neutral-100 shadow-sm md:hidden">
@@ -209,8 +204,6 @@
                     </table>
                 </div>
             </div>
-
-            {{-- ───────────────────────── COMPACT ───────────────────────── --}}
         @elseif($style === 'compact')
                     <div class="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 lg:grid-cols-6">
                 @foreach($prayers as $prayer)
@@ -232,7 +225,6 @@
                         @endif
                     </div>
 
-                    {{-- Jumu'ah card injected after Dhuhr --}}
                     @if($prayer['key'] === 'dhuhr' && $hasJummah)
                         <div class="col-span-2 rounded-xl border p-4 text-center transition-all duration-200 sm:col-span-1
                                      {{ $isFriday
@@ -260,7 +252,6 @@
                 @endforeach
             </div>
 
-            {{-- ───────────────────────── CARD (default) ───────────────────────── --}}
         @else
             <div class="max-w-2xl mx-auto bg-gradient-to-br from-emerald-600 to-emerald-800
                         rounded-2xl shadow-xl shadow-emerald-900/20 overflow-hidden">
