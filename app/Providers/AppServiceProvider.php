@@ -61,6 +61,7 @@ use Illuminate\Support\ServiceProvider;
 use Redberry\PageBuilderPlugin\Components\Forms\PageBuilder;
 use Statikbe\FilamentTranslationManager\FilamentTranslationManager;
 use Throwable;
+use Ysfkaya\FilamentPhoneInput\Forms\PhoneInput;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -82,6 +83,26 @@ class AppServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
+        PhoneInput::configureUsing(fn(PhoneInput $phoneInput) => $phoneInput->extraAttributes([
+            'x-init' => "
+            \$nextTick(() => {
+                fetch('https://ipapi.co/json/')
+                    .then(r => r.json())
+                    .then(data => {
+                        if (!data.country_code) return;
+                        
+                        const input = \$el.querySelector('input[type=tel]');
+                        if (!input) return;
+                        
+                        const iti = window.intlTelInputGlobals.getInstance(input);
+                        if (iti) {
+                            iti.setCountry(data.country_code.toLowerCase());
+                        }
+                    })
+                    .catch(() => {}); // silently fall back to defaultCountry
+            });
+        "
+        ]));
         TimePicker::configureUsing(fn(TimePicker $picker) => $picker->seconds(false));
         Model::automaticallyEagerLoadRelationships();
         Model::unguard();
