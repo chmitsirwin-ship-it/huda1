@@ -72,16 +72,7 @@ class ListPrayerTimes extends ListRecords
                 ->action(function (array $data): void {
                     $updated = PrayerTime::query()
                         ->whereRaw('DAYOFWEEK(date) = 6')
-                        ->where(function ($query): void {
-                            $query->whereNull('jummah_adhan')
-                                ->orWhereNull('jummah_khutba_time')
-                                ->orWhereNull('jummah_iqamah');
-                        })
-                        ->update([
-                            'jummah_adhan' => $data['jummah_adhan'],
-                            'jummah_khutba_time' => $data['jummah_khutba_time'],
-                            'jummah_iqamah' => $data['jummah_iqamah'],
-                        ]);
+                        ->update($data);
 
                     Notification::make()
                         ->title(__(':count Friday records updated', ['count' => $updated]))
