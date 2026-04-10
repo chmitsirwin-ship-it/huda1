@@ -25,6 +25,10 @@ class PrayerTimesBlock extends BaseBlock
                 ->label(__('Always Show Next Jummah'))
                 ->helperText(__('Display the next upcoming Friday Jummah times at the bottom of this block.'))
                 ->default(true),
+            Toggle::make('show_next_salah_countdown')
+                ->label(__('Show Next Salah Countdown'))
+                ->helperText(__('Display a live countdown to the upcoming salah time above the Jummah section.'))
+                ->default(true),
         ];
     }
 

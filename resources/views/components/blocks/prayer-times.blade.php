@@ -27,12 +27,56 @@
     $isFriday     = today()->isFriday();
 
     $showJummah  = (bool) ($data['show_jummah'] ?? true);
+    $showNextSalahCountdown = (bool) ($data['show_next_salah_countdown'] ?? true);
     $nextJummah  = $showJummah
         ? \App\Models\PrayerTime::whereNotNull('jummah_time')
             ->where('date', '>=', today()->toDateString())
             ->orderBy('date')
             ->first()
         : null;
+
+    $nextSalah = null;
+    $now = now();
+
+    if ($today) {
+        $todaySalahs = collect($prayers)
+            ->reject(fn (array $prayer): bool => $prayer['key'] === 'sunrise')
+            ->map(function (array $prayer) use ($today) {
+                $rawTime = $today->{$prayer['key'].'_adhan'} ?? $today->{$prayer['key']} ?? null;
+
+                if (!$rawTime) {
+                    return null;
+                }
+
+                return [
+                    'label' => $prayer['label'],
+                    'icon' => $prayer['icon'],
+                    'time' => \Carbon\Carbon::parse($today->date->toDateString().' '.$rawTime),
+                ];
+            })
+            ->filter()
+            ->first(fn (array $prayer): bool => $prayer['time']->isFuture());
+
+        if ($todaySalahs) {
+            $nextSalah = $todaySalahs;
+        } else {
+            $tomorrowPrayerTime = \App\Models\PrayerTime::where('date', '>', today()->toDateString())
+                ->orderBy('date')
+                ->first();
+
+            if ($tomorrowPrayerTime) {
+                $tomorrowFajr = $tomorrowPrayerTime->fajr_adhan ?? $tomorrowPrayerTime->fajr ?? null;
+
+                if ($tomorrowFajr) {
+                    $nextSalah = [
+                        'label' => __('Fajr'),
+                        'icon' => $sunIcon,
+                        'time' => \Carbon\Carbon::parse($tomorrowPrayerTime->date->toDateString().' '.$tomorrowFajr),
+                    ];
+                }
+            }
+        }
+    }
 @endphp
 
 @if(\App\Support\PublicNavigation::isEnabled('prayer_times'))
@@ -66,62 +110,52 @@
             {{-- ───────────────────────── DETAILED ───────────────────────── --}}
         @elseif($style === 'detailed')
             <div class="max-w-3xl mx-auto">
-                <div class="space-y-3 md:hidden">
-                    @foreach($prayers as $i => $prayer)
-                        @php
-                            $adhan  = \App\Support\LocalizedDate::time($today->{$prayer['key'].'_adhan'} ?? $today->{$prayer['key']} ?? null);
-                            $iqamah = \App\Support\LocalizedDate::time($today->{$prayer['key'].'_iqamah'} ?? null);
-                        @endphp
-                        <div class="rounded-2xl border border-neutral-100 {{ $i % 2 === 0 ? 'bg-white' : 'bg-emerald-50/50' }} p-4 shadow-sm">
-                            <div class="flex items-center justify-between gap-3">
-                                <span class="font-semibold text-neutral-800">{{ $prayer['label'] }}</span>
-                                <svg class="w-4 h-4 shrink-0 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="{{ $prayer['icon'] }}"/>
-                                </svg>
-                            </div>
-                            <div class="mt-4 grid grid-cols-2 gap-3">
-                                <div class="rounded-xl bg-emerald-50 px-3 py-2.5 text-center">
-                                    <p class="text-[11px] font-semibold uppercase tracking-[0.2em] text-emerald-600">{{ __('Adhan') }}</p>
-                                    <p class="mt-1 text-lg font-bold text-emerald-700 tabular-nums">{{ $adhan ?? '—' }}</p>
+                <div class="overflow-hidden rounded-2xl border border-neutral-100 shadow-sm md:hidden">
+                    <div class="grid grid-cols-[minmax(0,1.2fr)_minmax(0,0.9fr)_minmax(0,0.9fr)] bg-emerald-600 text-white">
+                        <div class="px-3 py-3 text-left text-xs font-semibold uppercase tracking-[0.18em]">{{ __('Prayer') }}</div>
+                        <div class="px-2 py-3 text-center text-xs font-semibold uppercase tracking-[0.18em]">{{ __('Adhan') }}</div>
+                        <div class="px-2 py-3 text-center text-xs font-semibold uppercase tracking-[0.18em]">{{ __('Iqamah') }}</div>
+                    </div>
+                    <div>
+                        @foreach($prayers as $i => $prayer)
+                            @php
+                                $adhan  = \App\Support\LocalizedDate::time($today->{$prayer['key'].'_adhan'} ?? $today->{$prayer['key']} ?? null);
+                                $iqamah = \App\Support\LocalizedDate::time($today->{$prayer['key'].'_iqamah'} ?? null);
+                            @endphp
+                            <div class="grid grid-cols-[minmax(0,1.2fr)_minmax(0,0.9fr)_minmax(0,0.9fr)] items-center border-b border-neutral-100 {{ $i % 2 === 0 ? 'bg-white' : 'bg-emerald-50/50' }}">
+                                <div class="flex items-center gap-2 px-3 py-3">
+                                    <svg class="h-3.5 w-3.5 shrink-0 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="{{ $prayer['icon'] }}"/>
+                                    </svg>
+                                    <span class="truncate text-sm font-semibold text-neutral-800">{{ $prayer['label'] }}</span>
                                 </div>
-                                <div class="rounded-xl bg-amber-50 px-3 py-2.5 text-center">
-                                    <p class="text-[11px] font-semibold uppercase tracking-[0.2em] text-amber-600">{{ __('Iqamah') }}</p>
-                                    <p class="mt-1 text-lg font-bold text-amber-600 tabular-nums">{{ $iqamah ?? '—' }}</p>
-                                </div>
+                                <div class="px-2 py-3 text-center text-sm font-semibold text-emerald-700 tabular-nums">{{ $adhan ?? '—' }}</div>
+                                <div class="px-2 py-3 text-center text-sm font-semibold text-amber-600 tabular-nums">{{ $iqamah ?? '—' }}</div>
                             </div>
-                        </div>
-                        @if($prayer['key'] === 'dhuhr' && $hasJummah)
-                            <div class="rounded-2xl border border-amber-200 bg-amber-50/80 p-4 shadow-sm">
-                                <div class="flex items-center justify-between gap-3">
-                                    <div class="flex items-center gap-2">
-                                        <span class="font-semibold text-neutral-800">{{ __("Jumu'ah") }}</span>
+                            @if($prayer['key'] === 'dhuhr' && $hasJummah)
+                                <div class="grid grid-cols-[minmax(0,1.2fr)_minmax(0,0.9fr)_minmax(0,0.9fr)] items-center border-b border-neutral-100 bg-amber-50/70">
+                                    <div class="flex items-center gap-2 px-3 py-3">
+                                        <svg class="h-3.5 w-3.5 shrink-0 text-amber-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="{{ $jummahIcon }}"/>
+                                        </svg>
+                                        <span class="truncate text-sm font-semibold text-neutral-800">{{ __("Jumu'ah") }}</span>
                                         @if($isFriday)
-                                            <span class="rounded-full bg-amber-500 px-2 py-0.5 text-xs font-medium text-white">{{ __('Today') }}</span>
+                                            <span class="rounded-full bg-amber-500 px-1.5 py-0.5 text-[10px] font-medium text-white">{{ __('Today') }}</span>
                                         @endif
                                     </div>
-                                    <svg class="w-4 h-4 shrink-0 text-amber-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="{{ $jummahIcon }}"/>
-                                    </svg>
-                                </div>
-                                <div class="mt-4 grid grid-cols-2 gap-3">
-                                    <div class="rounded-xl bg-white/80 px-3 py-2.5 text-center">
-                                        <p class="text-[11px] font-semibold uppercase tracking-[0.2em] text-emerald-600">{{ __('Adhan') }}</p>
-                                        <p class="mt-1 text-lg font-bold text-emerald-700 tabular-nums">{{ $jummahTime ?? '—' }}</p>
-                                    </div>
-                                    <div class="rounded-xl bg-white/80 px-3 py-2.5 text-center">
-                                        <p class="text-[11px] font-semibold uppercase tracking-[0.2em] text-amber-600">{{ __('Iqamah') }}</p>
-                                        <p class="mt-1 text-lg font-bold text-amber-600 tabular-nums">{{ $jummahIqamah ?? '—' }}</p>
-                                    </div>
+                                    <div class="px-2 py-3 text-center text-sm font-semibold text-emerald-700 tabular-nums">{{ $jummahTime ?? '—' }}</div>
+                                    <div class="px-2 py-3 text-center text-sm font-semibold text-amber-600 tabular-nums">{{ $jummahIqamah ?? '—' }}</div>
                                 </div>
                                 @if($khutbaTime)
-                                    <div class="mt-3 rounded-xl bg-white/70 px-3 py-2.5 text-center">
-                                        <p class="text-[11px] font-semibold uppercase tracking-[0.2em] text-amber-600">{{ __('Khutbah') }}</p>
-                                        <p class="mt-1 text-base font-bold text-amber-700 tabular-nums">{{ $khutbaTime }}</p>
+                                    <div class="grid grid-cols-[minmax(0,1.2fr)_minmax(0,0.9fr)_minmax(0,0.9fr)] items-center border-b border-neutral-100 bg-amber-50/40">
+                                        <div class="px-3 py-2.5 text-sm font-medium text-neutral-500">↳ {{ __('Khutbah') }}</div>
+                                        <div class="px-2 py-2.5 text-center text-sm font-semibold text-amber-700 tabular-nums">{{ $khutbaTime }}</div>
+                                        <div class="px-2 py-2.5 text-center text-sm text-neutral-400">—</div>
                                     </div>
                                 @endif
-                            </div>
-                        @endif
-                    @endforeach
+                            @endif
+                        @endforeach
+                    </div>
                 </div>
                 <div class="hidden overflow-hidden rounded-2xl border border-neutral-100 shadow-sm md:block">
                     <table class="w-full">
@@ -327,6 +361,65 @@
             </div>
         @endif
 
+        @if($showNextSalahCountdown && $nextSalah)
+            <div class="mx-auto mt-5 max-w-3xl">
+                <div class="relative overflow-hidden rounded-2xl border border-emerald-200/70 bg-gradient-to-br from-emerald-50 via-white to-emerald-100/80 shadow-lg shadow-emerald-100/60"
+                     x-data="{
+                         target: new Date('{{ $nextSalah['time']->toIso8601String() }}').getTime(),
+                         hours: '00', minutes: '00', seconds: '00', expired: false,
+                         tick() {
+                             const diff = this.target - Date.now();
+
+                             if (diff <= 0) {
+                                 this.expired = true;
+                                 this.hours = '00';
+                                 this.minutes = '00';
+                                 this.seconds = '00';
+                                 return;
+                             }
+
+                             this.hours = String(Math.floor(diff / 3600000)).padStart(2, '0');
+                             this.minutes = String(Math.floor((diff % 3600000) / 60000)).padStart(2, '0');
+                             this.seconds = String(Math.floor((diff % 60000) / 1000)).padStart(2, '0');
+                         }
+                     }"
+                     x-init="tick(); setInterval(() => tick(), 1000)">
+                    <div class="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(16,185,129,0.14),transparent_34%),radial-gradient(circle_at_bottom_left,rgba(5,150,105,0.12),transparent_28%)]"></div>
+                    <div class="relative flex flex-col gap-4 px-4 py-4 sm:px-6 sm:py-5 lg:flex-row lg:items-center lg:justify-between lg:gap-6">
+                        <div class="flex items-center gap-3 sm:gap-4">
+                            <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-emerald-600 text-white shadow-sm shadow-emerald-200">
+                                <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.75">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="{{ $nextSalah['icon'] }}"/>
+                                </svg>
+                            </div>
+                            <div class="min-w-0">
+                                <p class="text-[10px] font-semibold uppercase tracking-[0.28em] text-emerald-600">{{ __('Next Salah') }}</p>
+                                <div class="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1">
+                                    <h3 class="text-xl font-bold text-neutral-900 sm:text-2xl">{{ $nextSalah['label'] }}</h3>
+                                    <span class="rounded-full bg-emerald-100 px-2.5 py-1 text-xs font-semibold text-emerald-700 ring-1 ring-emerald-200/80 tabular-nums">{{ \App\Support\LocalizedDate::time($nextSalah['time']) }}</span>
+                                </div>
+                                <p class="mt-1 text-sm text-neutral-500">{{ __('Begins in') }}</p>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-3 gap-2 sm:gap-3 lg:min-w-[290px]">
+                            @foreach([['value' => 'hours', 'label' => __('Hours')], ['value' => 'minutes', 'label' => __('Minutes')], ['value' => 'seconds', 'label' => __('Seconds')]] as $unit)
+                                <div class="rounded-2xl border border-white/80 bg-white/90 px-3 py-3 text-center shadow-sm shadow-emerald-100/60 backdrop-blur-sm">
+                                    <template x-if="!expired">
+                                        <span x-text="{{ $unit['value'] }}" class="block text-2xl font-black leading-none text-emerald-700 tabular-nums sm:text-3xl"></span>
+                                    </template>
+                                    <template x-if="expired">
+                                        <span class="block text-2xl font-black leading-none text-emerald-700 tabular-nums sm:text-3xl">00</span>
+                                    </template>
+                                    <p class="mt-2 text-[10px] font-semibold uppercase tracking-[0.22em] text-neutral-500">{{ $unit['label'] }}</p>
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
+                </div>
+            </div>
+        @endif
+
         {{-- Next Jummah Banner --}}
         @if($nextJummah)
             @php
@@ -335,7 +428,7 @@
                 $nextJummahDate = \App\Support\LocalizedDate::date($nextJummah->date);
                 $nextJummahDay  = \App\Support\LocalizedDate::weekday($nextJummah->date);
             @endphp
-            <div class="mt-10 mx-auto max-w-3xl">
+            <div class="mt-4 mx-auto max-w-3xl">
                 <div class="relative overflow-hidden rounded-2xl bg-gradient-to-br from-emerald-500 to-emerald-600 shadow-lg shadow-emerald-500/20">
 
                     {{-- decorative circles --}}
@@ -365,7 +458,6 @@
                             <div class="rounded-2xl bg-white/16 px-4 py-3 shadow-sm ring-1 ring-white/10 sm:col-span-2 lg:col-span-1">
                                 <p class="text-[10px] font-semibold uppercase tracking-[0.2em] text-emerald-100/75">{{ __('Salah Time') }}</p>
                                 <p class="mt-1 text-2xl font-bold text-white tabular-nums">{{ \App\Support\LocalizedDate::time($nextJummah->jummah_time) }}</p>
-                                <p class="mt-1 text-xs text-emerald-100/70">{{ __('Main congregation') }}</p>
                             </div>
                             @if($nextJummah->jummah_khutba_time)
                                 <div class="rounded-2xl bg-white/10 px-4 py-3 ring-1 ring-white/8">
