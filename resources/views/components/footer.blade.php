@@ -21,19 +21,23 @@
                     @if(setting('general.address'))
                         <div class="flex items-start gap-2 text-xs text-neutral-500">
                             <x-heroicon-o-map-pin class="w-3.5 h-3.5 mt-0.5 shrink-0 text-emerald-700" />
-                            <span>{{ setting('general.address') }}</span>
+                            <span><a class="text-emerald-700 hover:text-emerald-900 transition-colors" href="https://www.google.com/maps/search/?api=1&query={{ setting('location.latitude') }},{{ setting('location.longitude') }}">{{ setting('general.address') }}</a></span>
                         </div>
                     @endif
-                    @if(setting('general.phone'))
-                        <div class="flex items-center gap-2 text-xs text-neutral-500">
-                            <x-heroicon-o-phone class="w-3.5 h-3.5 shrink-0 text-emerald-700" />
-                            <bdi>{{ setting('general.phone') }}</bdi>
-                        </div>
+                    @if(setting('general.phones'))
+                        @foreach(setting('general.phones') as $phone)
+                                <div class="flex items-center gap-2 text-xs text-neutral-500">
+                                    <x-heroicon-o-phone class="w-3.5 h-3.5 shrink-0 text-emerald-700" />
+                                    <a href="tel:{{ data_get($phone,'phone','-') }}" class="text-emerald-700 hover:text-emerald-900 transition-colors">
+                                        <bdi>{{ data_get($phone,'phone','-') }}</bdi>
+                                    </a>
+                                </div>
+                        @endforeach
                     @endif
                     @if(setting('general.email'))
                         <div class="flex items-center gap-2 text-xs text-neutral-500">
                             <x-heroicon-o-envelope class="w-3.5 h-3.5 shrink-0 text-emerald-700" />
-                            <span>{{ setting('general.email') }}</span>
+                            <span><a href="mailto:{{ setting('general.email') }}">{{ setting('general.email') }}</a></span>
                         </div>
                     @endif
                 </div>
