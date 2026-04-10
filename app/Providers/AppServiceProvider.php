@@ -84,7 +84,7 @@ class AppServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
-        dd(Http::get('https://ipinfo.io/json')->json());
+        dd(Http::get('https://ipinfo.io/'.request()->ip().'/json')->json());
         PhoneInput::configureUsing(fn(PhoneInput $phoneInput) => $phoneInput->ipLookup(function () {
             return dd(Http::get('https://ipinfo.io/json'));
         }));
