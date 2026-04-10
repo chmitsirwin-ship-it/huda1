@@ -16,8 +16,8 @@
         ['key' => 'isha',    'label' => __('Isha'),    'icon' => $moonIcon],
     ];
 
-    $hasJummah    = $today && ($today->jummah_time ?? null);
-    $jummahTime   = $hasJummah ? \App\Support\LocalizedDate::time($today->jummah_time) : null;
+    $hasJummah    = $today && ($today->jummah_adhan ?? null);
+    $jummahTime   = $hasJummah ? \App\Support\LocalizedDate::time($today->jummah_adhan) : null;
     $jummahIqamah = ($today && ($today->jummah_iqamah ?? null))
                         ? \App\Support\LocalizedDate::time($today->jummah_iqamah)
                         : null;
@@ -29,7 +29,7 @@
     $showJummah  = (bool) ($data['show_jummah'] ?? true);
     $showNextSalahCountdown = (bool) ($data['show_next_salah_countdown'] ?? true);
     $nextJummah  = $showJummah
-        ? \App\Models\PrayerTime::whereNotNull('jummah_time')
+        ? \App\Models\PrayerTime::whereNotNull('jummah_adhan')
             ->where('date', '>=', today()->toDateString())
             ->orderBy('date')
             ->first()
@@ -457,7 +457,7 @@
                         <div class="grid flex-1 gap-3 {{ $nextJummah->jummah_khutba_time && $nextJummah->jummah_iqamah ? 'grid-cols-3' : 'grid-cols-2' }}">
                             <div class="rounded-2xl bg-white/16 px-4 py-3 shadow-sm ring-1 ring-white/10">
                                 <p class="text-[10px] font-semibold uppercase tracking-[0.2em] text-emerald-100/75">{{ __('Salah Time') }}</p>
-                                <p class="mt-1 text-2xl font-bold text-white tabular-nums">{{ \App\Support\LocalizedDate::time($nextJummah->jummah_time) }}</p>
+                                <p class="mt-1 text-2xl font-bold text-white tabular-nums">{{ \App\Support\LocalizedDate::time($nextJummah->jummah_adhan) }}</p>
                             </div>
                             @if($nextJummah->jummah_khutba_time)
                                 <div class="rounded-2xl bg-white/10 px-4 py-3 ring-1 ring-white/8">

@@ -4,12 +4,14 @@ namespace App\Filament\Admin\Resources\PrayerTimes\Tables;
 
 use App\Support\LocalizedDate;
 use Filament\Actions\Action;
+use Filament\Actions\ActionGroup;
 use Filament\Actions\BulkAction;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Actions\ViewAction;
 use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Notifications\Notification;
 use Filament\Tables\Columns\TextColumn;
@@ -20,6 +22,16 @@ use Illuminate\Support\Carbon;
 
 class PrayerTimesTable
 {
+    protected const DAY_OPTIONS = [
+        'sunday' => 'Sunday',
+        'monday' => 'Monday',
+        'tuesday' => 'Tuesday',
+        'wednesday' => 'Wednesday',
+        'thursday' => 'Thursday',
+        'friday' => 'Friday',
+        'saturday' => 'Saturday',
+    ];
+
     public static function configure(Table $table): Table
     {
         return $table
@@ -91,49 +103,79 @@ class PrayerTimesTable
                         return $indicators;
                     })
                     ->default(),
-            ])
-            ->recordActions([
-                Action::make('adjust_iqamah')
-                    ->color('success')
-                    ->button()
-                    ->requiresConfirmation()
+                Filter::make('day')
+                    ->label(__('Day'))
                     ->schema([
-                        TextInput::make('adjustment')
-                            ->label(__('Adjustment (in minutes)'))
-                            ->hint(__('Will be added above adhan time'))
-                            ->numeric()
-                            ->default(0),
+                        Select::make('day')
+                            ->label(__('Day'))
+                            ->options(collect(self::DAY_OPTIONS)->mapWithKeys(fn (string $label, string $value): array => [$value => __($label)])->all())
+                            ->placeholder(__('All days')),
                     ])
-                    ->action(function ($record, array $data) {
-                        $adjustment = (int) $data['adjustment'];
-                        $prayers = [
-                            'fajr',
-                            'dhuhr',
-                            'asr',
-                            'maghrib',
-                            'isha',
-                        ];
-                        foreach ($prayers as $prayer) {
-                            $adhanField = "{$prayer}_adhan";
-                            $iqamahField = "{$prayer}_iqamah";
+                    ->query(function (Builder $query, array $data): Builder {
+                        $weekday = $data['day'] ?? null;
 
-                            if ($record->$adhanField) {
-                                $record->$iqamahField = Carbon::parse($record->$adhanField)
-                                    ->addMinutes($adjustment)
-                                    ->format('H:i:s');
-                            }
+                        if (! $weekday || ! isset(self::DAY_OPTIONS[$weekday])) {
+                            return $query;
                         }
 
-                        $record->save();
-                        Notification::make()
-                            ->title(__('Iqamah times adjusted successfully!'))
-                            ->success()
-                            ->send();
+                        return $query->whereRaw('DAYNAME(date) = ?', [self::DAY_OPTIONS[$weekday]]);
                     })
-                    ->label(__('Adjust Iqamah Times')),
-                ViewAction::make(),
+                    ->indicateUsing(function (array $data): ?string {
+                        $weekday = $data['day'] ?? null;
+
+                        if (! $weekday || ! isset(self::DAY_OPTIONS[$weekday])) {
+                            return null;
+                        }
+
+                        return __('Day').': '.__((string) self::DAY_OPTIONS[$weekday]);
+                    }),
+            ])
+            ->recordActions([
+
                 EditAction::make(),
-                DeleteAction::make(),
+                ActionGroup::make([
+                    Action::make('adjust_iqamah')
+                        ->color('success')
+                        ->button()
+                        ->requiresConfirmation()
+                        ->schema([
+                            TextInput::make('adjustment')
+                                ->label(__('Adjustment (in minutes)'))
+                                ->hint(__('Will be added above adhan time'))
+                                ->numeric()
+                                ->default(0),
+                        ])
+                        ->action(function ($record, array $data) {
+                            $adjustment = (int) $data['adjustment'];
+                            $prayers = [
+                                'fajr',
+                                'dhuhr',
+                                'asr',
+                                'maghrib',
+                                'isha',
+                            ];
+                            foreach ($prayers as $prayer) {
+                                $adhanField = "{$prayer}_adhan";
+                                $iqamahField = "{$prayer}_iqamah";
+
+                                if ($record->$adhanField) {
+                                    $record->$iqamahField = Carbon::parse($record->$adhanField)
+                                        ->addMinutes($adjustment)
+                                        ->format('H:i:s');
+                                }
+                            }
+
+                            $record->save();
+                            Notification::make()
+                                ->title(__('Iqamah times adjusted successfully!'))
+                                ->success()
+                                ->send();
+                        })
+                        ->label(__('Adjust Iqamah Times')),
+                    ViewAction::make(),
+                    DeleteAction::make(),
+                ]),
+
             ])
             ->toolbarActions([
                 DeleteBulkAction::make(),

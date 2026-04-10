@@ -200,7 +200,7 @@ class MosqueDemoSeeder extends Seeder
                     'maghrib_iqamah' => $this->minutesToTime(18 * 60 + 11 - ($offset % 3)),
                     'isha_adhan' => $this->minutesToTime(19 * 60 + 31 - ($offset % 3)),
                     'isha_iqamah' => $this->minutesToTime(19 * 60 + 51 - ($offset % 3)),
-                    'jummah_time' => $date->isFriday() ? '13:15:00' : null,
+                    'jummah_adhan' => $date->isFriday() ? '13:15:00' : null,
                     'jummah_khutba_time' => $date->isFriday() ? '12:45:00' : null,
                 ]
             );

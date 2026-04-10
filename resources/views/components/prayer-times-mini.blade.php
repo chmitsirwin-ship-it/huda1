@@ -21,11 +21,11 @@
             @endif
 
             {{-- Jumu'ah rows injected after Dhuhr --}}
-            @if($prayer['name'] === __('Dhuhr') && $today->jummah_time)
+            @if($prayer['name'] === __('Dhuhr') && $today->jummah_adhan)
                 <div class="flex items-center justify-between py-1 px-2 rounded bg-amber-900/20 border border-amber-800/30">
                     <span class="text-xs text-amber-500">{{ __("Jumu'ah") }}</span>
                     <span class="text-xs font-medium text-amber-400 tabular-nums">
-                        {{ \App\Support\LocalizedDate::time($today->jummah_time) }}
+                        {{ \App\Support\LocalizedDate::time($today->jummah_adhan) }}
                     </span>
                 </div>
                 @if($today->jummah_khutba_time)

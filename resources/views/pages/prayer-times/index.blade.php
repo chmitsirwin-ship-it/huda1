@@ -45,7 +45,7 @@
                     @endforeach
                 </div>
 
-                @if($today->jummah_time)
+                @if($today->jummah_adhan)
                     <div class="mt-5 bg-amber-500/10 border border-amber-400/25 rounded-xl px-5 py-4 flex flex-col sm:flex-row sm:items-center gap-4">
                         <div class="flex items-center gap-3 sm:border-e border-amber-400/20 sm:pe-5">
                             <div class="w-9 h-9 rounded-lg bg-amber-400/15 flex items-center justify-center shrink-0">
@@ -63,7 +63,7 @@
 
                             <div>
                                 <p class="text-[10px] font-medium text-amber-400 uppercase tracking-wider">{{ __('Salah') }}</p>
-                                <p class="text-base font-bold text-amber-100 tabular-nums mt-0.5">{{ \App\Support\LocalizedDate::time($today->jummah_time) }}</p>
+                                <p class="text-base font-bold text-amber-100 tabular-nums mt-0.5">{{ \App\Support\LocalizedDate::time($today->jummah_adhan) }}</p>
                             </div>
                             @if($today->jummah_khutba_time)
                                 <div>
@@ -128,7 +128,7 @@
                 @php
                     $isToday = $today && $pt->date->isSameDay($today->date);
                     $isFriday = $pt->date->isFriday();
-                    $hasJummah = $isFriday && ($pt->jummah_time ?? null);
+                    $hasJummah = $isFriday && ($pt->jummah_adhan ?? null);
                 @endphp
                 <article class="overflow-hidden rounded-2xl border {{ $isToday ? 'border-emerald-300 bg-emerald-50/80 shadow-sm shadow-emerald-100/60' : ($isFriday ? 'border-amber-200 bg-amber-50/60 shadow-sm shadow-amber-100/60' : 'border-neutral-200 bg-white shadow-sm') }}">
                     <div class="border-b {{ $isToday ? 'border-emerald-200/80 bg-emerald-100/70' : ($isFriday ? 'border-amber-200/80 bg-amber-100/70' : 'border-neutral-200 bg-neutral-50/80') }} px-4 py-3.5">
@@ -189,7 +189,7 @@
                             <div class="mt-3 grid grid-cols-1 gap-2 sm:grid-cols-3">
                                 <div class="rounded-xl bg-white/70 px-3 py-2.5 ring-1 ring-amber-200/70">
                                     <p class="text-[10px] font-semibold uppercase tracking-wide text-amber-500">{{ __('Salah') }}</p>
-                                    <p class="mt-1 text-sm font-bold text-amber-800 tabular-nums">{{ \App\Support\LocalizedDate::time($pt->jummah_time) }}</p>
+                                    <p class="mt-1 text-sm font-bold text-amber-800 tabular-nums">{{ \App\Support\LocalizedDate::time($pt->jummah_adhan) }}</p>
                                 </div>
                                 @if($pt->jummah_khutba_time ?? null)
                                     <div class="rounded-xl bg-white/70 px-3 py-2.5 ring-1 ring-amber-200/70">
@@ -226,7 +226,7 @@
                         @php
                             $isToday = $today && $pt->date->isSameDay($today->date);
                             $isFriday = $pt->date->isFriday();
-                            $hasJummah = $isFriday && ($pt->jummah_time ?? null);
+                            $hasJummah = $isFriday && ($pt->jummah_adhan ?? null);
                         @endphp
                         <tr class="align-top transition-colors {{ $isToday ? 'bg-emerald-50/80' : ($isFriday ? 'bg-amber-50/50' : 'bg-white hover:bg-neutral-50/80') }}">
                             <td class="px-4 py-4 whitespace-nowrap">
@@ -272,7 +272,7 @@
                                             <div class="mt-2 space-y-1 text-[11px] text-amber-700">
                                                 <div class="flex items-center justify-between gap-2">
                                                     <span>{{ __('Salah') }}</span>
-                                                    <span class="font-bold tabular-nums text-amber-800">{{ \App\Support\LocalizedDate::time($pt->jummah_time) }}</span>
+                                                    <span class="font-bold tabular-nums text-amber-800">{{ \App\Support\LocalizedDate::time($pt->jummah_adhan) }}</span>
                                                 </div>
                                                 @if($pt->jummah_khutba_time ?? null)
                                                     <div class="flex items-center justify-between gap-2">

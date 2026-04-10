@@ -53,32 +53,32 @@ class ListPrayerTimes extends ListRecords
                 }),
 
             Action::make('fillJummahTimes')
-                ->label(__('Fill Jummah Times'))
+                ->label(__('Fill Jummah Adhans'))
                 ->icon('heroicon-o-calendar-days')
                 ->outlined()
                 ->color('warning')
                 ->schema([
                     Grid::make(3)->schema([
-                        TimePicker::make('jummah_time')
-                            ->label(__('Jummah Time'))
+                        TimePicker::make('jummah_adhan')
+                            ->label(__('Jummah Adhan'))
                             ->required(),
                         TimePicker::make('jummah_khutba_time')
                             ->label(__('Jummah Khutba Time')),
                         TimePicker::make('jummah_iqamah')
                             ->label(__('Jummah Iqamah'))
                             ->required(),
-                    ])
+                    ]),
                 ])
                 ->action(function (array $data): void {
                     $updated = PrayerTime::query()
                         ->whereRaw('DAYOFWEEK(date) = 6')
                         ->where(function ($query): void {
-                            $query->whereNull('jummah_time')
+                            $query->whereNull('jummah_adhan')
                                 ->orWhereNull('jummah_khutba_time')
                                 ->orWhereNull('jummah_iqamah');
                         })
                         ->update([
-                            'jummah_time' => $data['jummah_time'],
+                            'jummah_adhan' => $data['jummah_adhan'],
                             'jummah_khutba_time' => $data['jummah_khutba_time'],
                             'jummah_iqamah' => $data['jummah_iqamah'],
                         ]);

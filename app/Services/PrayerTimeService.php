@@ -84,7 +84,7 @@ class PrayerTimeService
 
         if ($carbonDate->isFriday() && $dhuhrAdhan) {
             $jummahOffset = (int) setting('prayer.jummah_offset');
-            $data['jummah_time'] = $dhuhrAdhan;
+            $data['jummah_adhan'] = $dhuhrAdhan;
             $data['jummah_khutba_time'] = $this->adjustTime($dhuhrAdhan, -15);
             $data['jummah_iqamah'] = $this->adjustTime($dhuhrAdhan, $jummahOffset ?: $iqamahOffset);
         }
