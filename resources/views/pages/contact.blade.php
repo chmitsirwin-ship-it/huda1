@@ -32,7 +32,7 @@
                             </div>
                             <div>
                                 <p class="font-semibold text-neutral-800 mb-0.5">{{ __('Address') }}</p>
-                                <a href="https://www.google.com/maps/search/?api=1&query={{ setting('location.latitude') }},{{ setting('location.longitude') }}">{{ setting('general.address') }}</a>
+                                <a class="text-emerald-700 hover:text-emerald-900 transition-colors" href="https://www.google.com/maps/search/?api=1&query={{ setting('location.latitude') }},{{ setting('location.longitude') }}">{{ setting('general.address') }}</a>
                             </div>
                         </div>
                     @endif
