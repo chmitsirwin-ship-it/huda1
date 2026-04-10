@@ -27,7 +27,7 @@
                     @if(setting('general.phone'))
                         <div class="flex items-center gap-2 text-xs text-neutral-500">
                             <x-heroicon-o-phone class="w-3.5 h-3.5 shrink-0 text-emerald-700" />
-                            <span>{{ setting('general.phone') }}</span>
+                            <bdi>{{ setting('general.phone') }}</bdi>
                         </div>
                     @endif
                     @if(setting('general.email'))
