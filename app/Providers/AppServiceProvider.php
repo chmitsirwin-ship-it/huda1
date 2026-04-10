@@ -71,7 +71,7 @@ class AppServiceProvider extends ServiceProvider
 
     public function register(): void
     {
-        Panel::configureUsing(fn (Panel $panel) => $panel->maxContentWidth(Width::Full)
+        Panel::configureUsing(fn(Panel $panel) => $panel->maxContentWidth(Width::Full)
             ->font('Alexandria')
             ->colors([
                 'primary' => Color::Emerald,
@@ -85,7 +85,7 @@ class AppServiceProvider extends ServiceProvider
         TimePicker::configureUsing(fn(TimePicker $picker) => $picker->seconds(false));
         Model::automaticallyEagerLoadRelationships();
         Model::unguard();
-        PageBuilder::configureUsing(fn (PageBuilder $pageBuilder) => $pageBuilder->blocks([
+        PageBuilder::configureUsing(fn(PageBuilder $pageBuilder) => $pageBuilder->blocks([
             HeroBlock::class,
             SliderBlock::class,
             PrayerTimesBlock::class,
@@ -130,7 +130,7 @@ class AppServiceProvider extends ServiceProvider
             $switch
                 ->locales(array_keys($locales));
         });
-        Table::configureUsing(fn (Table $table) => $table->defaultDateTimeDisplayFormat('j M Y - g:i A')
+        Table::configureUsing(fn(Table $table) => $table->defaultDateTimeDisplayFormat('j M Y - g:i A')
             ->defaultDateDisplayFormat('j M Y')
             ->defaultTimeDisplayFormat('g:i A'));
         ToggleColumn::configureUsing(function (ToggleColumn $toggle): void {
@@ -139,28 +139,28 @@ class AppServiceProvider extends ServiceProvider
                 ->onIcon('fas-check-circle')
                 ->offIcon('fas-times-circle');
         });
-        Schema::configureUsing(fn (Schema $schema) => $schema->defaultDateTimeDisplayFormat('j M Y - g:i A')
+        Schema::configureUsing(fn(Schema $schema) => $schema->defaultDateTimeDisplayFormat('j M Y - g:i A')
             ->defaultDateDisplayFormat('j M Y')
             ->defaultTimeDisplayFormat('g:i A'));
-        ViewAction::configureUsing(fn (ViewAction $action) => $action->button()
+        ViewAction::configureUsing(fn(ViewAction $action) => $action->button()
             ->size(Size::ExtraSmall));
-        EditAction::configureUsing(fn (EditAction $action) => $action->button()
+        EditAction::configureUsing(fn(EditAction $action) => $action->button()
             ->size(Size::ExtraSmall));
-        DeleteAction::configureUsing(fn (DeleteAction $action) => $action->button()
+        DeleteAction::configureUsing(fn(DeleteAction $action) => $action->button()
             ->size(Size::ExtraSmall));
-        Column::configureUsing(fn (Column $column) => $column->translateLabel());
-        Field::configureUsing(fn (Field $field) => $field->translateLabel());
-        Entry::configureUsing(fn (Entry $entry) => $entry->translateLabel());
-        BaseFilter::configureUsing(fn (BaseFilter $baseFilter) => $baseFilter->translateLabel());
-        Action::configureUsing(fn (Action $action) => $action->size(Size::ExtraSmall));
-        Section::configureUsing(fn (Section $section) => $section->columnSpanFull());
-        ImageColumn::configureUsing(fn (ImageColumn $imageColumn) => $imageColumn->checkFileExistence(false)
+        Column::configureUsing(fn(Column $column) => $column->translateLabel());
+        Field::configureUsing(fn(Field $field) => $field->translateLabel());
+        Entry::configureUsing(fn(Entry $entry) => $entry->translateLabel());
+        BaseFilter::configureUsing(fn(BaseFilter $baseFilter) => $baseFilter->translateLabel());
+        Action::configureUsing(fn(Action $action) => $action->size(Size::ExtraSmall));
+        Section::configureUsing(fn(Section $section) => $section->columnSpanFull());
+        ImageColumn::configureUsing(fn(ImageColumn $imageColumn) => $imageColumn->checkFileExistence(false)
             ->visibility('public')
             ->extraImgAttributes(['loading' => 'lazy']));
-        ImageEntry::configureUsing(fn (ImageEntry $imageEntry) => $imageEntry->checkFileExistence(false)
+        ImageEntry::configureUsing(fn(ImageEntry $imageEntry) => $imageEntry->checkFileExistence(false)
             ->visibility('public')
             ->extraImgAttributes(['loading' => 'lazy']));
-        FileUpload::configureUsing(fn (FileUpload $fileUpload) => $fileUpload->visibility('public')
+        FileUpload::configureUsing(fn(FileUpload $fileUpload) => $fileUpload->visibility('public')
             ->fetchFileInformation(false));
     }
 
@@ -172,11 +172,11 @@ class AppServiceProvider extends ServiceProvider
         ];
 
         try {
-            if (! DatabaseSchema::hasTable('languages')) {
+            if (!DatabaseSchema::hasTable('languages')) {
                 return $fallbackLocales;
             }
 
-            $resolver = fn (): array => Language::query()
+            $resolver = fn(): array => Language::query()
                 ->where('is_active', true)
                 ->orderBy('sort_order', 'asc')
                 ->pluck('name', 'code')
