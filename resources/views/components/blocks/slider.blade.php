@@ -55,13 +55,13 @@ $slides = \App\Models\Slider::active()->get();
                      class="mx-auto max-w-3xl text-center text-white">
 
                     @if($slide->title)
-                        <h2 class="mb-4 line-clamp-3 text-4xl font-bold leading-tight md:text-5xl">
+                        <h2 class="mb-4 text-3xl font-bold leading-tight md:text-4xl lg:text-5xl">
                             {{ $slide->title }}
                         </h2>
                     @endif
 
                     @if($slide->subtitle)
-                        <p class="line-clamp-4 text-xl leading-relaxed text-emerald-100">
+                        <p class="text-lg leading-relaxed text-emerald-100 md:text-xl">
                             {{ $slide->subtitle }}
                         </p>
                     @endif
