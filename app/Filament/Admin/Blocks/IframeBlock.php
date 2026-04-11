@@ -19,6 +19,7 @@ class IframeBlock extends BaseBlock
                 ->label(__('Iframe URL'))
                 ->helperText(__('Only http and https embed URLs are supported.'))
                 ->url()
+                ->translatableTabs()
                 ->required(),
             TranslatableTabs::make()
                 ->schema([
@@ -53,8 +54,10 @@ class IframeBlock extends BaseBlock
     {
         $locale = app()->getLocale();
 
-        if (array_key_exists('title', $data) && is_array($data['title'])) {
-            $data['title'] = $data['title'][$locale] ?? collect($data['title'])->first(fn ($value) => filled($value)) ?? '';
+        foreach (['title', 'url'] as $field) {
+            if (array_key_exists($field, $data) && is_array($data[$field])) {
+                $data[$field] = $data[$field][$locale] ?? collect($data[$field])->first(fn ($v) => filled($v)) ?? '';
+            }
         }
 
         return $data;
