@@ -19,8 +19,8 @@ class IframeBlock extends BaseBlock
                 ->label(__('Iframe URL'))
                 ->helperText(__('Only http and https embed URLs are supported.'))
                 ->url()
-                ->translatableTabs()
-                ->required(),
+                ->required()
+                ->translatableTabs(),
             TranslatableTabs::make()
                 ->schema([
                     TextInput::make('title')->label(__('Title')),
