@@ -9,6 +9,8 @@ $slides = \App\Models\Slider::active()->get();
         current: 0,
         total: {{ $slides->count() }},
         autoplay: null,
+        touchStartX: null,
+        touchEndX: null,
         start() {
             this.autoplay = setInterval(() => this.next(), 5000);
         },
@@ -20,11 +22,39 @@ $slides = \App\Models\Slider::active()->get();
         },
         prev() {
             this.current = (this.current - 1 + this.total) % this.total;
+        },
+        handleTouchStart(event) {
+            this.touchStartX = event.touches[0].clientX;
+            this.touchEndX = event.touches[0].clientX;
+        },
+        handleTouchMove(event) {
+            this.touchEndX = event.touches[0].clientX;
+        },
+        handleTouchEnd() {
+            if (this.touchStartX === null || this.touchEndX === null) {
+                return;
+            }
+
+            const deltaX = this.touchStartX - this.touchEndX;
+
+            if (Math.abs(deltaX) >= 50) {
+                if (deltaX > 0) {
+                    this.next();
+                } else {
+                    this.prev();
+                }
+            }
+
+            this.touchStartX = null;
+            this.touchEndX = null;
         }
     }"
     x-init="start()"
     @mouseenter="stop()"
-    @mouseleave="start()">
+    @mouseleave="start()"
+    @touchstart.passive="handleTouchStart($event)"
+    @touchmove.passive="handleTouchMove($event)"
+    @touchend="handleTouchEnd()">
 
     <div class="relative flex h-[70vh] min-h-[32rem] items-center sm:h-[75vh]">
         @foreach($slides as $index => $slide)
