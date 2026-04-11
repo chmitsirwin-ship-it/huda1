@@ -21,7 +21,7 @@ class BlockRenderer
 
             try {
                 $html .= view($view, ['data' => $data])->render();
-            } catch (\Exception) {
+            } catch (\Exception $exception) {
                 dd("Error rendering block of type {$block->block_type}: View '{$view}' not found or error in view.");
             }
         }
