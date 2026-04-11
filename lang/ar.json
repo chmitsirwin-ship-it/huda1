@@ -580,5 +580,13 @@
     "Your Heading": "اتجاهك",
     "from North": "من الشمال",
     "Enable Compass": "تفعيل البوصلة",
-    "Qibla Direction Compass will be displayed here on the live site.": "سيتم عرض بوصلة اتجاه القبلة هنا على الموقع المباشر."
+    "Qibla Direction Compass will be displayed here on the live site.": "سيتم عرض بوصلة اتجاه القبلة هنا على الموقع المباشر.",
+    "Compass inactive": "البوصلة غير نشطة",
+    "Waiting for compass": "انتظار البوصلة",
+    "Tap to enable compass": "اضغط لتفعيل البوصلة",
+    "Compass access needed": "يلزم الوصول إلى البوصلة",
+    "Calibrating compass": "معايرة البوصلة جارية",
+    "Compass active": "البوصلة نشطة",
+    "Move phone to calibrate": "حرك الهاتف لمعايرة البوصلة",
+    "North": "الشمال"
 }

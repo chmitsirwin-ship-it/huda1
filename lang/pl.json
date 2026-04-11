@@ -771,5 +771,13 @@
     "Your Heading": "Twój kierunek",
     "from North": "od północy",
     "Enable Compass": "Włącz kompas",
-    "Qibla Direction Compass will be displayed here on the live site.": "Kompas kierunku Qibły będzie wyświetlany tutaj na żywej stronie."
+    "Qibla Direction Compass will be displayed here on the live site.": "Kompas kierunku Qibły będzie wyświetlany tutaj na żywej stronie.",
+    "Compass inactive": "Kompas nieaktywny",
+    "Waiting for compass": "Oczekiwanie na kompas",
+    "Tap to enable compass": "Dotknij, aby włączyć kompas",
+    "Compass access needed": "Wymagany dostęp do kompasu",
+    "Calibrating compass": "Kalibrowanie kompasu",
+    "Compass active": "Kompas aktywny",
+    "Move phone to calibrate": "Poruszaj telefonem, aby skalibrować",
+    "North": "Północ"
 }
