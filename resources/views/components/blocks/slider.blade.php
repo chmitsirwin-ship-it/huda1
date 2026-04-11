@@ -4,7 +4,7 @@ $slides = \App\Models\Slider::active()->get();
 @endphp
 
 @if($slides->isNotEmpty())
-<section class="relative overflow-hidden bg-emerald-950"
+<section class="group relative overflow-hidden bg-emerald-950"
     x-data="{
         current: 0,
         total: {{ $slides->count() }},
@@ -26,7 +26,7 @@ $slides = \App\Models\Slider::active()->get();
     @mouseenter="stop()"
     @mouseleave="start()">
 
-    <div class="relative min-h-[70vh] flex items-center">
+    <div class="relative flex h-[70vh] min-h-[32rem] items-center sm:h-[75vh]">
         @foreach($slides as $index => $slide)
             <div class="absolute inset-0 transition-opacity duration-700"
                  x-show="current === {{ $index }}"
@@ -46,22 +46,22 @@ $slides = \App\Models\Slider::active()->get();
             </div>
         @endforeach
 
-        <div class="relative z-10 w-full max-w-7xl mx-auto px-6 py-20">
+        <div class="relative z-10 mx-auto flex h-full w-full max-w-7xl items-center px-6 py-20">
             @foreach($slides as $index => $slide)
                 <div x-show="current === {{ $index }}"
                      x-transition:enter="transition duration-500 delay-200"
                      x-transition:enter-start="opacity-0 translate-y-4"
                      x-transition:enter-end="opacity-100 translate-y-0"
-                     class="text-center text-white max-w-3xl mx-auto">
+                     class="mx-auto max-w-3xl text-center text-white">
 
                     @if($slide->title)
-                        <h2 class="text-4xl md:text-5xl font-bold mb-4 leading-tight">
+                        <h2 class="mb-4 line-clamp-3 text-4xl font-bold leading-tight md:text-5xl">
                             {{ $slide->title }}
                         </h2>
                     @endif
 
                     @if($slide->subtitle)
-                        <p class="text-xl text-emerald-100 leading-relaxed">
+                        <p class="line-clamp-4 text-xl leading-relaxed text-emerald-100">
                             {{ $slide->subtitle }}
                         </p>
                     @endif
@@ -79,14 +79,14 @@ $slides = \App\Models\Slider::active()->get();
 
         @if($slides->count() > 1)
             <button @click="prev()"
-                    class="absolute left-4 z-20 flex items-center justify-center w-12 h-12 rounded-full bg-black/30 hover:bg-emerald-600/80 text-white transition-all duration-200 backdrop-blur-sm border border-white/10 hover:border-emerald-500/50">
+                    class="absolute left-4 z-20 hidden h-12 w-12 items-center justify-center rounded-full border border-white/10 bg-black/30 text-white opacity-0 backdrop-blur-sm transition-all duration-200 hover:border-emerald-500/50 hover:bg-emerald-600/80 group-hover:opacity-100 lg:flex">
                 <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/>
                 </svg>
             </button>
 
             <button @click="next()"
-                    class="absolute right-4 z-20 flex items-center justify-center w-12 h-12 rounded-full bg-black/30 hover:bg-emerald-600/80 text-white transition-all duration-200 backdrop-blur-sm border border-white/10 hover:border-emerald-500/50">
+                    class="absolute right-4 z-20 hidden h-12 w-12 items-center justify-center rounded-full border border-white/10 bg-black/30 text-white opacity-0 backdrop-blur-sm transition-all duration-200 hover:border-emerald-500/50 hover:bg-emerald-600/80 group-hover:opacity-100 lg:flex">
                 <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
                 </svg>
