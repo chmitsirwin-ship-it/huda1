@@ -11,6 +11,7 @@
             class="relative overflow-hidden bg-[#06111f] py-8 sm:py-10"
             x-data="{
                 state: 'loading',
+                locationReady: false,
                 qiblaBearing: 0,
                 distance: 0,
                 cardinal: '',
@@ -24,6 +25,7 @@
                 needsCompassPermission: false,
                 locationWatchId: null,
                 orientationHandler: null,
+                orientationTimeoutId: null,
                 angleDelta: 0,
                 latitude: null,
                 longitude: null,
@@ -45,14 +47,20 @@
                         window.removeEventListener('deviceorientationabsolute', this.orientationHandler, true);
                         window.removeEventListener('deviceorientation', this.orientationHandler, true);
                     }
+
+                    if (this.orientationTimeoutId !== null) {
+                        window.clearTimeout(this.orientationTimeoutId);
+                    }
                 },
 
                 setupCompassAvailability() {
-                    this.compassSupported = typeof window !== 'undefined' && 'DeviceOrientationEvent' in window;
+                    this.compassSupported = typeof window !== 'undefined'
+                        && 'DeviceOrientationEvent' in window
+                        && ('ondeviceorientationabsolute' in window || 'ondeviceorientation' in window);
 
                     if (!this.compassSupported) {
                         this.headingLabel = '{{ __('Live compass is not supported on this device') }}';
-                        this.alignmentLabel = '{{ __('Compass unavailable') }}';
+                        this.alignmentLabel = '{{ __('Showing Qibla bearing only') }}';
                         return;
                     }
 
@@ -78,6 +86,7 @@
                         (pos) => {
                             this.latitude = pos.coords.latitude;
                             this.longitude = pos.coords.longitude;
+                            this.locationReady = true;
                             this.calculateQibla(pos.coords.latitude, pos.coords.longitude);
                             this.state = 'ready';
                         },
@@ -138,6 +147,11 @@
                             return;
                         }
 
+                        if (this.orientationTimeoutId !== null) {
+                            window.clearTimeout(this.orientationTimeoutId);
+                            this.orientationTimeoutId = null;
+                        }
+
                         this.heading = nextHeading;
                         this.headingLabel = '{{ __('Compass active') }}';
                         this.updateAlignment();
@@ -145,6 +159,22 @@
 
                     window.addEventListener('deviceorientationabsolute', this.orientationHandler, true);
                     window.addEventListener('deviceorientation', this.orientationHandler, true);
+
+                    this.orientationTimeoutId = window.setTimeout(() => {
+                        if (this.heading !== null) {
+                            return;
+                        }
+
+                        this.compassSupported = false;
+                        this.compassEnabled = false;
+                        this.headingLabel = '{{ __('Live compass is not supported on this device') }}';
+                        this.alignmentLabel = '{{ __('Showing Qibla bearing only') }}';
+                        window.removeEventListener('deviceorientationabsolute', this.orientationHandler, true);
+                        window.removeEventListener('deviceorientation', this.orientationHandler, true);
+                        this.orientationHandler = null;
+                        this.orientationTimeoutId = null;
+                        this.updateAlignment();
+                    }, 2000);
                 },
 
                 calculateQibla(lat, lng) {
@@ -173,7 +203,9 @@
                 updateAlignment() {
                     if (this.heading === null) {
                         this.angleDelta = this.qiblaBearing;
-                        this.alignmentLabel = this.needsCompassPermission ? '{{ __('Tap to enable compass') }}' : '{{ __('Move phone to calibrate') }}';
+                        this.alignmentLabel = this.compassSupported
+                            ? (this.needsCompassPermission ? '{{ __('Tap to enable compass') }}' : '{{ __('Move phone to calibrate') }}')
+                            : '{{ __('Showing Qibla bearing only') }}';
                         this.alignmentTone = 'slate';
                         return;
                     }
@@ -254,6 +286,17 @@
                         </div>
 
                         <div x-show="state === 'ready'" x-cloak class="relative">
+                            <div
+                                x-show="!compassSupported"
+                                x-cloak
+                                class="absolute inset-0 z-30 flex items-center justify-center rounded-[1.5rem] bg-slate-950/72 px-6 text-center backdrop-blur-sm"
+                            >
+                                <div class="max-w-sm rounded-2xl border border-white/10 bg-white/8 px-5 py-4 shadow-[0_20px_60px_rgba(0,0,0,0.35)]">
+                                    <p class="text-sm font-semibold text-white">{{ __('Live compass is not supported on this device') }}</p>
+                                    <p class="mt-2 text-xs leading-5 text-slate-300">{{ __('Qibla bearing is still shown using your location, but live compass guidance works only on supported mobile devices.') }}</p>
+                                </div>
+                            </div>
+
                             <div class="mb-4 flex justify-center">
                                 <div class="inline-flex items-center gap-2 rounded-full border px-3.5 py-2 text-xs font-medium backdrop-blur-sm sm:text-sm" :class="toneClasses()">
                                     <span class="h-2.5 w-2.5 rounded-full" :class="alignmentTone === 'emerald' ? 'bg-emerald-300 shadow-[0_0_16px_rgba(110,231,183,0.9)]' : (alignmentTone === 'amber' ? 'bg-amber-200 shadow-[0_0_16px_rgba(253,230,138,0.8)]' : 'bg-slate-300/80')"></span>
@@ -334,7 +377,7 @@
                                     <p class="text-[10px] font-semibold uppercase tracking-[0.24em] text-slate-400">{{ __('Heading') }}</p>
                                     <div class="mt-2 flex items-end justify-between gap-3">
                                         <span class="text-xl font-semibold text-white tabular-nums" x-text="heading === null ? '--' : heading.toFixed(1) + '°'"></span>
-                                        <span class="text-xs text-slate-400">{{ __('North') }}</span>
+                                        <span class="text-xs text-slate-400" x-text="compassSupported ? '{{ __('North') }}' : '{{ __('Unavailable') }}'"></span>
                                     </div>
                                 </div>
                             </div>
