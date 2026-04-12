@@ -588,5 +588,8 @@
     "Calibrating compass": "معايرة البوصلة جارية",
     "Compass active": "البوصلة نشطة",
     "Move phone to calibrate": "حرك الهاتف لمعايرة البوصلة",
-    "North": "الشمال"
+    "North": "الشمال",
+    "Showing Qibla bearing only": "يتم عرض اتجاه القبلة فقط",
+    "Qibla bearing is still shown using your location, but live compass guidance works only on supported mobile devices.": "يتم عرض اتجاه القبلة باستخدام موقعك، ولكن إرشادات البوصلة المباشرة تعمل فقط على الأجهزة المحمولة المدعومة.",
+    "Unavailable": "غير متاح"
 }

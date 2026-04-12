@@ -779,5 +779,8 @@
     "Calibrating compass": "Kalibrowanie kompasu",
     "Compass active": "Kompas aktywny",
     "Move phone to calibrate": "Poruszaj telefonem, aby skalibrować",
-    "North": "Północ"
+    "North": "Północ",
+    "Showing Qibla bearing only": "Wyświetlanie tylko kierunku Qibły",
+    "Qibla bearing is still shown using your location, but live compass guidance works only on supported mobile devices.": "Kierunek Qibły jest nadal pokazywany za pomocą Twojej lokalizacji, ale wskazówki kompasu na żywo działają tylko na obsługiwanych urządzeniach mobilnych.",
+    "Unavailable": "Niedostępny"
 }
