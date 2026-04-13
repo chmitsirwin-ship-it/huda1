@@ -9,6 +9,7 @@
         "php": "^8.2",
         "abdulmajeed-jamaan/filament-translatable-tabs": "^5.0",
         "alkoumi/laravel-hijri-date": "^1.0.4",
+        "asmit/filament-upload": "^2.0",
         "bezhansalleh/filament-language-switch": "^4.3",
         "bezhansalleh/filament-shield": "^4.2",
         "cms-multi/filament-clear-cache": "^3.0.1",

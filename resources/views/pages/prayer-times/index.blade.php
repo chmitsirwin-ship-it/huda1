@@ -92,6 +92,7 @@
             $prevYear  = $month == 1 ? $year - 1 : $year;
             $nextMonth = $month == 12 ? 1 : $month + 1;
             $nextYear  = $month == 12 ? $year + 1 : $year;
+            $prayerTimesPdf = setting('prayer.prayer_times_pdf');
             $tablePrayers = [
                 ['key' => 'fajr', 'label' => __('Fajr')],
                 ['key' => 'sunrise', 'label' => __('Sunrise')],
@@ -110,6 +111,15 @@
                 </h2>
             </div>
             <div class="grid grid-cols-2 gap-2 sm:flex sm:flex-wrap sm:justify-end">
+                @if($prayerTimesPdf)
+                    <a href="{{ \Illuminate\Support\Facades\Storage::url($prayerTimesPdf) }}"
+                       target="_blank"
+                       rel="noopener noreferrer"
+                       class="col-span-2 inline-flex items-center justify-center gap-2 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-2.5 text-sm font-semibold text-emerald-700 transition-colors hover:border-emerald-300 hover:bg-emerald-100 sm:col-span-1">
+                        <x-icon name="heroicon-o-document-arrow-down" class="h-4 w-4"/>
+                        {{ __('Download PDF') }}
+                    </a>
+                @endif
                 <a href="{{ route('prayer-times.index', ['year' => $prevYear, 'month' => $prevMonth]) }}"
                    class="inline-flex items-center justify-center gap-1.5 rounded-xl border border-neutral-200 bg-white px-4 py-2.5 text-sm font-medium text-neutral-600 transition-colors hover:border-neutral-300 hover:bg-neutral-50">
                     <x-icon name="heroicon-o-chevron-left" class="h-3.5 w-3.5 rtl:rotate-180"/>

@@ -5,6 +5,8 @@ namespace App\Filament\Admin\Pages;
 use App\Enums\CalculationMethod;
 use App\Enums\PrayerMethod;
 use App\Support\PublicNavigation;
+use Asmit\FilamentUpload\Enums\PdfViewFit;
+use Asmit\FilamentUpload\Forms\Components\AdvancedFileUpload;
 use BackedEnum;
 use BezhanSalleh\FilamentShield\Traits\HasPageShield;
 use Filament\Forms\Components\CodeEditor;
@@ -159,6 +161,16 @@ class MosqueSettings extends Settings
 
                                 TextInput::make('hijri.adjustment_factor')->numeric()
                                     ->label(__('Hijri Adjustment Factor (days)')),
+                                AdvancedFileUpload::make('prayer.prayer_times_pdf')
+                                    ->label(__('Prayer Times PDF'))
+                                    ->acceptedFileTypes(['application/pdf'])
+                                    ->directory('settings')
+                                    ->pdfDisplayPage(1) // Set default page
+                                    ->pdfToolbar(true) // Enable toolbar
+                                    ->pdfZoomLevel(100) // Set zoom level
+                                    ->pdfFitType(PdfViewFit::FIT) // Set fit type
+                                    ->pdfNavPanes(true) // Enable navigation panes
+
                             ]),
 
                         Tab::make(__('SEO'))
@@ -174,7 +186,7 @@ class MosqueSettings extends Settings
                         Tab::make(__('Navigation'))
                             ->schema([
                                 ...collect(PublicNavigation::sections())
-                                    ->map(fn (string $label, string $section): Toggle => Toggle::make(PublicNavigation::settingKey($section))
+                                    ->map(fn(string $label, string $section): Toggle => Toggle::make(PublicNavigation::settingKey($section))
                                         ->label($label)
                                         ->default(true))
                                     ->all(),
