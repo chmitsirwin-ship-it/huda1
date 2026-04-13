@@ -13,24 +13,21 @@ class SetLocale
     {
         $languages = Language::where('is_active', true)->get();
         $activeCodes = $languages->pluck('code')->all();
-
-        if ($request->has('lang') && in_array($request->filled('lang'), $activeCodes)) {
-            session(['locale' => $request->filled('lang')]);
+        if ($request->filled('lang') && in_array($request->query('lang'), $activeCodes)) {
+            session(['locale' => $request->query('lang')]);
         }
 
         $locale = session('locale');
 
-        $language = match (true) {
-            $locale && in_array($locale, $activeCodes) => $languages->firstWhere('code', $locale),
-//            in_array($accept = substr($request->header('Accept-Language', ''), 0, 2), $activeCodes) => $languages->firstWhere('code', $accept),
-            default => $languages->firstWhere('is_default', true),
-        };
-
+        $language = $locale && in_array($locale, $activeCodes)
+            ? $languages->firstWhere('code', $locale)
+            : $languages->firstWhere('is_default', true);
 
         if ($language) {
             app()->setLocale($language->code);
             session(['locale' => $language->code]);
         }
+
         return $next($request);
     }
 }
