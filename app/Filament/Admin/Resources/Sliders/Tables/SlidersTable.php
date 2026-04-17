@@ -9,6 +9,7 @@ use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\ToggleColumn;
 use Filament\Tables\Table;
+use TinusG\FilamentHoverImageColumn\HoverImageColumn;
 
 class SlidersTable
 {
@@ -16,7 +17,7 @@ class SlidersTable
     {
         return $table
             ->columns([
-                ImageColumn::make('image')
+                HoverImageColumn::make('image')
                     ->label(__('Image')),
 
                 TextColumn::make('title')

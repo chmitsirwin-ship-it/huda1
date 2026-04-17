@@ -9,6 +9,7 @@ use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\ToggleColumn;
 use Filament\Tables\Table;
+use TinusG\FilamentHoverImageColumn\HoverImageColumn;
 
 class StaffTable
 {
@@ -16,7 +17,7 @@ class StaffTable
     {
         return $table
             ->columns([
-                ImageColumn::make('photo')
+                HoverImageColumn::make('photo')
                     ->label(__('Photo'))
                     ->circular(),
 
