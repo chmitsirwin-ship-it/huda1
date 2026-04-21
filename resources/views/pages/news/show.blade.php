@@ -36,7 +36,12 @@
         @endif
 
         <article class="max-w-none whitespace-pre-line text-base leading-8 text-neutral-700">
-            {!! $newsItem->content !!}
+            {!! \Filament\Forms\Components\RichEditor\RichContentRenderer::make($newsItem->content)
+                ->customBlocks([
+                    \App\Filament\Forms\Components\RichEditor\RichContentCustomBlocks\NewsAudioBlock::class,
+                    \App\Filament\Forms\Components\RichEditor\RichContentCustomBlocks\NewsVideoBlock::class,
+                ])
+                ->toHtml() !!}
         </article>
 
         @if($relatedNews->isNotEmpty())

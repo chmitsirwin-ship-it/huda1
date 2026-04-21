@@ -3,6 +3,8 @@
 namespace App\Filament\Admin\Resources\News\Schemas;
 
 use AbdulmajeedJamaan\FilamentTranslatableTabs\TranslatableTabs;
+use App\Filament\Forms\Components\RichEditor\RichContentCustomBlocks\NewsAudioBlock;
+use App\Filament\Forms\Components\RichEditor\RichContentCustomBlocks\NewsVideoBlock;
 use App\Models\NewsCategory;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\FileUpload;
@@ -26,7 +28,13 @@ class NewsForm
                             ->schema([
                                 TextInput::make('title')->label(__('Title'))->required(),
                                 Textarea::make('excerpt')->label(__('Excerpt'))->rows(3),
-                                RichEditor::make('content')->label(__('Content'))->columnSpanFull(),
+                                RichEditor::make('content')
+                                    ->label(__('Content'))
+                                    ->customBlocks([
+                                        NewsAudioBlock::class,
+                                        NewsVideoBlock::class,
+                                    ])
+                                    ->columnSpanFull(),
                                 TextInput::make('meta_title')->label(__('Meta Title')),
                                 TextInput::make('meta_description')->label(__('Meta Description')),
                             ]),
