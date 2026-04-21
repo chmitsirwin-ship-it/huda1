@@ -36,7 +36,7 @@
         @endif
 
         <article class="max-w-none whitespace-pre-line text-base leading-8 text-neutral-700">
-            {{ $newsItem->content }}
+            {!! $newsItem->content !!}
         </article>
 
         @if($relatedNews->isNotEmpty())

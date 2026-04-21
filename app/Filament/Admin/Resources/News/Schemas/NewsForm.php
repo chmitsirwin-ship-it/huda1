@@ -6,6 +6,7 @@ use AbdulmajeedJamaan\FilamentTranslatableTabs\TranslatableTabs;
 use App\Models\NewsCategory;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
@@ -25,7 +26,7 @@ class NewsForm
                             ->schema([
                                 TextInput::make('title')->label(__('Title'))->required(),
                                 Textarea::make('excerpt')->label(__('Excerpt'))->rows(3),
-                                Textarea::make('content')->label(__('Content'))->rows(14)->columnSpanFull(),
+                                RichEditor::make('content')->label(__('Content'))->columnSpanFull(),
                                 TextInput::make('meta_title')->label(__('Meta Title')),
                                 TextInput::make('meta_description')->label(__('Meta Description')),
                             ]),
