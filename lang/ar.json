@@ -591,5 +591,9 @@
     "North": "الشمال",
     "Showing Qibla bearing only": "يتم عرض اتجاه القبلة فقط",
     "Qibla bearing is still shown using your location, but live compass guidance works only on supported mobile devices.": "يتم عرض اتجاه القبلة باستخدام موقعك، ولكن إرشادات البوصلة المباشرة تعمل فقط على الأجهزة المحمولة المدعومة.",
-    "Unavailable": "غير متاح"
+    "Unavailable": "غير متاح",
+    "Primary Phone": "رقم الهاتف الرئيسي",
+    "Secondary Phone": "رقم الهاتف الثانوي",
+    "Prayer Times PDF": "ملف PDF لمواقيت الصلاة",
+    "Download PDF": "تحميل PDF"
 }

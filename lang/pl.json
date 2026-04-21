@@ -782,5 +782,9 @@
     "North": "Północ",
     "Showing Qibla bearing only": "Wyświetlanie tylko kierunku Qibły",
     "Qibla bearing is still shown using your location, but live compass guidance works only on supported mobile devices.": "Kierunek Qibły jest nadal pokazywany za pomocą Twojej lokalizacji, ale wskazówki kompasu na żywo działają tylko na obsługiwanych urządzeniach mobilnych.",
-    "Unavailable": "Niedostępny"
+    "Unavailable": "Niedostępny",
+    "Primary Phone": "",
+    "Secondary Phone": "",
+    "Prayer Times PDF": "",
+    "Download PDF": ""
 }
