@@ -81,9 +81,7 @@ class QuranPlayer {
 
     getPlayerOptions() {
         return {
-            controls: [ 'play', 'progress', 'duration', 'volume', 'settings'],
-            settings: ['speed'],
-            autoplay: Boolean(this.config.features?.autoplay),
+            controls: [ 'play','current-time', 'progress', 'duration', 'volume'],
             clickToPlay: true,
             resetOnEnd: false,
         };
@@ -348,20 +346,6 @@ class QuranPlayer {
 
         if (action === 'next') {
             this.playNext();
-            return;
-        }
-
-        if (action === 'shuffle') {
-            this.state.shuffle = ! this.state.shuffle;
-            this.syncActionButtons();
-            this.persistState();
-            return;
-        }
-
-        if (action === 'loop') {
-            this.state.loop = ! this.state.loop;
-            this.syncActionButtons();
-            this.persistState();
             return;
         }
 
