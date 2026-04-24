@@ -22,6 +22,7 @@ use App\Filament\Admin\Blocks\LiveStreamBlock;
 use App\Filament\Admin\Blocks\NewsBlock;
 use App\Filament\Admin\Blocks\PrayerTimesBlock;
 use App\Filament\Admin\Blocks\QiblaDirectionBlock;
+use App\Filament\Admin\Blocks\QuranPlayerBlock;
 use App\Filament\Admin\Blocks\QuranVerseBlock;
 use App\Filament\Admin\Blocks\RamadanScheduleBlock;
 use App\Filament\Admin\Blocks\RichTextBlock;
@@ -103,6 +104,7 @@ class AppServiceProvider extends ServiceProvider
             EventsBlock::class,
             AnnouncementsBlock::class,
             QuranVerseBlock::class,
+            QuranPlayerBlock::class,
             HadithBlock::class,
             StaffBlock::class,
             GalleryBlock::class,

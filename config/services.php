@@ -35,4 +35,9 @@ return [
         ],
     ],
 
+    'mp3quran' => [
+        'base_url' => env('MP3QURAN_API_BASE_URL', 'https://mp3quran.net/api/v3'),
+        'timeout' => env('MP3QURAN_API_TIMEOUT', 20),
+    ],
+
 ];

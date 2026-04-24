@@ -9,6 +9,7 @@ use App\Http\Controllers\KhutbaController;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\PrayerTimeController;
+use App\Http\Controllers\QuranPlayerController;
 use App\Http\Controllers\StaffController;
 use Illuminate\Support\Facades\Route;
 
@@ -51,4 +52,11 @@ Route::middleware('section-enabled:staff')->group(function (): void {
 
 Route::middleware('section-enabled:contact')->group(function (): void {
     Route::get('/contact', [ContactController::class, 'index'])->name('contact.index');
+});
+
+Route::prefix('api/quran-player')->name('quran-player.')->group(function (): void {
+    Route::get('/bootstrap', [QuranPlayerController::class, 'bootstrap'])->name('bootstrap');
+    Route::get('/ayat-timing/soar', [QuranPlayerController::class, 'timingSoar'])->name('timing.soar');
+    Route::get('/ayat-timing', [QuranPlayerController::class, 'ayatTiming'])->name('timing.ayat');
+    Route::get('/page-svg', [QuranPlayerController::class, 'pageSvg'])->name('page-svg');
 });

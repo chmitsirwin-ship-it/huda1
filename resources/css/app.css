@@ -35,3 +35,21 @@
     --font-sans: 'Alexandria', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
     'Segoe UI Symbol', 'Noto Color Emoji';
 }
+
+@layer components {
+    .quran-player-page-highlight {
+        fill: rgba(240, 179, 58, 0.34);
+        stroke: rgba(240, 179, 58, 0.95);
+        stroke-width: 1.5;
+    }
+
+    .plyr {
+        --plyr-color-main: #2cc295;
+        --plyr-audio-controls-background: rgba(7, 29, 32, 0.96);
+        --plyr-video-controls-background: linear-gradient(180deg, rgba(4, 20, 22, 0.05), rgba(4, 20, 22, 0.9));
+        --plyr-menu-background: #0a272a;
+        --plyr-menu-color: #fff;
+        --plyr-tooltip-background: #f0b33a;
+        --plyr-tooltip-color: #041416;
+    }
+}
