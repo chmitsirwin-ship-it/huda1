@@ -646,7 +646,7 @@
     "Insert Video": "إدراج فيديو",
     "New Contact Message": "رسالة تواصل جديدة",
     "Contact Form": "نموذج التواصل",
-    "N\\/A": "غير متاح",
+    "N\\\/A": "غير متاح",
     "Player ready": "المشغل جاهز",
     "Shuffle": "تشغيل عشوائي",
     "Loop": "تكرار",
@@ -666,5 +666,9 @@
     "Audio file": "ملف صوتي",
     "Your browser does not support the video tag.": "متصفحك لا يدعم وسم الفيديو.",
     "Video file: :name": "ملف فيديو: :name",
-    "Video file": "ملف فيديو"
+    "Video file": "ملف فيديو",
+    "N\/A": "غير متاح",
+    "Current Reciter": "القارئ الحالي",
+    "Current Surah": "السورة الحالية",
+     "Current Tafsir": "التفسير الحالي"
 }

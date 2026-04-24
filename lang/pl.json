@@ -838,7 +838,7 @@
     "Listen to Quran recitations with a clean player, reciter selection, and optional ayah sync.": "Słuchaj recytacji Koranu dzięki przejrzystemu odtwarzaczowi, wyborowi recytatora oraz opcjonalnej synchronizacji ajatu.",
     "New Contact Message": "Nowa wiadomość kontaktowa",
     "Contact Form": "Formularz kontaktowy",
-    "N\\/A": "Nie dotyczy",
+    "N\\\/A": "Nie dotyczy",
     "Player ready": "Odtwarzacz gotowy",
     "Shuffle": "Losowe odtwarzanie",
     "Loop": "Powtarzanie",
@@ -857,5 +857,8 @@
     "Audio file": "Plik audio",
     "Your browser does not support the video tag.": "Twoja przeglądarka nie obsługuje tagu wideo.",
     "Video file: :name": "Plik wideo: :name",
-    "Video file": "Plik wideo"
+    "Video file": "Plik wideo",
+    "N\/A": "N\/A",
+    "Current Reciter": "Obecny recytator",
+    "Current Surah": "Obecna sura"
 }

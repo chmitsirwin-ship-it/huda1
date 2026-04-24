@@ -625,7 +625,7 @@
     "Listen to Quran recitations with a clean player, reciter selection, and optional ayah sync.": "Listen to Quran recitations with a clean player, reciter selection, and optional ayah sync.",
     "New Contact Message": "New Contact Message",
     "Contact Form": "Contact Form",
-    "N\\/A": "N/A",
+    "N\\\/A": "N\/A",
     "Player ready": "Player ready",
     "Shuffle": "Shuffle",
     "Loop": "Loop",
@@ -645,5 +645,8 @@
     "Audio file": "Audio file",
     "Your browser does not support the video tag.": "Your browser does not support the video tag.",
     "Video file: :name": "Video file: :name",
-    "Video file": "Video file"
+    "Video file": "Video file",
+    "N\/A": "N\/A",
+    "Current Reciter": "Current Reciter",
+    "Current Surah": "Current Surah"
 }
