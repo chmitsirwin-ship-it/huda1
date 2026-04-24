@@ -12,9 +12,13 @@ class PrayerTimeService
 {
     public function getTodayPrayer(): ?PrayerTime
     {
-        return Cache::remember('prayer_today', 86400, fn () => PrayerTime::query()
-            ->whereDate('date', today())
-            ->first());
+        return Cache::remember(
+            'prayer_today',
+            now()->endOfDay()->diffInSeconds(now()),
+            fn () => PrayerTime::query()
+                ->whereDate('date', today())
+                ->first()
+        );
     }
 
     public function getMonthPrayers(int $year, int $month): Collection
