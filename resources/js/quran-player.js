@@ -17,6 +17,7 @@ class QuranPlayer {
         this.state = {
             bootstrap: null,
             queueItems: [],
+            queueSignature: null,
             queueIndex: 0,
             shuffle: false,
             loop: false,
@@ -29,11 +30,9 @@ class QuranPlayer {
         };
 
         this.audioElement = root.querySelector('[data-audio-element]');
-        this.toolbarEl = root.querySelector('[data-player-toolbar]');
         this.contentEl = root.querySelector('[data-player-content]');
-        this.activeTypeEl = root.querySelector('[data-active-type]');
-        this.activeTitleEl = root.querySelector('[data-active-title]');
-        this.activeSubtitleEl = root.querySelector('[data-active-subtitle]');
+        this.currentReciterEl = root.querySelector('[data-current-reciter]');
+        this.currentSurahEl = root.querySelector('[data-current-surah]');
         this.actionButtons = {
             previous: root.querySelector('[data-action="previous"]'),
             next: root.querySelector('[data-action="next"]'),
@@ -61,10 +60,17 @@ class QuranPlayer {
             });
 
             this.resolveDefaults();
+            this.syncQueueFromSelection();
             this.render();
         } catch (error) {
-            this.activeTitleEl.textContent = this.t('failed');
-            this.activeSubtitleEl.textContent = '';
+            if (this.currentReciterEl) {
+                this.currentReciterEl.textContent = this.t('failed');
+            }
+
+            if (this.currentSurahEl) {
+                this.currentSurahEl.textContent = '';
+            }
+
             this.contentEl.innerHTML = `<div class="rounded-[1rem] border border-dashed border-white/10 bg-white/5 px-4 py-6 text-center text-sm text-slate-400">${this.t('failed')}</div>`;
         }
     }
@@ -114,55 +120,55 @@ class QuranPlayer {
         }
     }
 
+    syncQueueFromSelection({ surahId = null, autoplay = false } = {}) {
+        const reciter = this.getSelectedReciter();
+        const moshaf = this.getSelectedMoshaf();
+
+        if (! reciter || ! moshaf?.surahs?.length) {
+            this.state.queueItems = [];
+            this.state.queueIndex = 0;
+            this.state.queueSignature = null;
+            return;
+        }
+
+        const queueItems = moshaf.surahs.map((surah) => ({
+            title: surah.name,
+            subtitle: `${reciter.name} • ${moshaf.name}`,
+            url: surah.audio_url,
+            surahId: surah.id,
+            timingReadId: moshaf.timing_read_id ?? null,
+        }));
+
+        const nextSurahId = surahId ?? this.state.selectedSurahId ?? moshaf.surah_list?.[0] ?? queueItems[0]?.surahId ?? null;
+        const nextIndex = Math.max(queueItems.findIndex((item) => item.surahId === nextSurahId), 0);
+        const nextItem = queueItems[nextIndex] ?? null;
+        const nextSignature = `${reciter.id}:${moshaf.moshaf_type}`;
+        const shouldReloadSource = this.state.queueSignature !== nextSignature || ! this.player?.source?.sources?.length;
+
+        this.state.queueItems = queueItems;
+        this.state.queueIndex = nextIndex;
+        this.state.queueSignature = nextSignature;
+        this.state.selectedSurahId = nextItem?.surahId ?? null;
+
+        if (! shouldReloadSource || ! nextItem) {
+            return;
+        }
+
+        this.player.source = {
+            type: 'audio',
+            title: nextItem.title,
+            sources: [{ src: nextItem.url, type: 'audio/mp3' }],
+        };
+
+        if (autoplay) {
+            this.player.play().catch(() => {});
+        }
+    }
+
     render() {
-        this.renderToolbar();
         this.renderContent();
         this.syncActionButtons();
         this.persistState();
-    }
-
-    renderToolbar() {
-        const selectedSurah = this.getSelectedSurah();
-
-        this.toolbarEl.innerHTML = `
-            <div class="flex flex-col gap-3 rounded-[1.1rem] border border-white/10 bg-[#07171a]/70 p-3 sm:rounded-[1.3rem] sm:p-4">
-                <div class="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
-                    <div class="min-w-0">
-                        <div class="text-xs font-semibold uppercase tracking-[0.28em] text-slate-400">${this.t('filters')}</div>
-                        <div class="mt-1 text-sm text-slate-300">${this.escape(this.getSelectedReciter()?.name ?? this.t('chooseReciter'))}</div>
-                    </div>
-                    <div class="grid grid-cols-2 gap-2 lg:hidden">
-                        <button
-                            type="button"
-                            data-action="open-panel"
-                            data-panel="reciters"
-                            class="inline-flex min-h-11 items-center justify-center rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm font-medium text-slate-100 transition hover:border-emerald-300/40 hover:bg-white/10"
-                        >
-                            ${this.t('browseReciters')}
-                        </button>
-                        <button
-                            type="button"
-                            data-action="open-panel"
-                            data-panel="surahs"
-                            class="inline-flex min-h-11 items-center justify-center rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm font-medium text-slate-100 transition hover:border-amber-300/40 hover:bg-white/10"
-                        >
-                            ${this.t('browseSurahs')}
-                        </button>
-                    </div>
-                    <div class="hidden flex-wrap gap-2 lg:flex">
-                        ${selectedSurah ? `
-                            <button
-                                type="button"
-                                data-play-surah="${selectedSurah.id}"
-                                class="inline-flex min-h-11 items-center justify-center rounded-full border border-emerald-300/30 bg-emerald-300/15 px-5 py-2.5 text-sm font-medium text-white transition hover:bg-emerald-300/25"
-                            >
-                                ${this.t('playThis')}
-                            </button>
-                        ` : ''}
-                    </div>
-                </div>
-            </div>
-        `;
     }
 
     renderContent() {
@@ -172,9 +178,13 @@ class QuranPlayer {
         const surahs = this.getFilteredSurahs();
         const reciters = this.getFilteredReciters();
 
-        this.activeTypeEl.textContent = this.t('recitations');
-        this.activeTitleEl.textContent = reciter?.name ?? this.t('chooseReciter');
-        this.activeSubtitleEl.textContent = moshaf?.name ?? '';
+        if (this.currentReciterEl) {
+            this.currentReciterEl.textContent = reciter?.name ?? this.t('chooseReciter');
+        }
+
+        if (this.currentSurahEl) {
+            this.currentSurahEl.textContent = selectedSurah?.name ?? this.t('chooseSurah');
+        }
 
         if (! moshaf || ! surahs.length) {
             this.contentEl.innerHTML = `<div class="rounded-[1rem] border border-dashed border-white/10 bg-white/5 px-4 py-6 text-center text-sm text-slate-400">${this.t('empty')}</div>`;
@@ -385,6 +395,7 @@ class QuranPlayer {
             this.state.selectedSurahId = null;
             this.state.openPanel = null;
             this.resolveDefaults();
+            this.syncQueueFromSelection();
             this.render();
             return;
         }
@@ -408,12 +419,14 @@ class QuranPlayer {
                 this.state.selectedSurahId = null;
                 this.state.surahQuery = '';
                 this.resolveDefaults();
+                this.syncQueueFromSelection();
                 this.render();
                 break;
             case 'riwayah':
                 this.state.selectedRiwayahId = Number(target.value) || null;
                 this.state.selectedSurahId = this.getSelectedMoshaf()?.surah_list?.[0] ?? null;
                 this.state.surahQuery = '';
+                this.syncQueueFromSelection();
                 this.render();
                 break;
             default:
@@ -447,23 +460,7 @@ class QuranPlayer {
     }
 
     playRecitationQueue(surahId) {
-        const reciter = this.getSelectedReciter();
-        const moshaf = this.getSelectedMoshaf();
-
-        if (! reciter || ! moshaf) {
-            return;
-        }
-
-        this.state.selectedSurahId = surahId;
-        this.state.queueItems = moshaf.surahs.map((surah) => ({
-            title: surah.name,
-            subtitle: `${reciter.name} • ${moshaf.name}`,
-            url: surah.audio_url,
-            surahId: surah.id,
-            timingReadId: moshaf.timing_read_id ?? null,
-        }));
-        this.state.queueIndex = Math.max(this.state.queueItems.findIndex((item) => item.surahId === surahId), 0);
-
+        this.syncQueueFromSelection({ surahId });
         this.loadQueueItem();
         this.renderContent();
     }
@@ -509,8 +506,9 @@ class QuranPlayer {
         }
 
         this.state.selectedSurahId = item.surahId;
-        this.activeTitleEl.textContent = item.title;
-        this.activeSubtitleEl.textContent = item.subtitle ?? '';
+        if (this.currentSurahEl) {
+            this.currentSurahEl.textContent = item.title;
+        }
         this.player.source = {
             type: 'audio',
             title: item.title,

@@ -43,6 +43,8 @@
             'close' => __('Close'),
             'filters' => __('Filters'),
             'library' => __('Library'),
+            'currentReciter' => __('Current Reciter'),
+            'currentSurah' => __('Current Surah'),
         ],
     ];
 @endphp
@@ -71,19 +73,18 @@
             <div class="mt-6 space-y-4 sm:space-y-5">
                 <div class="rounded-[1.4rem] border border-white/10 bg-white/5 p-3 backdrop-blur sm:rounded-[1.6rem] sm:p-4">
                     <div class="rounded-[1.2rem] border border-white/10 bg-[#071d20]/80 p-3 sm:rounded-[1.4rem] sm:p-5">
-                        <div class="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
-                            <div class="min-w-0">
-                                <div class="text-xs uppercase tracking-[0.3em] text-amber-300/80" data-active-type>{{ __('Recitations') }}</div>
-                                <h3 class="mt-2 break-words text-lg font-semibold text-white sm:text-2xl" data-active-title>{{ __('Choose a reciter') }}</h3>
-                                <p class="mt-1.5 text-sm text-slate-300" data-active-subtitle></p>
+                        <div class="mb-3 grid gap-2 sm:mb-4 sm:grid-cols-2">
+                            <div class="rounded-[1rem] border border-white/10 bg-white/5 px-4 py-3">
+                                <div class="text-[11px] font-semibold uppercase tracking-[0.28em] text-slate-400">{{ __('Current Reciter') }}</div>
+                                <div class="mt-2 text-sm font-medium text-white sm:text-base" data-current-reciter>{{ __('Choose a reciter') }}</div>
                             </div>
-
-                            <span class="inline-flex w-fit items-center rounded-full border border-emerald-300/20 bg-emerald-300/10 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.24em] text-emerald-100 sm:text-[11px]">
-                                {{ __('Playing Now') }}
-                            </span>
+                            <div class="rounded-[1rem] border border-white/10 bg-white/5 px-4 py-3">
+                                <div class="text-[11px] font-semibold uppercase tracking-[0.28em] text-slate-400">{{ __('Current Surah') }}</div>
+                                <div class="mt-2 text-sm font-medium text-white sm:text-base" data-current-surah>{{ __('Choose a surah') }}</div>
+                            </div>
                         </div>
 
-                        <div class="mt-4 rounded-[1.15rem] border border-white/10 bg-[#021012] p-2 sm:mt-5 sm:rounded-[1.3rem] sm:p-3" wire:ignore>
+                        <div class="rounded-[1.15rem] border border-white/10 bg-[#021012] p-2 sm:rounded-[1.3rem] sm:p-3" wire:ignore>
                             <audio controls playsinline preload="metadata" data-audio-element></audio>
                         </div>
 
@@ -99,8 +100,6 @@
                         </div>
                     </div>
                 </div>
-
-                <div data-player-toolbar wire:ignore></div>
                 <div data-player-content wire:ignore></div>
             </div>
         </div>
