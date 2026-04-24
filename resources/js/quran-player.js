@@ -6,6 +6,8 @@ class QuranPlayer {
         this.root = root;
         this.config = JSON.parse(root.dataset.quranPlayer || '{}');
         this.storageKey = `quran-player:${this.config.blockId}`;
+        this.mobileMediaQuery = window.matchMedia('(max-width: 767px)');
+        this.handlePlayerModeChange = () => this.updatePlayerMode();
         if (this.config.dir) {
             this.root.setAttribute('dir', this.config.dir);
         }
@@ -18,6 +20,7 @@ class QuranPlayer {
             queueIndex: 0,
             shuffle: false,
             loop: false,
+            openPanel: null,
             selectedReciterId: null,
             selectedRiwayahId: null,
             selectedSurahId: null,
@@ -26,7 +29,6 @@ class QuranPlayer {
         };
 
         this.audioElement = root.querySelector('[data-audio-element]');
-        this.statusEl = root.querySelector('[data-player-status]');
         this.toolbarEl = root.querySelector('[data-player-toolbar]');
         this.contentEl = root.querySelector('[data-player-content]');
         this.activeTypeEl = root.querySelector('[data-active-type]');
@@ -39,24 +41,20 @@ class QuranPlayer {
             loop: root.querySelector('[data-action="loop"]'),
         };
 
-        this.player = new Plyr(this.audioElement, {
-            controls: ['play-large', 'rewind', 'play', 'fast-forward', 'progress', 'current-time', 'duration', 'mute', 'volume', 'settings'],
-            settings: ['speed'],
-            autoplay: Boolean(this.config.features?.autoplay),
-        });
+        this.player = this.createPlayer();
 
         this.root.addEventListener('click', (event) => this.handleClick(event));
         this.root.addEventListener('change', (event) => this.handleChange(event));
         this.root.addEventListener('input', (event) => this.handleInput(event));
+        this.root.addEventListener('keydown', (event) => this.handleKeydown(event));
         this.audioElement.addEventListener('ended', () => this.playNext());
+        this.mobileMediaQuery.addEventListener('change', this.handlePlayerModeChange);
 
         this.restoreState();
         this.bootstrap();
     }
 
     async bootstrap() {
-        this.setStatus(this.t('loading'));
-
         try {
             this.state.bootstrap = await this.fetchJson(this.config.routes.bootstrap, {
                 language: this.config.language,
@@ -64,9 +62,41 @@ class QuranPlayer {
 
             this.resolveDefaults();
             this.render();
-            this.setStatus(this.t('ready'));
         } catch (error) {
-            this.setStatus(this.t('failed'), true);
+            this.activeTitleEl.textContent = this.t('failed');
+            this.activeSubtitleEl.textContent = '';
+            this.contentEl.innerHTML = `<div class="rounded-[1rem] border border-dashed border-white/10 bg-white/5 px-4 py-6 text-center text-sm text-slate-400">${this.t('failed')}</div>`;
+        }
+    }
+
+    createPlayer() {
+        return new Plyr(this.audioElement, this.getPlayerOptions());
+    }
+
+    getPlayerOptions() {
+        return {
+            controls: [ 'play', 'progress', 'duration', 'volume', 'settings'],
+            settings: ['speed'],
+            autoplay: Boolean(this.config.features?.autoplay),
+            clickToPlay: true,
+            resetOnEnd: false,
+        };
+    }
+
+    updatePlayerMode() {
+        const currentTime = this.player?.currentTime ?? 0;
+        const wasPaused = this.player?.paused ?? true;
+        const source = this.player?.source ?? null;
+
+        this.player?.destroy();
+        this.player = this.createPlayer();
+
+        if (source?.sources?.length) {
+            this.player.source = source;
+            this.player.currentTime = currentTime;
+            if (! wasPaused) {
+                this.player.play().catch(() => {});
+            }
         }
     }
 
@@ -92,7 +122,47 @@ class QuranPlayer {
     }
 
     renderToolbar() {
-        this.toolbarEl.innerHTML = '';
+        const selectedSurah = this.getSelectedSurah();
+
+        this.toolbarEl.innerHTML = `
+            <div class="flex flex-col gap-3 rounded-[1.1rem] border border-white/10 bg-[#07171a]/70 p-3 sm:rounded-[1.3rem] sm:p-4">
+                <div class="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+                    <div class="min-w-0">
+                        <div class="text-xs font-semibold uppercase tracking-[0.28em] text-slate-400">${this.t('filters')}</div>
+                        <div class="mt-1 text-sm text-slate-300">${this.escape(this.getSelectedReciter()?.name ?? this.t('chooseReciter'))}</div>
+                    </div>
+                    <div class="grid grid-cols-2 gap-2 lg:hidden">
+                        <button
+                            type="button"
+                            data-action="open-panel"
+                            data-panel="reciters"
+                            class="inline-flex min-h-11 items-center justify-center rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm font-medium text-slate-100 transition hover:border-emerald-300/40 hover:bg-white/10"
+                        >
+                            ${this.t('browseReciters')}
+                        </button>
+                        <button
+                            type="button"
+                            data-action="open-panel"
+                            data-panel="surahs"
+                            class="inline-flex min-h-11 items-center justify-center rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm font-medium text-slate-100 transition hover:border-amber-300/40 hover:bg-white/10"
+                        >
+                            ${this.t('browseSurahs')}
+                        </button>
+                    </div>
+                    <div class="hidden flex-wrap gap-2 lg:flex">
+                        ${selectedSurah ? `
+                            <button
+                                type="button"
+                                data-play-surah="${selectedSurah.id}"
+                                class="inline-flex min-h-11 items-center justify-center rounded-full border border-emerald-300/30 bg-emerald-300/15 px-5 py-2.5 text-sm font-medium text-white transition hover:bg-emerald-300/25"
+                            >
+                                ${this.t('playThis')}
+                            </button>
+                        ` : ''}
+                    </div>
+                </div>
+            </div>
+        `;
     }
 
     renderContent() {
@@ -112,66 +182,142 @@ class QuranPlayer {
         }
 
         this.contentEl.innerHTML = `
-            <div class="grid gap-4 xl:grid-cols-[minmax(0,0.9fr)_minmax(0,1.2fr)]">
-                <div class="h-full">
-                    <div class="flex h-full flex-col rounded-[1.3rem] border border-white/10 bg-[#07171a]/70 p-4">
-                        <div class="flex flex-col gap-3 border-b border-white/10 pb-3 sm:flex-row sm:items-start sm:justify-between">
-                            <div class="text-xs font-semibold uppercase tracking-[0.28em] text-slate-400">${this.t('pickReciter')}</div>
-                            <div class="w-full sm:max-w-xs">
-                                ${this.renderSelect('riwayah', this.t('chooseRiwayah'), this.getAvailableMoshaf().map((item) => ({ value: item.moshaf_type, label: item.name })), this.state.selectedRiwayahId, true)}
+            <div class="space-y-4">
+                <div class="grid gap-3 lg:hidden">
+                    <button
+                        type="button"
+                        data-action="open-panel"
+                        data-panel="reciters"
+                        class="rounded-[1.05rem] border border-white/10 bg-[#07171a]/70 p-3.5 text-start transition hover:border-emerald-300/30 hover:bg-white/10"
+                    >
+                        <div class="text-xs font-semibold uppercase tracking-[0.28em] text-slate-400">${this.t('pickReciter')}</div>
+                        <div class="mt-2 text-base font-semibold text-white">${this.escape(reciter?.name ?? this.t('chooseReciter'))}</div>
+                        <div class="mt-1 text-sm text-slate-300">${this.escape(moshaf?.name ?? this.t('chooseRiwayah'))}</div>
+                    </button>
+
+                    <button
+                        type="button"
+                        data-action="open-panel"
+                        data-panel="surahs"
+                        class="rounded-[1.05rem] border border-white/10 bg-[#07171a]/70 p-3.5 text-start transition hover:border-amber-300/30 hover:bg-white/10"
+                    >
+                        <div class="flex items-center justify-between gap-3">
+                            <div>
+                                <div class="text-xs font-semibold uppercase tracking-[0.28em] text-slate-400">${this.t('surahLibrary')}</div>
+                                <div class="mt-2 text-base font-semibold text-white">${this.escape(selectedSurah?.name ?? this.t('chooseSurah'))}</div>
+                                <div class="mt-1 text-sm text-slate-300">${this.t('showingResults')}: ${surahs.length}</div>
+                            </div>
+                            <div class="inline-flex h-11 min-w-11 items-center justify-center rounded-full border border-white/10 bg-white/5 px-3 text-sm text-slate-200">
+                                ${selectedSurah ? this.escape(String(selectedSurah.id)) : surahs.length}
                             </div>
                         </div>
-                        <div class="mt-3 flex min-h-11 items-center gap-2 rounded-2xl border border-white/10 bg-white/5 px-4 py-3">
-                            <input
-                                type="text"
-                                value="${this.escapeAttribute(this.state.reciterQuery)}"
-                                data-control="reciter-search"
-                                placeholder="${this.t('searchReciters')}"
-                                class="w-full bg-transparent text-sm text-white outline-none placeholder:text-slate-400"
-                            />
-                            <div data-reciter-search-clear>
-                                ${this.renderReciterSearchClear()}
+                    </button>
+                </div>
+
+                <div class="hidden gap-4 xl:grid-cols-[minmax(0,0.9fr)_minmax(0,1.2fr)] lg:grid">
+                    ${this.renderReciterPanel(reciters, { mobile: false })}
+                    ${this.renderSurahPanel(surahs, selectedSurah, { mobile: false })}
+                </div>
+
+                <div class="${this.state.openPanel ? 'pointer-events-auto opacity-100' : 'pointer-events-none opacity-0'} fixed inset-0 z-50 bg-[#02090b]/75 p-3 backdrop-blur-sm transition lg:hidden" data-mobile-overlay>
+                    <div
+                        class="absolute inset-0"
+                        data-action="close-panel"
+                        aria-hidden="true"
+                    ></div>
+                    <div class="absolute inset-x-3 bottom-3 top-auto max-h-[88vh] overflow-hidden rounded-[1.35rem] border border-white/10 bg-[#051518] shadow-[0_30px_90px_rgba(0,0,0,0.45)]">
+                        <div class="flex items-center justify-between border-b border-white/10 px-4 py-4">
+                            <div>
+                                <div class="text-xs font-semibold uppercase tracking-[0.28em] text-slate-400">${this.state.openPanel === 'reciters' ? this.t('filters') : this.t('library')}</div>
+                                <div class="mt-1 text-base font-semibold text-white">${this.state.openPanel === 'reciters' ? this.t('browseReciters') : this.t('browseSurahs')}</div>
                             </div>
+                            <button
+                                type="button"
+                                data-action="close-panel"
+                                class="inline-flex min-h-11 items-center justify-center rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm font-medium text-slate-100 transition hover:border-white/20 hover:bg-white/10"
+                            >
+                                ${this.t('close')}
+                            </button>
                         </div>
-                        <div class="mt-3 min-h-0 max-h-[36rem] flex-1 overflow-y-auto pe-1" data-reciter-results>
-                            ${this.renderReciterResults(reciters)}
+                        <div class="max-h-[calc(88vh-5rem)] overflow-y-auto p-4">
+                            ${this.state.openPanel === 'reciters'
+                                ? this.renderReciterPanel(reciters, { mobile: true })
+                                : this.state.openPanel === 'surahs'
+                                    ? this.renderSurahPanel(surahs, selectedSurah, { mobile: true })
+                                    : ''}
                         </div>
                     </div>
                 </div>
+            </div>
+        `;
 
-                <div class="flex h-full flex-col rounded-[1.3rem] border border-white/10 bg-[#07171a]/70 p-4">
-                    <div class="flex flex-col gap-3 border-b border-white/10 pb-3">
-                        <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-                            <div>
-                                <div class="text-xs font-semibold uppercase tracking-[0.28em] text-slate-400">${this.t('surahLibrary')}</div>
-                                <div class="mt-1 text-sm text-slate-300" data-surah-results-count>${this.t('showingResults')}: ${surahs.length}</div>
-                            </div>
-                            ${selectedSurah ? `
-                                <button
-                                    type="button"
-                                    data-play-surah="${selectedSurah.id}"
-                                    class="inline-flex min-h-11 items-center justify-center rounded-full border border-emerald-300/30 bg-emerald-300/15 px-5 py-2.5 text-sm font-medium text-white transition hover:bg-emerald-300/25"
-                                >
-                                    ${this.t('playThis')}
-                                </button>
-                            ` : ''}
-                        </div>
-                        <div class="flex min-h-11 items-center gap-2 rounded-2xl border border-white/10 bg-white/5 px-4 py-3">
-                            <input
-                                type="text"
-                                value="${this.escapeAttribute(this.state.surahQuery)}"
-                                data-control="surah-search"
-                                placeholder="${this.t('searchSurahs')}"
-                                class="w-full bg-transparent text-sm text-white outline-none placeholder:text-slate-400"
-                            />
-                            <div data-surah-search-clear>
-                                ${this.renderSurahSearchClear()}
-                            </div>
+        document.body.classList.toggle('overflow-hidden', Boolean(this.state.openPanel));
+    }
+
+    renderReciterPanel(reciters = this.getFilteredReciters(), { mobile = false } = {}) {
+        return `
+            <div class="h-full">
+                <div class="flex h-full flex-col rounded-[1.15rem] border border-white/10 bg-[#07171a]/70 p-4 sm:rounded-[1.3rem] sm:p-5">
+                    <div class="flex flex-col gap-3 border-b border-white/10 pb-3 sm:flex-row sm:items-start sm:justify-between">
+                        <div class="text-xs font-semibold uppercase tracking-[0.28em] text-slate-400">${this.t('pickReciter')}</div>
+                        <div class="w-full sm:max-w-xs">
+                            ${this.renderSelect('riwayah', this.t('chooseRiwayah'), this.getAvailableMoshaf().map((item) => ({ value: item.moshaf_type, label: item.name })), this.state.selectedRiwayahId, true)}
                         </div>
                     </div>
-                    <div class="mt-4 min-h-0 max-h-[36rem] flex-1 overflow-y-auto pe-2" data-surah-results>
-                        ${this.renderSurahResults(surahs)}
+                    <div class="mt-3 flex min-h-12 items-center gap-2 rounded-2xl border border-white/10 bg-white/5 px-4 py-3">
+                        <input
+                            type="text"
+                            value="${this.escapeAttribute(this.state.reciterQuery)}"
+                            data-control="reciter-search"
+                            placeholder="${this.t('searchReciters')}"
+                            class="w-full bg-transparent text-sm text-white outline-none placeholder:text-slate-400"
+                        />
+                        <div data-reciter-search-clear>
+                            ${this.renderReciterSearchClear()}
+                        </div>
                     </div>
+                    <div class="mt-3 min-h-0 ${mobile ? '' : 'max-h-[36rem]'} flex-1 overflow-y-auto pe-1" data-reciter-results>
+                        ${this.renderReciterResults(reciters)}
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+
+    renderSurahPanel(surahs = this.getFilteredSurahs(), selectedSurah = this.getSelectedSurah(), { mobile = false } = {}) {
+        return `
+            <div class="flex h-full flex-col rounded-[1.15rem] border border-white/10 bg-[#07171a]/70 p-4 sm:rounded-[1.3rem] sm:p-5">
+                <div class="flex flex-col gap-3 border-b border-white/10 pb-3">
+                    <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+                        <div>
+                            <div class="text-xs font-semibold uppercase tracking-[0.28em] text-slate-400">${this.t('surahLibrary')}</div>
+                            <div class="mt-1 text-sm text-slate-300" data-surah-results-count>${this.t('showingResults')}: ${surahs.length}</div>
+                        </div>
+                        ${selectedSurah ? `
+                            <button
+                                type="button"
+                                data-play-surah="${selectedSurah.id}"
+                                class="inline-flex min-h-11 items-center justify-center rounded-full border border-emerald-300/30 bg-emerald-300/15 px-5 py-2.5 text-sm font-medium text-white transition hover:bg-emerald-300/25"
+                            >
+                                ${this.t('playThis')}
+                            </button>
+                        ` : ''}
+                    </div>
+                    <div class="flex min-h-12 items-center gap-2 rounded-2xl border border-white/10 bg-white/5 px-4 py-3">
+                        <input
+                            type="text"
+                            value="${this.escapeAttribute(this.state.surahQuery)}"
+                            data-control="surah-search"
+                            placeholder="${this.t('searchSurahs')}"
+                            class="w-full bg-transparent text-sm text-white outline-none placeholder:text-slate-400"
+                        />
+                        <div data-surah-search-clear>
+                            ${this.renderSurahSearchClear()}
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-4 min-h-0 ${mobile ? '' : 'max-h-[36rem]'} flex-1 overflow-y-auto pe-2" data-surah-results>
+                    ${this.renderSurahResults(surahs)}
                 </div>
             </div>
         `;
@@ -183,7 +329,7 @@ class QuranPlayer {
             return;
         }
 
-        const { action, playSurah, selectReciter } = button.dataset;
+        const { action, playSurah, selectReciter, panel } = button.dataset;
 
         if (action === 'previous') {
             this.playPrevious();
@@ -221,10 +367,23 @@ class QuranPlayer {
             return;
         }
 
+        if (action === 'open-panel') {
+            this.state.openPanel = panel ?? null;
+            this.render();
+            return;
+        }
+
+        if (action === 'close-panel') {
+            this.state.openPanel = null;
+            this.render();
+            return;
+        }
+
         if (selectReciter) {
             this.state.selectedReciterId = Number(selectReciter) || null;
             this.state.selectedRiwayahId = null;
             this.state.selectedSurahId = null;
+            this.state.openPanel = null;
             this.resolveDefaults();
             this.render();
             return;
@@ -232,6 +391,7 @@ class QuranPlayer {
 
         if (playSurah) {
             this.playRecitationQueue(Number(playSurah));
+            this.state.openPanel = null;
         }
     }
 
@@ -258,6 +418,13 @@ class QuranPlayer {
                 break;
             default:
                 break;
+        }
+    }
+
+    handleKeydown(event) {
+        if (event.key === 'Escape' && this.state.openPanel) {
+            this.state.openPanel = null;
+            this.render();
         }
     }
 
@@ -479,46 +646,28 @@ class QuranPlayer {
     }
 
     updateReciterSearchUI() {
-        const resultsEl = this.contentEl.querySelector('[data-reciter-results]');
-        const clearEl = this.contentEl.querySelector('[data-reciter-search-clear]');
+        this.contentEl.querySelectorAll('[data-reciter-results]').forEach((element) => {
+            element.innerHTML = this.renderReciterResults();
+        });
 
-        if (resultsEl) {
-            resultsEl.innerHTML = this.renderReciterResults();
-        }
-
-        if (clearEl) {
-            clearEl.innerHTML = this.renderReciterSearchClear();
-        }
+        this.contentEl.querySelectorAll('[data-reciter-search-clear]').forEach((element) => {
+            element.innerHTML = this.renderReciterSearchClear();
+        });
     }
 
     updateSurahSearchUI() {
         const surahs = this.getFilteredSurahs();
-        const resultsEl = this.contentEl.querySelector('[data-surah-results]');
-        const clearEl = this.contentEl.querySelector('[data-surah-search-clear]');
-        const countEl = this.contentEl.querySelector('[data-surah-results-count]');
+        this.contentEl.querySelectorAll('[data-surah-results]').forEach((element) => {
+            element.innerHTML = this.renderSurahResults(surahs);
+        });
 
-        if (resultsEl) {
-            resultsEl.innerHTML = this.renderSurahResults(surahs);
-        }
+        this.contentEl.querySelectorAll('[data-surah-search-clear]').forEach((element) => {
+            element.innerHTML = this.renderSurahSearchClear();
+        });
 
-        if (clearEl) {
-            clearEl.innerHTML = this.renderSurahSearchClear();
-        }
-
-        if (countEl) {
-            countEl.textContent = `${this.t('showingResults')}: ${surahs.length}`;
-        }
-    }
-
-    setStatus(message, isError = false) {
-        this.statusEl.textContent = message;
-        this.statusEl.classList.toggle('border-rose-300/20', isError);
-        this.statusEl.classList.toggle('bg-rose-300/10', isError);
-        this.statusEl.classList.toggle('text-rose-100', isError);
-        this.statusEl.classList.toggle('border-emerald-300/20', ! isError && Boolean(message));
-        this.statusEl.classList.toggle('bg-emerald-300/10', ! isError && Boolean(message));
-        this.statusEl.classList.toggle('text-emerald-100', ! isError && Boolean(message));
-        this.statusEl.classList.toggle('hidden', ! message);
+        this.contentEl.querySelectorAll('[data-surah-results-count]').forEach((element) => {
+            element.textContent = `${this.t('showingResults')}: ${surahs.length}`;
+        });
     }
 
     syncActionButtons() {
@@ -591,6 +740,11 @@ class QuranPlayer {
         } catch {
             // Ignore invalid local state.
         }
+    }
+
+    destroy() {
+        document.body.classList.remove('overflow-hidden');
+        this.mobileMediaQuery.removeEventListener('change', this.handlePlayerModeChange);
     }
 
     async fetchJson(url, params = {}) {
