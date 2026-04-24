@@ -860,5 +860,8 @@
     "Video file": "Plik wideo",
     "N\/A": "N\/A",
     "Current Reciter": "Obecny recytator",
-    "Current Surah": "Obecna sura"
+    "Current Surah": "Obecna sura",
+    "On Surah End": "",
+    "Play Next Surah": "",
+    "Repeat Current Surah": ""
 }

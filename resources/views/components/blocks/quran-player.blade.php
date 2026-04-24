@@ -45,6 +45,9 @@
             'library' => __('Library'),
             'currentReciter' => __('Current Reciter'),
             'currentSurah' => __('Current Surah'),
+            'onSurahEnd' => __('On Surah End'),
+            'playNextSurah' => __('Play Next Surah'),
+            'repeatCurrentSurah' => __('Repeat Current Surah'),
         ],
     ];
 @endphp
@@ -97,6 +100,32 @@
                                 <span>{{ __('Next') }}</span>
                                 <x-icon name="heroicon-o-chevron-right" class="h-4 w-4 rtl:rotate-180" />
                             </button>
+                        </div>
+
+                        <div class="mt-3 rounded-[1rem] border border-white/10 bg-white/5 p-3 sm:mt-4">
+                            <div class="flex flex-col gap-2">
+                                <span class="text-[11px] font-semibold uppercase tracking-[0.28em] text-slate-400">{{ __('On Surah End') }}</span>
+                                <div class="grid grid-cols-1 gap-2 sm:grid-cols-2" role="group" aria-label="{{ __('On Surah End') }}">
+                                    <button
+                                        type="button"
+                                        data-action="set-end-mode"
+                                        data-end-mode="next"
+                                        aria-pressed="true"
+                                        class="inline-flex min-h-11 items-center justify-center rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm font-medium text-slate-200 transition hover:border-emerald-300/40 hover:bg-emerald-300/10"
+                                    >
+                                        {{ __('Play Next Surah') }}
+                                    </button>
+                                    <button
+                                        type="button"
+                                        data-action="set-end-mode"
+                                        data-end-mode="repeat-one"
+                                        aria-pressed="false"
+                                        class="inline-flex min-h-11 items-center justify-center rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm font-medium text-slate-200 transition hover:border-emerald-300/40 hover:bg-emerald-300/10"
+                                    >
+                                        {{ __('Repeat Current Surah') }}
+                                    </button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

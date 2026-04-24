@@ -670,5 +670,8 @@
     "N\/A": "غير متاح",
     "Current Reciter": "القارئ الحالي",
     "Current Surah": "السورة الحالية",
-     "Current Tafsir": "التفسير الحالي"
+    "Current Tafsir": "التفسير الحالي",
+    "On Surah End": "عند نهاية السورة",
+    "Play Next Surah": "تشغيل السورة التالية",
+    "Repeat Current Surah": "تكرار السورة الحالية"
 }

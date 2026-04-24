@@ -8,6 +8,7 @@ class QuranPlayer {
         this.storageKey = `quran-player:${this.config.blockId}`;
         this.mobileMediaQuery = window.matchMedia('(max-width: 767px)');
         this.handlePlayerModeChange = () => this.updatePlayerMode();
+        this.handlePlaybackEndedEvent = () => this.handlePlaybackEnded();
         if (this.config.dir) {
             this.root.setAttribute('dir', this.config.dir);
         }
@@ -21,6 +22,7 @@ class QuranPlayer {
             queueIndex: 0,
             shuffle: false,
             loop: false,
+            endMode: 'next',
             openPanel: null,
             selectedReciterId: null,
             selectedRiwayahId: null,
@@ -46,10 +48,10 @@ class QuranPlayer {
         this.root.addEventListener('change', (event) => this.handleChange(event));
         this.root.addEventListener('input', (event) => this.handleInput(event));
         this.root.addEventListener('keydown', (event) => this.handleKeydown(event));
-        this.audioElement.addEventListener('ended', () => this.playNext());
         this.mobileMediaQuery.addEventListener('change', this.handlePlayerModeChange);
 
         this.restoreState();
+        this.syncModeControls();
         this.bootstrap();
     }
 
@@ -76,7 +78,10 @@ class QuranPlayer {
     }
 
     createPlayer() {
-        return new Plyr(this.audioElement, this.getPlayerOptions());
+        const player = new Plyr(this.audioElement, this.getPlayerOptions());
+        player.on('ended', this.handlePlaybackEndedEvent);
+
+        return player;
     }
 
     getPlayerOptions() {
@@ -166,6 +171,7 @@ class QuranPlayer {
     render() {
         this.renderContent();
         this.syncActionButtons();
+        this.syncModeControls();
         this.persistState();
     }
 
@@ -337,7 +343,7 @@ class QuranPlayer {
             return;
         }
 
-        const { action, playSurah, selectReciter, panel } = button.dataset;
+        const { action, playSurah, selectReciter, panel, endMode } = button.dataset;
 
         if (action === 'previous') {
             this.playPrevious();
@@ -346,6 +352,13 @@ class QuranPlayer {
 
         if (action === 'next') {
             this.playNext();
+            return;
+        }
+
+        if (action === 'set-end-mode') {
+            this.state.endMode = this.normalizeEndMode(endMode);
+            this.syncModeControls();
+            this.persistState();
             return;
         }
 
@@ -499,8 +512,57 @@ class QuranPlayer {
             sources: [{ src: item.url, type: 'audio/mp3' }],
         };
 
-        await this.player.play().catch(() => {});
+        await this.playCurrentSource();
         this.renderContent();
+    }
+
+    handlePlaybackEnded() {
+        this.state.endMode = this.getCurrentEndMode();
+
+        if (this.state.endMode === 'repeat-one') {
+            this.player.currentTime = 0;
+            this.playCurrentSource();
+            return;
+        }
+
+        this.playNext();
+    }
+
+    async playCurrentSource() {
+        const started = await this.player.play().then(() => true).catch(() => false);
+
+        if (started) {
+            return;
+        }
+
+        await new Promise((resolve) => {
+            const media = this.player?.media;
+
+            if (! media) {
+                resolve();
+                return;
+            }
+
+            const cleanup = () => {
+                media.removeEventListener('loadedmetadata', complete);
+                media.removeEventListener('canplay', complete);
+                media.removeEventListener('error', complete);
+                clearTimeout(timeoutId);
+            };
+
+            const complete = () => {
+                cleanup();
+                resolve();
+            };
+
+            const timeoutId = window.setTimeout(complete, 2500);
+
+            media.addEventListener('loadedmetadata', complete, { once: true });
+            media.addEventListener('canplay', complete, { once: true });
+            media.addEventListener('error', complete, { once: true });
+        });
+
+        await this.player.play().catch(() => {});
     }
 
     getReciters() {
@@ -551,14 +613,21 @@ class QuranPlayer {
         return `
             <label class="flex flex-col gap-2">
                 ${compact ? '' : `<span class="text-xs font-semibold uppercase tracking-[0.28em] text-slate-400">${placeholder}</span>`}
-                <select class="min-h-11 w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white outline-none transition focus:border-emerald-300/50" data-control="${control}" aria-label="${this.escapeAttribute(placeholder)}">
-                    <option value="">${placeholder}</option>
-                    ${options.map((option) => `
-                        <option value="${this.escapeAttribute(option.value)}" ${String(option.value) === String(value ?? '') ? 'selected' : ''}>
-                            ${this.escape(option.label)}
-                        </option>
-                    `).join('')}
-                </select>
+                <div class="relative">
+                    <select class="min-h-11 w-full appearance-none rounded-2xl border border-white/10 bg-[#0b2327] px-4 py-3 pe-10 text-sm text-slate-100 outline-none transition focus:border-emerald-300/50 [color-scheme:dark]" data-control="${control}" aria-label="${this.escapeAttribute(placeholder)}">
+                        <option value="" class="bg-[#0b2327] text-slate-200">${placeholder}</option>
+                        ${options.map((option) => `
+                            <option value="${this.escapeAttribute(option.value)}" class="bg-[#0b2327] text-slate-100" ${String(option.value) === String(value ?? '') ? 'selected' : ''}>
+                                ${this.escape(option.label)}
+                            </option>
+                        `).join('')}
+                    </select>
+                    <span class="pointer-events-none absolute inset-y-0 end-3 inline-flex items-center text-slate-300">
+                        <svg class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                            <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 0 1 1.06.02L10 11.12l3.71-3.9a.75.75 0 1 1 1.08 1.04l-4.25 4.47a.75.75 0 0 1-1.08 0L5.21 8.27a.75.75 0 0 1 .02-1.06Z" clip-rule="evenodd"></path>
+                        </svg>
+                    </span>
+                </div>
             </label>
         `;
     }
@@ -676,6 +745,37 @@ class QuranPlayer {
         });
     }
 
+    syncModeControls() {
+        const mode = this.normalizeEndMode(this.state.endMode);
+        this.state.endMode = mode;
+
+        this.root.querySelectorAll('[data-action="set-end-mode"]').forEach((element) => {
+            if (!(element instanceof HTMLButtonElement)) {
+                return;
+            }
+
+            const isActive = this.normalizeEndMode(element.dataset.endMode) === mode;
+
+            element.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+            element.classList.toggle('border-emerald-300/50', isActive);
+            element.classList.toggle('bg-emerald-300/20', isActive);
+            element.classList.toggle('text-white', isActive);
+            element.classList.toggle('border-white/10', ! isActive);
+            element.classList.toggle('bg-white/5', ! isActive);
+            element.classList.toggle('text-slate-200', ! isActive);
+        });
+    }
+
+    getCurrentEndMode() {
+        const control = this.root.querySelector('[data-action="set-end-mode"][aria-pressed="true"]');
+
+        if (control instanceof HTMLButtonElement) {
+            return this.normalizeEndMode(control.dataset.endMode);
+        }
+
+        return this.normalizeEndMode(this.state.endMode);
+    }
+
     toggleActionState(button, { active = false, disabled = false } = {}) {
         if (! button) {
             return;
@@ -699,6 +799,7 @@ class QuranPlayer {
                 selectedSurahId: this.state.selectedSurahId,
                 loop: this.state.loop,
                 shuffle: this.state.shuffle,
+                endMode: this.normalizeEndMode(this.state.endMode),
                 reciterQuery: this.state.reciterQuery,
                 surahQuery: this.state.surahQuery,
             }));
@@ -719,9 +820,14 @@ class QuranPlayer {
             }
 
             Object.assign(this.state, JSON.parse(raw));
+            this.state.endMode = this.normalizeEndMode(this.state.endMode);
         } catch {
             // Ignore invalid local state.
         }
+    }
+
+    normalizeEndMode(value) {
+        return value === 'repeat-one' ? 'repeat-one' : 'next';
     }
 
     destroy() {
