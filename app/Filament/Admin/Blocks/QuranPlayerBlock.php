@@ -19,8 +19,7 @@ class QuranPlayerBlock extends BaseBlock
                         ->label(__('Section Title'))
                         ->default(__('Quran Player')),
                     TextInput::make('intro')
-                        ->label(__('Description'))
-                        ->default(__('Listen to Quran recitations with a clean player, reciter selection, and optional ayah sync.')),
+                        ->label(__('Description')),
                 ]),
             \Filament\Forms\Components\Select::make('language_mode')
                 ->label(__('API Language'))
