@@ -1,69 +1,113 @@
+@php
+    $navLinks = array_filter([
+        ['route' => 'home', 'label' => __('Home')],
+
+        \App\Support\PublicNavigation::isEnabled('prayer_times')
+            ? ['route' => 'prayer-times.index', 'label' => __('Prayer Times')]
+            : null,
+
+        \App\Support\PublicNavigation::isEnabled('events') && \App\Models\Event::published()->exists()
+            ? ['route' => 'events.index', 'label' => __('Events')]
+            : null,
+
+        \App\Support\PublicNavigation::isEnabled('announcements') && \App\Models\Announcement::active()->exists()
+            ? ['route' => 'announcements.index', 'label' => __('Announcements')]
+            : null,
+
+        \App\Support\PublicNavigation::isEnabled('news')
+            ? ['route' => 'news.index', 'label' => __('News')]
+            : null,
+
+        \App\Support\PublicNavigation::isEnabled('gallery') && \App\Models\MediaItem::exists()
+            ? ['route' => 'gallery.index', 'label' => __('Gallery')]
+            : null,
+
+        \App\Support\PublicNavigation::isEnabled('library') && (\App\Models\QuranVerse::exists() || \App\Models\Hadith::exists())
+            ? ['route' => 'islamic-library.index', 'label' => __('Library')]
+            : null,
+
+        \App\Support\PublicNavigation::isEnabled('khutba')
+            ? ['route' => 'khutba.index', 'label' => __('Khutba')]
+            : null,
+
+        \App\Support\PublicNavigation::isEnabled('staff') && \App\Models\Staff::exists()
+            ? ['route' => 'staff.index', 'label' => __('Staff')]
+            : null,
+    ]);
+
+    $contactLink = \App\Support\PublicNavigation::isEnabled('contact')
+        ? ['route' => 'contact.index', 'label' => __('Contact')]
+        : null;
+
+    $navPages = \App\Models\Page::nav()->where('is_home', false)->get();
+    $languages = \App\Models\Language::active()->get();
+@endphp
+
+@php
+    // Reusable link class resolver
+    $linkClass = fn(bool $active, bool $block = false) => implode(' ', array_filter([
+        'px-3 py-2 rounded-md text-sm font-medium transition-colors duration-150',
+        $block ? 'block' : '',
+        $active
+            ? 'text-emerald-600 bg-emerald-50'
+            : 'text-neutral-600 hover:text-emerald-600 hover:bg-neutral-50',
+    ]));
+
+    $langClass = fn(bool $active) => implode(' ', [
+        'px-2.5 py-1 rounded text-xs font-medium border transition-colors duration-150',
+        $active
+            ? 'bg-emerald-600 text-white border-emerald-600'
+            : 'text-neutral-600 border-neutral-300 hover:border-emerald-500 hover:text-emerald-600',
+    ]);
+@endphp
+
 <nav class="bg-white shadow-sm sticky top-0 z-50" x-data="{ open: false }">
     <div class="mx-auto px-4 sm:px-6 lg:px-10">
         <div class="flex items-center justify-between h-16">
 
+            {{-- Logo --}}
             <a href="{{ route('home') }}" class="flex items-center shrink-0 h-16 py-2">
                 @if(setting('branding.logo'))
-                    <img
-                            src="{{ \Illuminate\Support\Facades\Storage::url(setting('branding.logo')) }}"
-                            alt="{{ setting('general.name') }}"
-                            class="h-15 w-auto object-contain"
-                    >
+                    <img src="{{ \Illuminate\Support\Facades\Storage::url(setting('branding.logo')) }}"
+                         alt="{{ setting('general.name') }}"
+                         class="h-15 w-auto object-contain">
                 @endif
             </a>
 
+            {{-- Desktop Links --}}
             <div class="hidden lg:flex items-center gap-1">
-                @php
-                    $navLinks = [
-                        ['route' => 'home', 'label' => __('Home')],
-                        ['route' => 'prayer-times.index', 'label' => __('Prayer Times'), 'enabled' => \App\Support\PublicNavigation::isEnabled('prayer_times')],
-                        ['route' => 'events.index', 'label' => __('Events'), 'enabled' => \App\Support\PublicNavigation::isEnabled('events'), 'when' => \App\Models\Event::published()->exists()],
-                        ['route' => 'announcements.index', 'label' => __('Announcements'), 'enabled' => \App\Support\PublicNavigation::isEnabled('announcements'), 'when' => \App\Models\Announcement::active()->exists()],
-                        ['route' => 'news.index', 'label' => __('News'), 'enabled' => \App\Support\PublicNavigation::isEnabled('news')],
-                        ['route' => 'gallery.index', 'label' => __('Gallery'), 'enabled' => \App\Support\PublicNavigation::isEnabled('gallery'), 'when' => \App\Models\MediaItem::query()->exists()],
-                        ['route' => 'islamic-library.index', 'label' => __('Library'), 'enabled' => \App\Support\PublicNavigation::isEnabled('library'), 'when' => \App\Models\QuranVerse::query()->exists() || \App\Models\Hadith::query()->exists()],
-                        ['route' => 'khutba.index', 'label' => __('Khutba'), 'enabled' => \App\Support\PublicNavigation::isEnabled('khutba')],
-                        ['route' => 'staff.index', 'label' => __('Staff'), 'enabled' => \App\Support\PublicNavigation::isEnabled('staff'), 'when' => \App\Models\Staff::query()->exists()],
-                        ['route' => 'contact.index', 'label' => __('Contact'), 'enabled' => \App\Support\PublicNavigation::isEnabled('contact')],
-                    ];
-                    $navPages = \App\Models\Page::nav()->where('is_home', false)->get();
-                @endphp
-
                 @foreach($navLinks as $link)
-                    @if(($link['enabled'] ?? true) === true && ($link['when'] ?? true) === true)
-                        @php
-                            $isActive = request()->routeIs($link['route']);
-                        @endphp
-                        <a href="{{ route($link['route']) }}"
-                           class="px-3 py-2 rounded-md text-sm font-medium transition-colors duration-150 {{ $isActive ? 'text-emerald-600 bg-emerald-50' : 'text-neutral-600 hover:text-emerald-600 hover:bg-neutral-50' }}">
-                            {{ $link['label'] }}
+                    <a href="{{ route($link['route']) }}" class="{{ $linkClass(request()->routeIs($link['route'])) }}">
+                        {{ $link['label'] }}
+                    </a>
+                @endforeach
+
+                @foreach($navPages as $page)
+                    <a href="{{ route('page.show', $page->slug) }}" class="{{ $linkClass(request()->is('page/' . $page->slug)) }}">
+                        {{ $page->title }}
+                    </a>
+                @endforeach
+
+                @if($contactLink)
+                    <a href="{{ route($contactLink['route']) }}" class="{{ $linkClass(request()->routeIs($contactLink['route'])) }}">
+                        {{ $contactLink['label'] }}
+                    </a>
+                @endif
+            </div>
+
+            {{-- Language Switcher --}}
+            @if($languages->isNotEmpty())
+                <div class="hidden lg:flex items-center gap-2">
+                    @foreach($languages as $language)
+                        <a href="{{ request()->fullUrlWithQuery(['lang' => $language->code]) }}"
+                           class="{{ $langClass(app()->getLocale() === $language->code) }}">
+                            {{ strtoupper($language->code) }}
                         </a>
-                    @endif
-                @endforeach
+                    @endforeach
+                </div>
+            @endif
 
-                @foreach($navPages as $navPage)
-                    @php
-                        $isActive = request()->is('page/' . $navPage->slug);
-                    @endphp
-                    <a href="{{ route('page.show', $navPage->slug) }}"
-                       class="px-3 py-2 rounded-md text-sm font-medium transition-colors duration-150 {{ $isActive ? 'text-emerald-600 bg-emerald-50' : 'text-neutral-600 hover:text-emerald-600 hover:bg-neutral-50' }}">
-                        {{ $navPage->title }}
-                    </a>
-                @endforeach
-            </div>
-
-            <div class="hidden lg:flex items-center gap-2">
-                @php
-                    $languages = \App\Models\Language::active()->get();
-                @endphp
-                @foreach($languages as $language)
-                    <a href="{{ request()->fullUrlWithQuery(['lang' => $language->code]) }}"
-                       class="px-2.5 py-1 rounded text-xs font-medium border transition-colors duration-150 {{ app()->getLocale() === $language->code ? 'bg-emerald-600 text-white border-emerald-600' : 'text-neutral-600 border-neutral-300 hover:border-emerald-500 hover:text-emerald-600' }}">
-                        {{ strtoupper($language->code) }}
-                    </a>
-                @endforeach
-            </div>
-
+            {{-- Mobile Toggle --}}
             <button @click="open = !open"
                     class="lg:hidden p-2 rounded-md text-neutral-500 hover:text-neutral-700 hover:bg-neutral-100 transition-colors"
                     :aria-expanded="open">
@@ -77,6 +121,7 @@
         </div>
     </div>
 
+    {{-- Mobile Menu --}}
     <div x-show="open"
          x-transition:enter="transition ease-out duration-150"
          x-transition:enter-start="opacity-0 -translate-y-1"
@@ -88,32 +133,28 @@
          @click.away="open = false">
         <div class="px-4 py-3 space-y-1">
             @foreach($navLinks as $link)
-                @if(($link['enabled'] ?? true) === true && ($link['when'] ?? true) === true)
-                    @php
-                        $isActive = request()->routeIs($link['route']);
-                    @endphp
-                    <a href="{{ route($link['route']) }}"
-                       class="block px-3 py-2 rounded-md text-sm font-medium transition-colors {{ $isActive ? 'text-emerald-600 bg-emerald-50' : 'text-neutral-600 hover:text-emerald-600 hover:bg-neutral-50' }}">
-                        {{ $link['label'] }}
-                    </a>
-                @endif
-            @endforeach
-
-            @foreach($navPages as $navPage)
-                @php
-                    $isActive = request()->is('page/' . $navPage->slug);
-                @endphp
-                <a href="{{ route('page.show', $navPage->slug) }}"
-                   class="block px-3 py-2 rounded-md text-sm font-medium transition-colors {{ $isActive ? 'text-emerald-600 bg-emerald-50' : 'text-neutral-600 hover:text-emerald-600 hover:bg-neutral-50' }}">
-                    {{ $navPage->title }}
+                <a href="{{ route($link['route']) }}" class="{{ $linkClass(request()->routeIs($link['route']), true) }}">
+                    {{ $link['label'] }}
                 </a>
             @endforeach
 
-            @if($languages->count() > 0)
+            @foreach($navPages as $page)
+                <a href="{{ route('page.show', $page->slug) }}" class="{{ $linkClass(request()->is('page/' . $page->slug), true) }}">
+                    {{ $page->title }}
+                </a>
+            @endforeach
+
+            @if($contactLink)
+                <a href="{{ route($contactLink['route']) }}" class="{{ $linkClass(request()->routeIs($contactLink['route']), true) }}">
+                    {{ $contactLink['label'] }}
+                </a>
+            @endif
+
+            @if($languages->isNotEmpty())
                 <div class="pt-3 border-t border-neutral-100 flex items-center gap-2 flex-wrap">
                     @foreach($languages as $language)
                         <a href="{{ request()->fullUrlWithQuery(['lang' => $language->code]) }}"
-                           class="px-2.5 py-1 rounded text-xs font-medium border transition-colors {{ app()->getLocale() === $language->code ? 'bg-emerald-600 text-white border-emerald-600' : 'text-neutral-600 border-neutral-300 hover:border-emerald-500 hover:text-emerald-600' }}">
+                           class="{{ $langClass(app()->getLocale() === $language->code) }}">
                             {{ strtoupper($language->code) }}
                         </a>
                     @endforeach
