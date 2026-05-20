@@ -3,5 +3,25 @@
   "packages": {
     "php": "8.4"
   },
-  "phpExtensions": ["bcmath", "intl", "zip"]
+  "phpExtensions": ["bcmath", "intl", "zip"],
+  "buildAptPackages": [
+    "bison",
+    "re2c",
+    "libxml2-dev",
+    "libsqlite3-dev",
+    "libcurl4-openssl-dev",
+    "libonig-dev",
+    "libreadline-dev",
+    "libzip-dev",
+    "libpng-dev",
+    "libjpeg-dev",
+    "libfreetype6-dev",
+    "libicu-dev",
+    "libpq-dev",
+    "libgd-dev",
+    "libssl-dev",
+    "zlib1g-dev",
+    "pkg-config",
+    "autoconf"
+  ]
 }
